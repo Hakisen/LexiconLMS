@@ -15,7 +15,7 @@ public        string Description{ get; set; }
 public        string Name{ get; set; } //
 public    int CourseId{ get; set; } //FK
   //Nav prop
-public  ICollection<Activity> Activities{ get; set; }
+public  ICollection<LmsActivity> LmsActivities{ get; set; }
 public    Course Course{ get; set; }
 
 

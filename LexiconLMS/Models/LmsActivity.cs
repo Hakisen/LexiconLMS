@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LexiconLMS.Models
 {
-    public class Activity
+    public class LmsActivity
     {
  public int Id{ get; set; }
  public DateTime EndDate{ get; set; }
