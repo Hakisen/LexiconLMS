@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using LexiconLMS.Models;
 
 [assembly: HostingStartup(typeof(LexiconLMS.Areas.Identity.IdentityHostingStartup))]
 namespace LexiconLMS.Areas.Identity
