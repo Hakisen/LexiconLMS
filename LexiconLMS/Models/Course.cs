@@ -7,16 +7,16 @@ namespace LexiconLMS.Models
 {
     public class Course
     {
-        int Id;
-        DateTime EndDate;
-        DateTime StartDate;
-        string Description;
-        string Name; //CourseName
-
-        string ApplicationUserId;//FK
-        //nav prop
-        ApplicationUser ApplicationUser;
-        ICollection<Module> Modules;
+  public  int Id{ get; set; }
+  public  System.DateTime EndDate{ get; set; }
+  public  DateTime StartDate{ get; set; }
+  public  string Description{ get; set; }
+  public  string Name{ get; set; } //CourseName
+ 
+  public  string ApplicationUserId{ get; set; }//FK
+  //nav prop
+  public  ApplicationUser ApplicationUser{ get; set; }
+  public  ICollection<Module> Modules{ get; set; }
 
 
 

@@ -7,17 +7,17 @@ namespace LexiconLMS.Models
 {
     public class Activity
     {
-        int Id;
-        DateTime EndDate;
-        DateTime StartDate;
-        string Description;
-        string Name; //
-                     //FK
-        int ActivityTypeId;
-        int ModuleId;
-        //Nav prop
-        ActivityType ActivityType;
-        Module Module;
+ public int Id{ get; set; }
+ public DateTime EndDate{ get; set; }
+ public DateTime StartDate{ get; set; }
+ public string Description{ get; set; }
+ public string Name{ get; set; } //
+            //FK
+ public int ActivityTypeId{ get; set; }
+ public int ModuleId{ get; set; }
+  //Nav prop
+ public ActivityType ActivityType{ get; set; }
+ public Module Module{ get; set; }
 
 
     }
