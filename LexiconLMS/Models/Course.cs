@@ -15,7 +15,7 @@ namespace LexiconLMS.Models
  
   public  string ApplicationUserId{ get; set; }//FK
   //nav prop
-  public  ApplicationUser ApplicationUser{ get; set; }
+  public ICollection < ApplicationUser> ApplicationUser{ get; set; }
   public  ICollection<Module> Modules{ get; set; }
 
 
