@@ -13,7 +13,7 @@ namespace LexiconLMS.Models
   public  string Description{ get; set; }
   public  string Name{ get; set; } //CourseName
  
-  public  string ApplicationUserId{ get; set; }//FK
+
   //nav prop
   public ICollection < ApplicationUser> ApplicationUser{ get; set; }
   public  ICollection<Module> Modules{ get; set; }
