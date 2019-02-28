@@ -15,5 +15,6 @@ namespace LexiconLMS.Data
             : base(options)
         {
         }
+        public DbSet<LexiconLMS.Models.Course> Course { get; set; }
     }
 }
