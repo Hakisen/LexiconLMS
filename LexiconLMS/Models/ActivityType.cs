@@ -7,10 +7,9 @@ namespace LexiconLMS.Models
 {
     public class ActivityType
     {
-        int Id;
-        string Type;
-        int ActivityId; //FK
+        public string Type { get; set; }
+        public int Id { get; set; }
         //Nav prop
-        ICollection<Activity> Activities;
+        public ICollection<LmsActivity> Activities { get; set; }
     }
 }

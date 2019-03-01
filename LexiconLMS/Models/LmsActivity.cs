@@ -5,19 +5,20 @@ using System.Threading.Tasks;
 
 namespace LexiconLMS.Models
 {
-    public class Module
+    public class LmsActivity
     {
-
         public int Id { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime StartDate { get; set; }
         public string Description { get; set; }
         public string Name { get; set; } //
-                                          //Nav prop
-        public int CourseId { get; set; } //FK
-        public Course Course { get; set; }
+                                         //FK
+        public int ActivityTypeId { get; set; }
+        public ActivityType ActivityType { get; set; }
+        //Nav prop
+        public int ModuleId { get; set; }
+        public Module Module { get; set; }
 
-        public ICollection<LmsActivity> LmsActivities { get; set; }
 
     }
 }
