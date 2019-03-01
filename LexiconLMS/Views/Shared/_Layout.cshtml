@@ -29,44 +29,89 @@
                 <a class="navbar-brand" href="#">LexiconLMS</a>
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Moduler<span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Elever</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Lärare</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Inlämningsuppgifter</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Schema
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Modulschema</a>
-                                <a class="dropdown-item" href="#">Aktivitetsschema</a>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">e-learning</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Snabblänkar
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Pluralsight</a>
-                                <a class="dropdown-item" href="#">W3School</a>
-                                <a class="dropdown-item" href="#">Bootstrap library</a>
-                                <a class="dropdown-item" href="#">Github</a>
-                                <a class="dropdown-item" href="#">Kursens Github</a>
-                            </div>
-                        </li>
-                    </ul>
+                    @if (User.IsInRole("student"))
+                    {
+                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Moduler<span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Elever</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Lärare</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Inlämningsuppgifter</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Schema
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Modulschema</a>
+                                    <a class="dropdown-item" href="#">Aktivitetsschema</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">e-learning</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Snabblänkar
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Pluralsight</a>
+                                    <a class="dropdown-item" href="#">W3School</a>
+                                    <a class="dropdown-item" href="#">Bootstrap library</a>
+                                    <a class="dropdown-item" href="#">Github</a>
+                                    <a class="dropdown-item" href="#">Kursens Github</a>
+                                </div>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Kurser<span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Elever</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Lärare</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Inlämnade uppgifter</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Schema
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Modulschema</a>
+                                    <a class="dropdown-item" href="#">Aktivitetsschema</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">e-learning</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Snabblänkar
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Pluralsight</a>
+                                    <a class="dropdown-item" href="#">W3School</a>
+                                    <a class="dropdown-item" href="#">Bootstrap library</a>
+                                    <a class="dropdown-item" href="#">Github</a>
+                                    <a class="dropdown-item" href="#">Kursens Github</a>
+                                </div>
+                            </li>
+                        </ul>
+
+                    }
                 }
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
 
