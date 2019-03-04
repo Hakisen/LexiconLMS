@@ -28,49 +28,111 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-            <td>
-              
+        @if (User.IsInRole("Teacher"))
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
 
-        
-                    @*ToDo:Refactor ViewComponent? ViewModel with gymclasses with member id*@
-                
-                    
+
+                    <td>
+
+
+
+
+
                         @foreach (var student in item.ApplicationUser.Where(m => m.CourseId == item.Id))
                         {
-                           
-                <div>
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h4 class="card-title">@student.Name</h4>
+                                    <p class="card-text">@student.Email</p>
+                                    <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
 
-                    <p><span>@student.Name</span><span>  </span> <span>@student.Email </span ></p>
 
-                </div>
-                            
                         }
-              
-            </td>
-
-     
 
 
-        </tr>
-}
+
+                    </td>
+
+                    }
+
+
+                </tr>
+            }
+        }
+        @if (User.IsInRole("Teacher"))
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+
+
+                    <td>
+
+
+
+
+
+                        @foreach (var student in item.ApplicationUser.Where(m => m.CourseId == item.Id))
+                        {
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h4 class="card-title">@student.Name</h4>
+                                    <p class="card-text">@student.Email</p>
+                                    <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                </div>
+                            </div>
+
+
+                        }
+
+
+
+                    </td>
+
+                    }
+
+
+                </tr>
+            }
+        }
     </tbody>
 </table>
