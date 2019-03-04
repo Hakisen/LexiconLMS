@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LexiconLMS.Data;
 using LexiconLMS.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LexiconLMS.Controllers
 {
+    //[Authorize(Roles = "Teacher, Student")]
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -149,5 +151,6 @@ namespace LexiconLMS.Controllers
         {
             return _context.Course.Any(e => e.Id == id);
         }
+
     }
 }

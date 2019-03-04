@@ -13,6 +13,11 @@
     <None Remove="Data\Migrations\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20190304103344_formattingDate.cs" />
+    <Compile Remove="Migrations\20190304103344_formattingDate.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Faker.Net" Version="1.1.1" />

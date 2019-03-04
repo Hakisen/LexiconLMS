@@ -8,13 +8,12 @@ namespace LexiconLMS.Models
 {
     public class Module
     {
-
         public int Id { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
 
         public string Description { get; set; }
@@ -24,6 +23,5 @@ namespace LexiconLMS.Models
         public Course Course { get; set; }
 
         public ICollection<LmsActivity> LmsActivities { get; set; }
-
     }
 }
