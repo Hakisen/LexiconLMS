@@ -10,10 +10,10 @@ namespace LexiconLMS.Models
     {
         public int Id { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public System.DateTime EndDate { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
 
         public string Description { get; set; }
