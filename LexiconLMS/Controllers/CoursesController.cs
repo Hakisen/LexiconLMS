@@ -22,7 +22,7 @@ namespace LexiconLMS.Controllers
         // GET: Courses
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Course.ToListAsync());
+            return View(await _context.Course.Include(a=>a.ApplicationUser).ToListAsync());
         }
 
         // GET: Courses/Details/5
