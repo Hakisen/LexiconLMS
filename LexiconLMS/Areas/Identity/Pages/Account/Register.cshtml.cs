@@ -78,6 +78,8 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             {
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Phone };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                var resultAddRole = await _userManager.AddToRoleAsync(user, Input.Role);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
@@ -93,7 +95,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    _UserUser.IsInRole("Student"))
+             
 
                     return LocalRedirect(returnUrl);
                 }
