@@ -47,6 +47,29 @@
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
+            <td>
+              
+
+        
+                    @*ToDo:Refactor ViewComponent? ViewModel with gymclasses with member id*@
+                
+                    
+                        @foreach (var student in item.ApplicationUser.Where(m => m.CourseId == item.Id))
+                        {
+                           
+                           <div>
+                                  
+                                    <p> @student.Email</p>
+                                 
+                                </div>
+                            
+                        }
+              
+            </td>
+
+     
+
+
         </tr>
 }
     </tbody>
