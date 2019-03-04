@@ -57,11 +57,11 @@
                         @foreach (var student in item.ApplicationUser.Where(m => m.CourseId == item.Id))
                         {
                            
-                           <div>
-                                  
-                                    <p> @student.Email</p>
-                                 
-                                </div>
+                <div>
+
+                    <p><span>@student.Name</span><span>  </span> <span>@student.Email </span ></p>
+
+                </div>
                             
                         }
               

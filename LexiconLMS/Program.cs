@@ -33,9 +33,9 @@ namespace LexiconLMS
 
                 var config = host.Services.GetRequiredService<IConfiguration>();
 
-                // dotnet user-secrets set  "GYM:AdminPW" "FooBar77!"
+                // dotnet user-secrets set  "LexiconLMS:AdminPW": "Q1!qwerty"
 
-                var AdminPw = config["GYM:AdminPW"];
+                var AdminPw = config["LexiconLMS:AdminPW"];
                 try
                 {
                     SeedData.Initialize(services, AdminPw).Wait();
@@ -57,7 +57,14 @@ namespace LexiconLMS
 
     public static class SeedData
     {
-        public static async Task Initialize(IServiceProvider serviceProvider, string adminPw)
+        internal class Studentuser
+        {
+            public string Email { get; set; }
+            public string Name { get; set; }
+        }
+    
+
+    public static async Task Initialize(IServiceProvider serviceProvider, string adminPw)
         {
             using (var context = new ApplicationDbContext(
              serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
@@ -138,23 +145,25 @@ namespace LexiconLMS
 
 
                 }
-                var studentemails = new List<string>();
+                var students = new List<Studentuser>();
                
                 for (int i = 0; i < 30; i++)
                 {
-                    string name = Faker.Internet.Email();
+                    var fakename = Faker.Name.FullName();
+                    Studentuser newStudent = new Studentuser { Email = Faker.Internet.Email(fakename), Name = fakename };
+                    
                    
-                    studentemails.Add(name);
+                    students.Add(newStudent);
                 }
 
 
 
-                foreach (var email in studentemails)
+                foreach (var student in students)
                 {
-                    var foundUser = await userManager.FindByEmailAsync(email);
+                    var foundUser = await userManager.FindByEmailAsync(student.Email);
                     if (foundUser != null) continue;
-                    var randomcourse = Faker.RandomNumber.Next(4);
-                    var user = new ApplicationUser { UserName = email, Email = email }; // , CourseId = courses[randomcourse].Id, Course = courses[randomcourse]};
+                 
+                    var user = new ApplicationUser { UserName = student.Email, Email = student.Email,Name=student.Name }; // , CourseId = courses[randomcourse].Id, Course = courses[randomcourse]};
                
                     var addUserResult = await userManager.CreateAsync(user, adminPw);
                     if (!addUserResult.Succeeded)
@@ -168,8 +177,8 @@ namespace LexiconLMS
                     {
                         throw new Exception(string.Join("\n", addToRoleResultAdmin.Errors));
                     }
-               
 
+                    var randomcourse = Faker.RandomNumber.Next(4);
                     user.CourseId = courses[randomcourse].Id;
                     var identityResult=await userManager.UpdateAsync(user);
                     if (!identityResult.Succeeded)
