@@ -29,7 +29,7 @@
                 <a class="navbar-brand" href="#">LexiconLMS</a>
                 @if (SignInManager.IsSignedIn(User))
                 {
-                    @if (User.IsInRole("student"))
+                    @if (User.IsInRole("Student"))
                     {
                         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                             <li class="nav-item">
@@ -73,9 +73,19 @@
                     else
                     {
                         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Kurser<span class="sr-only">(current)</span></a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Kurser
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Lista</a>
+                                    <a class="dropdown-item" href="#">Skapa ny</a>
+                                    <a class="dropdown-item" href="#">Ta bort</a>
+                                </div>
                             </li>
+                             @*<li class="nav-item">
+                                <a class="nav-link" href="#">Kurser<span class="sr-only">(current)</span></a>
+                            </li>*@
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Elever</a>
                             </li>
