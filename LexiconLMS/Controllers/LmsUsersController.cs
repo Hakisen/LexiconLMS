@@ -1,4 +1,5 @@
-﻿using LexiconLMS.Models;
+﻿using LexiconLMS.Data;
+using LexiconLMS.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,26 +9,28 @@ using System.Threading.Tasks;
 
 namespace LexiconLMS.Controllers
 {
-    public class UsersController : Controller
+    public class LmsUsersController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        public virtual System.Linq.IQueryable<ApplicationUser> Users { get; }
        
 
+
+
         private readonly UserManager<ApplicationUser> _userManager;
-        public UsersController(
+        public LmsUsersController(
             UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-        
+
         }
-        // GET: Courses
-        public async Task<IActionResult> Index()
+        
+        public  Task<IActionResult> Index()
         {
-            return View(await _userManager.Users.ToList());
+            
+            return View(Users);
         }
 
-        private IActionResult View(object p)
-        {
-            throw new NotImplementedException();
-        }
+     
     }
 }
