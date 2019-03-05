@@ -52,8 +52,11 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             [Phone]
             [Display(Name = "Telefon")]
             public string Phone { get; set; }
+            [Required]
+            [Display(Name = "Namn")]
+            public string Name { get; set; }
 
-           
+
             [Display(Name = "Roll")]
             public string Role{ get; set; }
 
@@ -82,7 +85,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Phone };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Phone ,Name=Input.Name};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 var resultAddRole = await _userManager.AddToRoleAsync(user, Input.Role);
 

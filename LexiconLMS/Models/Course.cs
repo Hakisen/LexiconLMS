@@ -11,12 +11,15 @@ namespace LexiconLMS.Models
         public int Id { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name = "Slut")]
         public System.DateTime EndDate { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name = "Start")]
         public DateTime StartDate { get; set; }
-
+        [Display(Name = "Beskrivning")]
         public string Description { get; set; }
+        [Display(Name = "Kursnamn")]
         public string Name { get; set; } //CourseName
 
         //public  string ApplicationUserId{ get; set; }//FK
