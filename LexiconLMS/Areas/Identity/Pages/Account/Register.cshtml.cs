@@ -48,8 +48,11 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             [Phone]
             [Display(Name = "Telefon")]
             public string Phone { get; set; }
+            [Required]
+            [Display(Name = "Namn")]
+            public string Name { get; set; }
 
-           
+
             [Display(Name = "Roll")]
             public string Role{ get; set; }
 
