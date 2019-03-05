@@ -185,14 +185,7 @@ namespace LexiconLMS
                     {
                         throw new Exception(string.Join("\n", identityResult.Errors));
                     }
-
-
-
                 }
-
-
-
-
             }
         }
     }
