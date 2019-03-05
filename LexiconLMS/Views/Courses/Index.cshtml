@@ -24,10 +24,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
+        
         @if (User.IsInRole("Teacher"))
         {
             @foreach (var item in Model)
@@ -50,14 +50,7 @@
                         <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
-
-
                     <td>
-
-
-
-
-
                         @foreach (var student in item.ApplicationUser.Where(m => m.CourseId == item.Id))
                         {
                             <div class="card">
@@ -67,17 +60,8 @@
                                     <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
                                 </div>
                             </div>
-
-
                         }
-
-
-
                     </td>
-
-                    }
-
-
                 </tr>
             }
         }
@@ -102,15 +86,8 @@
                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                         <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-
-
+                    </td>                    
                     <td>
-
-
-
-
-
                         @foreach (var student in item.ApplicationUser.Where(m => m.CourseId == item.Id))
                         {
                             <div class="card">
@@ -120,17 +97,8 @@
                                     <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
                                 </div>
                             </div>
-
-
                         }
-
-
-
                     </td>
-
-                    }
-
-
                 </tr>
             }
         }

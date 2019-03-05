@@ -126,7 +126,7 @@ namespace LexiconLMS
                     }
                 }
 
-                var teacheremails = new[] { "admin@lexicon.se", "stefan@lexicon.se", "John.lexicon.se" };
+                var teacheremails = new[] { "admin@lexicon.se", "stefan@lexicon.se", "John@lexicon.se" };
                 foreach (var email in teacheremails)
                 {
                     var foundUser = await userManager.FindByEmailAsync(email);
