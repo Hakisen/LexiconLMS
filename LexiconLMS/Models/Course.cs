@@ -21,6 +21,7 @@ namespace LexiconLMS.Models
         public string Description { get; set; }
         [Display(Name = "Kursnamn")]
         public string Name { get; set; } //CourseName
+        //public string ApplicationUserId { get; set; }
 
         //public  string ApplicationUserId{ get; set; }//FK
         //nav prop
