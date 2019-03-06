@@ -13,24 +13,34 @@ namespace LexiconLMS.Controllers
     {
         private readonly ApplicationDbContext _context;
         public virtual System.Linq.IQueryable<ApplicationUser> Users { get; }
-       
 
 
-
-        private readonly UserManager<ApplicationUser> _userManager;
-        public LmsUsersController(
-            UserManager<ApplicationUser> userManager)
+        public LmsUsersController(ApplicationDbContext context)
         {
-            _userManager = userManager;
-
-        }
-        
-        public  Task<IActionResult> Index()
-        {
-            
-            return View(Users);
+            _context = context;
         }
 
-     
+        // GET: Users
+        public  IActionResult Index()
+        {
+            return View( _context.Users.ToList());
+        }
+
+
+        //private readonly UserManager<ApplicationUser> _userManager;
+        //public LmsUsersController(
+        //    UserManager<ApplicationUser> userManager)
+        //{
+        //    _userManager = userManager;
+
+        //}
+
+        //public  Task<IActionResult> Index()
+        //{
+
+        //    return View(Users);
+        //}
+
+
     }
 }

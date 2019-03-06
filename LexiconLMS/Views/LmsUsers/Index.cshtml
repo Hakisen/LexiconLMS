@@ -20,7 +20,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Course)
             </th>
-           
+
 
         </tr>
     </thead>
@@ -40,63 +40,118 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Course)
                     </td>
-                    
+                    <td>
+                        @if (await UserManager.IsInRoleAsync(item, "Teacher"))
+                        {<p>Teacher</p>}
+                        @if (await UserManager.IsInRoleAsync(item, "Student"))
+                        {<p>Student</p>}
+
+                    </td>
+
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                         <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                     @*<td>
-                        @foreach (var student in item.Course.Where(m => m. == item.Id))
-                        {
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <h4 class="card-title">@student.Name</h4>
-                                    <p class="card-text">@student.Email</p>
-                                    <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                            @foreach (var student in item.Course.Where(m => m. == item.Id))
+                            {
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">@student.Name</h4>
+                                        <p class="card-text">@student.Email</p>
+                                        <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                    </div>
                                 </div>
-                            </div>
-                        }
-                    </td>*@
+                            }
+                        </td>*@
                 </tr>
             }
         }
-        @*@if (User.IsInRole("Teacher"))
+
+        @if (User.IsInRole("Student"))
         {
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                    <td>
-                        @foreach (var course in item.Course.Where(m => m.CourseId == item.Id))
-                        {
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <h4 class="card-title">@student.Name</h4>
-                                    <p class="card-text">@student.Email</p>
-                                    <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                    @if (await UserManager.IsInRoleAsync(item, "Student"))
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Course)
+                        </td>
+                        <td>
+                            @if (await UserManager.IsInRoleAsync(item, "Teacher"))
+                            {<p>Teacher</p>}
+                            @if (await UserManager.IsInRoleAsync(item, "Student"))
+                            {<p>Student</p>}
+
+                        </td>
+
+
+                        <td>
+
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+
+                        </td>
+                    }
+                   
+                    @*<td>
+                            @foreach (var student in item.Course.Where(m => m. == item.Id))
+                            {
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">@student.Name</h4>
+                                        <p class="card-text">@student.Email</p>
+                                        <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                    </div>
                                 </div>
-                            </div>
-                        }
-                    </td>
+                            }
+                        </td>*@
                 </tr>
             }
-        }*@
+        }
+        @*@if (User.IsInRole("Teacher"))
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                        <td>
+                            @foreach (var course in item.Course.Where(m => m.CourseId == item.Id))
+                            {
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">@student.Name</h4>
+                                        <p class="card-text">@student.Email</p>
+                                        <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
+                                    </div>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            }*@
     </tbody>
 </table>
