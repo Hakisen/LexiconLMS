@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using LexiconLMS.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LexiconLMS.Areas.Identity.Pages.Account
 {
@@ -20,18 +21,21 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         [BindProperty]
@@ -48,8 +52,11 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             [Phone]
             [Display(Name = "Telefon")]
             public string Phone { get; set; }
+            [Required]
+            [Display(Name = "Namn")]
+            public string Name { get; set; }
 
-           
+
             [Display(Name = "Roll")]
             public string Role{ get; set; }
 
@@ -68,6 +75,8 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
 
         public void OnGet(string returnUrl = null)
         {
+            ViewData["RoleName"] = new SelectList(_roleManager.Roles, "Name", "Name");
+            //return View();
             ReturnUrl = returnUrl;
         }
 
@@ -76,7 +85,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Phone };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Phone ,Name=Input.Name};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 var resultAddRole = await _userManager.AddToRoleAsync(user, Input.Role);
 
