@@ -17,13 +17,13 @@ namespace LexiconLMS.Migrations
                     Type = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
-                {
+                {//8
                     table.PrimaryKey("PK_ActivityType", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
-                columns: table => new
+                columns: table => new   
                 {
                     Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
