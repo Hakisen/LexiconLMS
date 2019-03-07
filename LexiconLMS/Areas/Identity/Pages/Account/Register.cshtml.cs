@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using LexiconLMS.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using LexiconLMS.Data;
 
 namespace LexiconLMS.Areas.Identity.Pages.Account
 {
@@ -22,6 +23,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
          
@@ -29,7 +31,8 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager
+            RoleManager<IdentityRole> roleManager,
+            ApplicationDbContext context
             )
         {
             _userManager = userManager;
@@ -37,6 +40,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+             _context = context;
         }
 
         [BindProperty]
@@ -71,12 +75,18 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            [Display(Name = "Course")]
+            public int CourseId { get; set; }
 
         }
 
         public void OnGet(string returnUrl = null)
+
         {
+            
             ViewData["RoleName"] = new SelectList(_roleManager.Roles, "Name", "Name");
+
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name");
             //return View();
             ReturnUrl = returnUrl;
         }
@@ -86,7 +96,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Phone ,Name=Input.Name};
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Phone ,Name=Input.Name,CourseId=Input.CourseId };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 var resultAddRole = await _userManager.AddToRoleAsync(user, Input.Role);
 
@@ -104,7 +114,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                  //Stefan  await _signInManager.SignInAsync(user, isPersistent: false);
+                 //Stefan  await _signInManager.SignInAsync(user, isPersistent: false);
              
 
                     return LocalRedirect(returnUrl);
