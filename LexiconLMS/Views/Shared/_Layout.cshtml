@@ -23,11 +23,13 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
            <div class="container-fluid">
-             <a class="navbar-brand" href="Home">LexiconLMS</a>
+             <a class="navbar-brand" asp-area="" asp-controller="Home"asp-action="Index">LexiconLMS</a>
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                
                     @if (SignInManager.IsSignedIn(User))
                     {
                         @if (User.IsInRole("Student"))
@@ -80,21 +82,26 @@
                                         Kurser
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" asp-controller="Courses" asp-action="Index">hantera pågående kurser</a>
-                                        @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>*@
-                                        <a class="dropdown-item" asp-controller="Courses" asp-action="Create">Skapa ny</a>
-                                    </div>
+                                    <a class="dropdown-item" asp-controller="Courses" asp-action="Index">Lista samtliga kurser</a>
+                                    <a class="dropdown-item" asp-controller="LMSUsers" asp-action="List">Lista samtliga lärare</a>
+                                    <a class="dropdown-item" asp-controller="LMSUsers" asp-action="List">Lista samtliga elever</a>
+                                    <a class="dropdown-item" asp-controller="Courses" asp-action="Index">Hantera kurser</a>
+                                    @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>*@
+                                      <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Hantera lärare/elever</a>                        
+                                    <a class="dropdown-item" asp-controller="Courses" asp-action="Create">Hantera E-learning</a>
+                                    <a class="dropdown-item" asp-controller="Courses" asp-action="Create">Hantera nyheter/information</a>
+
+</div>
                                 </li>
                                 @*<li class="nav-item">
-                            <a class="nav-link" href="#">Kurser<span class="sr-only">(current)</span></a>
-                        </li>*@
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-controller="LmsUsers" asp-action="Index">Deltagare</a>
-                                    @*<a class="nav-link" href="#">Elever</a>*@
+                                <a class="nav-link" href="#">Kurser<span class="sr-only">(current)</span></a>
+                                </li>
+                                @*<li class="nav-item">
+                                <a class="nav-link" href="#">Elever</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">Lärare</a>
-                                </li>
+                                <a class="nav-link" href="#">Lärare</a>
+                                </li>*@
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Inlämnade uppgifter</a>
                                 </li>
@@ -106,9 +113,6 @@
                                         <a class="dropdown-item" href="#">Modulschema</a>
                                         <a class="dropdown-item" href="#">Aktivitetsschema</a>
                                     </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">e-learning</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -128,10 +132,10 @@
                     }
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
 
-                        <form class="form-inline my-2 my-lg-0">
+                        @*<form class="form-inline my-2 my-lg-0">
                             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                        </form>
+                        </form>*@
                         <partial name="_LoginPartial" />
                     </div>
                 </div>
