@@ -57,14 +57,15 @@ namespace LexiconLMS
 
     public static class SeedData
     {
-        internal class Studentuser
+        internal class LmsUser
         {
             public string Email { get; set; }
             public string Name { get; set; }
+            public string UserName { get; set; }
         }
-    
 
-    public static async Task Initialize(IServiceProvider serviceProvider, string adminPw)
+
+        public static async Task Initialize(IServiceProvider serviceProvider, string adminPw)
         {
             using (var context = new ApplicationDbContext(
              serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
@@ -76,34 +77,69 @@ namespace LexiconLMS
                 {
 
                     context.Course.RemoveRange(context.Course);
+                    context.Module.RemoveRange(context.Module);
 
 
                 }
                 if (context.Users.Any())
-                {                  
+                {
                     context.Users.RemoveRange(context.Users);
-                    context.UserRoles.RemoveRange(context.UserRoles);
+                  
+                   
                 }
-
+                context.SaveChanges();
                 // Let's seed!
                 var courses = new List<Course>();
-                for (int i = 0; i < 5; i++)
-                {
-                    string name = Faker.Company.Name();
+                var courseNames = new[] { "Java Grundkurs", "Java Avanserad", "Unix från grunden", "DotNet för alla", "DotNet för webben" };
+                
 
-                    var course = new Course
+                    foreach (var name in courseNames)
                     {
-                        Name = name,
-                        StartDate = DateTime.Today,
-                        EndDate = DateTime.Today.AddDays(7),
-                        Description = Faker.Lorem.Sentence(3),
-                    };
-                    courses.Add(course);
-                }
-                context.Course.AddRange(courses);
-                context.SaveChanges();
 
- 
+
+
+
+                        var course = new Course
+                        {
+                            Name = name,
+                            StartDate = DateTime.Today,
+                            EndDate = DateTime.Today.AddDays(7),
+                            Description = Faker.Lorem.Sentence(3),
+                        };
+                        courses.Add(course);
+                    }
+                
+                    context.Course.AddRange(courses);
+                    context.SaveChanges();
+              
+                var modules = new List<Module>();
+
+                
+
+                    for (int i = 20; i < 40; i++)
+                    {
+
+
+
+
+
+                        var random = Faker.RandomNumber.Next(4);
+                        var module = new Module
+                        {
+                            Name = $"module{i}",
+                            StartDate = DateTime.Today,
+                            EndDate = DateTime.Today.AddDays(7),
+                            Description = Faker.Lorem.Sentence(3),
+
+                            CourseId = courses[random].Id
+                        };
+                        modules.Add(module);
+                    }
+                    context.Module.AddRange(modules);
+                    context.SaveChanges();
+               
+
+
                 if (roleManager == null || userManager == null)
                 {
                     throw new Exception("roleManager or userManager is null");
@@ -121,13 +157,16 @@ namespace LexiconLMS
                         throw new Exception(string.Join("\n", result.Errors));
                     }
                 }
+                //if (!context.Users.Any())
+                //{
 
-                var teacheremails = new[] { "admin@lexicon.se", "stefan@lexicon.se", "John@lexicon.se" };
+
+                var teacheremails = new[] { "admin@lexicon.se", "stefan@lexicon.se", "John@lexicon.se", "teacher1@lexicon.se", "teacher2@lexicon.se", "teacher3@lexicon.se" };
                 foreach (var email in teacheremails)
                 {
                     var foundUser = await userManager.FindByEmailAsync(email);
                     if (foundUser != null) continue;
-                    var user = new ApplicationUser { UserName = email, Email = email };
+                    var user = new ApplicationUser { UserName = email, Email = email/*, PhoneNumber = Faker.Phone.()*/ };
                     var addUserResult = await userManager.CreateAsync(user, adminPw);
                     if (!addUserResult.Succeeded)
                     {
@@ -141,14 +180,14 @@ namespace LexiconLMS
 
 
                 }
-                var students = new List<Studentuser>();
-               
-                for (int i = 0; i < 30; i++)
+                var students = new List<LmsUser>();
+
+                for (int i = 0; i < 20; i++)
                 {
-                    var fakename = Faker.Name.FullName();
-                    Studentuser newStudent = new Studentuser { Email = Faker.Internet.Email(fakename), Name = fakename };
-                    
-                   
+                    var fakename = $"Elev{i}";
+                    LmsUser newStudent = new LmsUser {UserName= $"{fakename}@lexicon.se", Email = $"{fakename}@lexicon.se", Name = $"{fakename} Stensson"/*, PhoneNumber = Faker.Phone.Number()*/ };
+
+
                     students.Add(newStudent);
                 }
 
@@ -158,15 +197,15 @@ namespace LexiconLMS
                 {
                     var foundUser = await userManager.FindByEmailAsync(student.Email);
                     if (foundUser != null) continue;
-                 
-                    var user = new ApplicationUser { UserName = student.Email, Email = student.Email,Name=student.Name }; // , CourseId = courses[randomcourse].Id, Course = courses[randomcourse]};
-               
+
+                    var user = new ApplicationUser { UserName = student.Email, Email = student.Email, Name = student.Name/*,PhoneNumber=student.PhoneNumber*/ }; // , CourseId = courses[randomcourse].Id, Course = courses[randomcourse]};
+
                     var addUserResult = await userManager.CreateAsync(user, adminPw);
                     if (!addUserResult.Succeeded)
                     {
                         throw new Exception(string.Join("\n", addUserResult.Errors));
                     }
-                  
+
 
                     var addToRoleResultAdmin = await userManager.AddToRoleAsync(user, "Student");
                     if (!addToRoleResultAdmin.Succeeded)
@@ -176,13 +215,14 @@ namespace LexiconLMS
 
                     var randomcourse = Faker.RandomNumber.Next(4);
                     user.CourseId = courses[randomcourse].Id;
-                    var identityResult=await userManager.UpdateAsync(user);
+                    var identityResult = await userManager.UpdateAsync(user);
                     if (!identityResult.Succeeded)
                     {
                         throw new Exception(string.Join("\n", identityResult.Errors));
                     }
                 }
             }
+
         }
     }
 }
