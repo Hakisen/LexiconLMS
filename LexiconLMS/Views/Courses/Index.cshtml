@@ -9,6 +9,8 @@
 <p>
     <a asp-action="Create">Skapa ny kurs</a>
 </p>
+
+
 <table class="table">
     <thead>
         <tr>
@@ -47,9 +49,10 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Ändra</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Mer info</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Ta bort</a> |
+                    <a asp-action="LSMUSer" asp-route-id="List">Lista Elever</a>
                 </td>
                 <td>
                     @foreach (var student in item.ApplicationUser.Where(m => m.CourseId == item.Id))
