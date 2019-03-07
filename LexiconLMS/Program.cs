@@ -79,12 +79,11 @@ namespace LexiconLMS
 
 
                 }
-                if (context.Users.Any()) { 
-                  
-                context.Users.RemoveRange(context.Users);
-                context.UserRoles.RemoveRange(context.UserRoles);
-
-            }
+                if (context.Users.Any())
+                {                  
+                    context.Users.RemoveRange(context.Users);
+                    context.UserRoles.RemoveRange(context.UserRoles);
+                }
 
                 // Let's seed!
                 var courses = new List<Course>();
@@ -96,11 +95,8 @@ namespace LexiconLMS
                     {
                         Name = name,
                         StartDate = DateTime.Today,
-                        EndDate = DateTime.Today,
+                        EndDate = DateTime.Today.AddDays(7),
                         Description = Faker.Lorem.Sentence(3),
-                   
-
-
                     };
                     courses.Add(course);
                 }
@@ -185,14 +181,7 @@ namespace LexiconLMS
                     {
                         throw new Exception(string.Join("\n", identityResult.Errors));
                     }
-
-
-
                 }
-
-
-
-
             }
         }
     }

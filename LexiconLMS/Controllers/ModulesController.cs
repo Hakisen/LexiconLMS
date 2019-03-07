@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LexiconLMS.Data;
 using LexiconLMS.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LexiconLMS.Controllers
 {
-    //[Authorize(Roles = "Teacher, Student")]
+    [Authorize]
     public class ModulesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,6 +26,12 @@ namespace LexiconLMS.Controllers
         {
             var applicationDbContext = _context.Module.Include(c => c.Course);
             return View(await applicationDbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> CourseModules(int? id)
+        {
+            var applicationDbContext = _context.Module.Include(c => c.Course).Where(c => c.Course.Id == id);
+            return View("Index", await applicationDbContext.ToListAsync());
         }
 
         // GET: Modules/Details/5
@@ -47,6 +54,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Modules/Create
+        [Authorize(Roles = "Teacher")]
         public IActionResult Create()
         {
             ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name");
@@ -56,6 +64,7 @@ namespace LexiconLMS.Controllers
         // POST: Modules/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,EndDate,StartDate,Description,Name,CourseId")] Module module)
@@ -71,6 +80,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Modules/Edit/5
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,6 +100,7 @@ namespace LexiconLMS.Controllers
         // POST: Modules/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,EndDate,StartDate,Description,Name,CourseId")] Module module)
@@ -124,6 +135,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Modules/Delete/5
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -138,11 +150,13 @@ namespace LexiconLMS.Controllers
             {
                 return NotFound();
             }
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
 
             return View(module);
         }
 
         // POST: Modules/Delete/5
+        [Authorize(Roles = "Teacher")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
