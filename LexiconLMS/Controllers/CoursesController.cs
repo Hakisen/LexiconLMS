@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LexiconLMS.Data;
 using LexiconLMS.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace LexiconLMS.Controllers
 {
@@ -15,9 +16,11 @@ namespace LexiconLMS.Controllers
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public CoursesController(ApplicationDbContext context)
+        public CoursesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+            
             _context = context;
         }
 
@@ -25,6 +28,13 @@ namespace LexiconLMS.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Course.Include(a=>a.ApplicationUser).ToListAsync());
+        }
+        // GET: Courses
+        public IActionResult StudentsPerCourse(int? id)
+        {
+            var studentspercourse= _context.Course.Include(a => a.ApplicationUser).
+                 FirstOrDefault(u => u.Id == id);
+            return View(studentspercourse);
         }
 
         // GET: Courses/Details/5

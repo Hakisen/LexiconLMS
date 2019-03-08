@@ -15,16 +15,18 @@ namespace LexiconLMS.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> userManager;
-  //      private readonly RoleManager<ApplicationUser> roleManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        //      private readonly RoleManager<ApplicationUser> roleManager;
         public virtual System.Linq.IQueryable<ApplicationUser> Users { get; }
     //    public virtual System.Linq.IQueryable<ApplicationUser> Roles { get; }
 
 
-        public LmsUsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public LmsUsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             this.userManager = userManager;
-    //        this.roleManager = roleManager;
+            this.signInManager = signInManager;
+            //        this.roleManager = roleManager;
         }
 
         // GET: Users
@@ -92,6 +94,20 @@ namespace LexiconLMS.Controllers
 
             return View(students);
         }
+        public async Task<IActionResult> StudentsPerCourse(int id)
+        {
+
+
+            var lmsusers = from s in _context.Users
+                 .Include(c => c.Course).Where(s=>s.CourseId==id)
+                           select s;
+            var lmsusers1 = lmsusers;
+
+            var students = await userManager.GetUsersInRoleAsync("Student");
+
+
+            return View(students);
+        }
 
         // GET: LmsUsers/Details/5
         public IActionResult Details(string id)
@@ -134,7 +150,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,PhoneNumber,Email,Name")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,PhoneNumber,Email,Name,CourseId")] ApplicationUser applicationUser)
         {
             if (id != applicationUser.Id)
             {
@@ -149,6 +165,7 @@ namespace LexiconLMS.Controllers
                     user.Email = applicationUser.Email;
                     user.PhoneNumber = applicationUser.PhoneNumber;
                     user.Name = applicationUser.Name;
+                    user.CourseId = applicationUser.CourseId;
                  var result  = await userManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {

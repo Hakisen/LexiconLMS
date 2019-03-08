@@ -26,85 +26,41 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-          
+
         </tr>
     </thead>
     <tbody>
-    
-    @if (User.IsInRole("Teacher"))
-    {
-        @foreach (var item in Model)
+
+        @if (User.IsInRole("Teacher"))
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Ändra</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Mer info</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Ta bort</a> |
-                    <a asp-action="LSMUSer" asp-route-id="List">Lista Elever</a>
-                </td>
-                <td>
-                    @foreach (var student in item.ApplicationUser.Where(m => m.CourseId == item.Id))
-                    {
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h4 class="card-title">@student.Name</h4>
-                                <p class="card-text">@student.Email</p>
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-                            </div>
-                        </div>
-                    }
-                </td>
-            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Ändra</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Mer info</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Ta bort</a> |
+                        <a asp-action="StudentsPerCourse" asp-route-id="@item.Id">Lista Elever</a>
+                    </td>
+                    <td>
+
+                </tr>
+            }
         }
-    }
-    @if (User.IsInRole("Teacher"))
-    {
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-                <td>
-                    @foreach (var student in item.ApplicationUser.Where(m => m.CourseId == item.Id))
-                    {
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h4 class="card-title">@student.Name</h4>
-                                <p class="card-text">@student.Email</p>
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-                            </div>
-                        </div>
-                    }
-                </td>
-            </tr>
-        }
-    }
+
+        
+        
     </tbody>
 </table>
