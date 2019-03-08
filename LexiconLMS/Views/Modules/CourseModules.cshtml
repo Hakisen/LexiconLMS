@@ -4,10 +4,12 @@
     ViewData["Title"] = "CourseModules";
 }
 
-<h1>CourseModules</h1>
-
+<h2>Kursmoduler</h2> <h3>i kurs @ViewBag.CourseName</h3>
+<div class="text-success">
+    @TempData["SuccessText"]
+</div>
 <p>
-    <a asp-action="Create">Create New Course Module</a>
+    <a asp-action="CreateCourseModule" asp-route-courseId="@ViewBag.CourseId">Skapa ny kursmodul</a>
 </p>
 <table class="table">
     <thead>
@@ -52,6 +54,7 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>}
