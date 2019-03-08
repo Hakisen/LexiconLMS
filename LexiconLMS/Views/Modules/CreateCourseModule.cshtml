@@ -1,20 +1,19 @@
 ﻿@model LexiconLMS.Models.Module
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "CreateCourseModule";
+    //var CourseId = ViewBag.CourseId;
 }
 
-<h1>Edit</h1>
-<div class="text-danger">
-    @TempData["FailText"]
-</div>
+@*<h2>Create Course Module</h2> <h3>in Course: @ViewBag.CourseName</h3>*@
+<h2>Skapa kursmodul</h2> <h3>i kurs: @Model.Course.Name</h3>
+
 <h4>Module</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="CreateCourseModule">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
                 <input asp-for="StartDate" class="form-control" />
@@ -37,11 +36,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="CourseId" class="control-label"></label>
-                <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
-                <span asp-validation-for="CourseId" class="text-danger"></span>
+                @*<select asp-for="CourseId" class ="form-control" asp-items="ViewBag.CourseId"></select>*@
+                @*<input type="hidden" value="@CourseId" name="CourseId" class="form-control" asp-item="ViewBag.ModuleCourseId" />*@
+                <input type="hidden" asp-for="CourseId" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="CreateCourseModule" class="btn btn-primary" />
             </div>
         </form>
     </div>

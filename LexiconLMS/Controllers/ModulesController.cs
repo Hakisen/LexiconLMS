@@ -28,10 +28,13 @@ namespace LexiconLMS.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        public async Task<IActionResult> CourseModules(int? id)
+        public async Task<IActionResult> CourseModules(int? courseId)
         {
-            var applicationDbContext = _context.Module.Include(c => c.Course).Where(c => c.Course.Id == id);
-            return View("Index", await applicationDbContext.ToListAsync());
+            var applicationDbContext = _context.Module.Include(c => c.Course).Where(c => c.Course.Id == courseId);
+            //return View("Index", await applicationDbContext.ToListAsync());
+            ViewBag.CourseName = _context.Course.Find(courseId).Name;
+            ViewBag.CourseId = courseId;
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Modules/Details/5
@@ -74,6 +77,50 @@ namespace LexiconLMS.Controllers
                 _context.Add(module);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
+            return View(module);
+        }
+
+        [Authorize(Roles = "Teacher")]
+        public IActionResult CreateCourseModule(int courseId)
+        {
+            if (courseId == null)
+            {
+                return NotFound();
+            }
+
+            //ViewData["CourseId"] = courseId;
+            //var CourseId = id;  //sätter Id (för module) till CourseId ????
+            //ViewBag.ModuleCourseId = id;
+            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name");
+
+            var course = _context.Course.Find(courseId);
+            //ViewBag.CourseName = course.Name; behövs ej nu när vi inkluderar en Course = course i modellen (Module)
+
+            Module model = new Module {
+                CourseId = courseId,
+                StartDate = course.StartDate,
+                EndDate = course.EndDate,
+                Course = course
+            };
+            return base.View(model);
+        }
+
+        // POST: Modules/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Teacher")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCourseModule([Bind("Id,EndDate,StartDate,Description,Name,CourseId")] Module module)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(module);
+                await _context.SaveChangesAsync();
+                TempData["SuccessText"] = $"Modul: {module.Name} skapades Ok!";
+                return RedirectToAction(nameof(CourseModules), new { module.CourseId});
             }
             ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
             return View(module);
@@ -128,9 +175,12 @@ namespace LexiconLMS.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                TempData["SuccessText"] = $"Modul: {module.Name} uppdaterad Ok!";
+                return RedirectToAction(nameof(CourseModules), new { module.CourseId });
             }
             ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
+            TempData["FailText"] = $"Något gick fel. Modul: {module.Name} uppdaterades inte!";
             return View(module);
         }
 
@@ -150,7 +200,7 @@ namespace LexiconLMS.Controllers
             {
                 return NotFound();
             }
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
+            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
 
             return View(module);
         }
@@ -162,9 +212,13 @@ namespace LexiconLMS.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var module = await _context.Module.FindAsync(id);
+            //var courseId = module.CourseId; behövs ej, objektet lever vidare så länge det är i scope
+            //var moduleName = module.Name;
             _context.Module.Remove(module);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            TempData["SuccessText"] = $"Modul: {module.Name} raderad Ok!";
+            return RedirectToAction(nameof(CourseModules), new { module.CourseId});
         }
 
         private bool ModuleExists(int id)
