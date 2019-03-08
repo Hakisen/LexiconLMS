@@ -6,18 +6,25 @@
     ViewData["Title"] = "LmsUsers";
 }
 
-<h1>LmsUsers</h1>
+<h1>Användare</h1>
 
 <table class="table">
     <thead>
         <tr>
+           
+            
+
+
+
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Name)</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["EmailSortParm"]">@Html.DisplayNameFor(model => model.Email)</a>
+              
             </th>
             <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["CourseSortParm"]">@Html.DisplayNameFor(model => model.Course.Name)</a>
                 @Html.DisplayNameFor(model => model.Course.Name)
             </th>
 
@@ -49,22 +56,11 @@
                     </td>
 
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Ändra</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Detaljer</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Radera</a>
                     </td>
-                    @*<td>
-                            @foreach (var student in item.Course.Where(m => m. == item.Id))
-                            {
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">@student.Name</h4>
-                                        <p class="card-text">@student.Email</p>
-                                        <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-                                    </div>
-                                </div>
-                            }
-                        </td>*@
+                  
                 </tr>
             }
         }
@@ -76,16 +72,18 @@
                 <tr>
                     @if (await UserManager.IsInRoleAsync(item, "Student"))
                     {
-                        <td>
 
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course)
-                        </td>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Name)</a>
+                        </th>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["EmailSortParm"]">@Html.DisplayNameFor(model => model.Email)</a>
+
+                        </th>
+                        <th>
+                            <a asp-action="Index" asp-route-sortOrder="@ViewData["CourseSortParm"]">@Html.DisplayNameFor(model => model.Course.Name)</a>
+                            @Html.DisplayNameFor(model => model.Course.Name)
+                        </th>
                         <td>
                             @if (await UserManager.IsInRoleAsync(item, "Teacher"))
                             {<p>Teacher</p>}
@@ -97,62 +95,15 @@
 
                         <td>
 
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Detaljer</a> |
 
                         </td>
                     }
-                   
-                    @*<td>
-                            @foreach (var student in item.Course.Where(m => m. == item.Id))
-                            {
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">@student.Name</h4>
-                                        <p class="card-text">@student.Email</p>
-                                        <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-                                    </div>
-                                </div>
-                            }
-                        </td>*@
+
+ 
                 </tr>
             }
         }
-        @*@if (User.IsInRole("Teacher"))
-            {
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StartDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EndDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
-                        <td>
-                            @foreach (var course in item.Course.Where(m => m.CourseId == item.Id))
-                            {
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">@student.Name</h4>
-                                        <p class="card-text">@student.Email</p>
-                                        <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></a>
-                                    </div>
-                                </div>
-                            }
-                        </td>
-                    </tr>
-                }
-            }*@
+      
     </tbody>
 </table>

@@ -2,6 +2,7 @@
 using LexiconLMS.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -27,20 +28,67 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Users
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder)
         {
+
+
             // userManager.GetUsersInRoleAsync("Teacher");
-            var lmsusers = _context.Users
-                 .Include(c => c.Course);
-               
-           
-                   return View(lmsusers);
+
+          
+            var lmsusers = from s in _context.Users
+                 .Include(c => c.Course) select s;
+            var lmsusers1 = lmsusers;
+
+
+                if (String.IsNullOrEmpty(sortOrder))
+                    ViewData["NameSortParm"] = "name_desc";
+                else
+                    ViewData["NameSortParm"] = sortOrder == "Name" ? "name_desc" : "Name";
+
+                ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "Name";
+                ViewData["EmailSortParm"] = sortOrder == "Email" ? "email_desc" : "Email";
+                ViewData["CourseSortParam"] = sortOrder == "Course" ? "course_desc" : "Course";
+            
+
+
+
+
+            switch (sortOrder)
+                {
+
+                    case "Name":
+                        lmsusers1 = lmsusers.OrderBy(s => s.Name);
+                        break;
+                    case "name_desc":
+                        lmsusers1 = lmsusers.OrderByDescending(s => s.Name);
+                        break;
+                    case "Email":
+                         lmsusers1 = lmsusers.OrderBy(s => s.Email);
+                        break;
+                    case "email_desc":
+                        lmsusers1 = lmsusers.OrderByDescending(s => s.Email);
+                        break;
+                    case "Course":
+                        lmsusers1 = lmsusers.OrderBy(s => s.Course.Name);
+                        break;
+                    case "course_desc":
+                        lmsusers1 = lmsusers.OrderByDescending(s => s.Course.Name);
+                        break;
+              
+                default:
+                        lmsusers1 = lmsusers.OrderBy(s => s.Name);
+                        break;
+                }
+
+
+
+                return View(lmsusers1);
         }
         // GET: Students
         public async Task<IActionResult> Students()
         {
             var students = await userManager.GetUsersInRoleAsync("Student");
-    
+
 
             return View(students);
         }
@@ -72,7 +120,7 @@ namespace LexiconLMS.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["EditCourseId"] = new SelectList(_context.Course, "Id", "Name");
             var LmsUser = await _context.Users.FindAsync(id);
             if (LmsUser == null)
             {
