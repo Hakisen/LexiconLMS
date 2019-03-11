@@ -37,6 +37,22 @@ namespace LexiconLMS.Controllers
                  FirstOrDefault(u => u.Id == id);
             return View(studentspercourse);
         }
+        // GET: Modules per course
+        public async Task<IActionResult> StudentModules(int? id)
+        {
+            var student = new StudentModulesViewModel();
+            var studentName = User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(studentName);
+            var courseId = (int)user.CourseId;
+
+
+            student.StudentCourse = await _context.Course.Include(a => a.ApplicationUser).Include( u=>u.Modules  ).FirstOrDefaultAsync(u => u.Id == courseId);
+            student.Student = user;
+
+
+            return View(student);
+        }
+
         //Get:Course students and student and student
         public async Task<IActionResult> Student()
         {
