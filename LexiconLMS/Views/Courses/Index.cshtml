@@ -52,8 +52,9 @@
                     <a asp-action="Edit" asp-route-id="@item.Id">Ändra</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Mer info</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Ta bort</a> |
-                    <a asp-action="LSMUSer" asp-route-id="List">Lista Elever</a>
-                </td>
+                    <a asp-action="LmsUSer" asp-route-id="Students">Lista Elever</a> |
+                    <a asp-action="Modules" asp-route-id="CourseModules">Lista Moduler</a>
+                </td>   
                 <td>
                     @foreach (var student in item.ApplicationUser.Where(m => m.CourseId == item.Id))
                     {
