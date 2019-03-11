@@ -16,12 +16,13 @@ namespace LexiconLMS.Controllers
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public CoursesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             
             _context = context;
+          _userManager = userManager;
         }
 
         // GET: Courses
@@ -29,16 +30,31 @@ namespace LexiconLMS.Controllers
         {
             return View(await _context.Course.Include(a=>a.ApplicationUser).ToListAsync());
         }
-        // GET: Courses
+        // GET: Students per course
         public IActionResult StudentsPerCourse(int? id)
         {
             var studentspercourse= _context.Course.Include(a => a.ApplicationUser).
                  FirstOrDefault(u => u.Id == id);
             return View(studentspercourse);
         }
+        //Get:Course students and student and student
+        public async Task<IActionResult> Student()
+        {
+            var student = new StudentViewModel();
+            var studentName = User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(studentName);
+            var courseId = (int) user.CourseId;
 
-        // GET: Courses/Details/5
-        public async Task<IActionResult> Details(int? id)
+
+            student.StudentCourse = await _context.Course.Include(a => a.ApplicationUser).FirstOrDefaultAsync(u => u.Id == courseId);
+            student.Student = user;
+
+
+            return View(student);
+        }
+
+            // GET: Courses/Details/5
+            public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {

@@ -7,10 +7,9 @@ namespace LexiconLMS.Models
 {
     public class StudentViewModel
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
-
-        public List<ApplicationUser> ApplicationUsers { get; set; }
+       // public List<ApplicationUser> ApplicationUsers { get; set; }
+        public Course StudentCourse { get; set; }
+        public ApplicationUser Student { get; set; }
 
     }
 }
