@@ -72,6 +72,7 @@ namespace LexiconLMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,EndDate,StartDate,Description,Name,CourseId")] Module module)
         {
+
             if (ModelState.IsValid)
             {
                 _context.Add(module);
@@ -104,6 +105,7 @@ namespace LexiconLMS.Controllers
                 EndDate = course.EndDate,
                 Course = course
             };
+
             return base.View(model);
         }
 
@@ -115,15 +117,36 @@ namespace LexiconLMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCourseModule([Bind("Id,EndDate,StartDate,Description,Name,CourseId")] Module module)
         {
-            if (ModelState.IsValid)
+
+            var course = await _context.Course.FindAsync(module.CourseId);
+
+            if (module.StartDate.Date >= course.StartDate.Date && module.EndDate.Date <= course.EndDate.Date)
             {
-                _context.Add(module);
-                await _context.SaveChangesAsync();
-                TempData["SuccessText"] = $"Modul: {module.Name} skapades Ok!";
-                return RedirectToAction(nameof(CourseModules), new { module.CourseId});
+                if (ModelState.IsValid)
+                {
+                    _context.Add(module);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessText"] = $"Modul: {module.Name} skapades Ok!";
+                    return RedirectToAction(nameof(CourseModules), new { module.CourseId });
+                }
+
+                TempData["FailText"] = $"Något gick fel vid skapandet av modulen. Försök igen";
+                //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
+                module.Course = course;
+                return View(module);
             }
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
-            return View(module);
+
+            else
+            {
+                TempData["FailText"] = $"Startdatum och slutdatum måste ligga inom kursens start- och slutdatum!";
+                //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
+                module.Course = course;
+                return View(module);
+            }
+
+            //tidigare koden för ej Valid ModelState innan kollen av datum lagts till
+            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
+            //return View(module);
         }
 
         // GET: Modules/Edit/5
@@ -140,6 +163,11 @@ namespace LexiconLMS.Controllers
             {
                 return NotFound();
             }
+
+            var course = await _context.Course.FindAsync(module.CourseId);
+            module.Course = course;
+
+            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
             ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
             return View(module);
         }
@@ -157,31 +185,45 @@ namespace LexiconLMS.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var course = await _context.Course.FindAsync(module.CourseId);
+
+            if (module.StartDate.Date >= course.StartDate.Date && module.EndDate.Date <= course.EndDate.Date)
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    _context.Update(module);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ModuleExists(module.Id))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(module);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!ModuleExists(module.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    //return RedirectToAction(nameof(Index));
+                    TempData["SuccessText"] = $"Modul: {module.Name} uppdaterad Ok!";
+                    return RedirectToAction(nameof(CourseModules), new { module.CourseId });
                 }
-                //return RedirectToAction(nameof(Index));
-                TempData["SuccessText"] = $"Modul: {module.Name} uppdaterad Ok!";
-                return RedirectToAction(nameof(CourseModules), new { module.CourseId });
+                ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
+                TempData["FailText"] = $"Något gick fel. Modul: {module.Name} uppdaterades inte!";
+                module.Course = course;
+                return View(module);
             }
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
-            TempData["FailText"] = $"Något gick fel. Modul: {module.Name} uppdaterades inte!";
-            return View(module);
+            else
+            {
+                TempData["FailText"] = $"Startdatum och slutdatum måste ligga inom kursens start- och slutdatum!";
+                ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
+                module.Course = course;
+                return View(module);
+            }
+
         }
 
         // GET: Modules/Delete/5

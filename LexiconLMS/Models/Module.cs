@@ -12,9 +12,11 @@ namespace LexiconLMS.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Slut")]
+        //[DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime EndDate { get; set; }
 
         [DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:d}")]
         [Display(Name = "Start")]
         public DateTime StartDate { get; set; }
 
