@@ -35,11 +35,10 @@
 
         @if (User.IsInRole("Teacher"))
         {
-            @foreach (var item in Model)
-            {
+           
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Name)
+                        @Html.DisplayFor(modelItem => model.Name)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Email)
