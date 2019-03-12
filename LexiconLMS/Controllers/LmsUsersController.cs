@@ -1,5 +1,6 @@
 ﻿using LexiconLMS.Data;
 using LexiconLMS.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -246,6 +247,30 @@ namespace LexiconLMS.Controllers
         //    return View(Users);
         //}
 
+        [Authorize(Roles = "Teacher")]
+        public IActionResult CreateCourseStudent(int courseId)
+        {
+            if (courseId == null)
+            {
+                return NotFound();
+            }
+
+            //ViewData["CourseId"] = courseId;
+            //var CourseId = id;  //sätter Id (för module) till CourseId ????
+            //ViewBag.ModuleCourseId = id;
+            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name");
+
+            var course = _context.Course.Find(courseId);
+            //ViewBag.CourseName = course.Name; behövs ej nu när vi inkluderar en Course = course i modellen (Module)
+
+            ApplicationUser model = new ApplicationUser();
+            {
+                model.CourseId = courseId;
+                
+            };
+
+            return base.View(model);
+        }
 
     }
 }

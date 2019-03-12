@@ -11,5 +11,6 @@ namespace LexiconLMS.Models
         public int Id { get; set; }
         //Nav prop
         public ICollection<LmsActivity> Activities { get; set; }
+      
     }
 }
