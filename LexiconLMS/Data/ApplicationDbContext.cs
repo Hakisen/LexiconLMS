@@ -17,5 +17,7 @@ namespace LexiconLMS.Data
         }
         public DbSet<LexiconLMS.Models.Course> Course { get; set; }
         public DbSet<LexiconLMS.Models.Module> Module { get; set; }
+        public DbSet<LexiconLMS.Models.LmsActivity> LmsActivity { get; set; }
+        public DbSet<LexiconLMS.Models.ActivityType> ActivityType { get; set; }
     }
 }

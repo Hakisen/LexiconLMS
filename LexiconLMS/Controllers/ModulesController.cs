@@ -22,6 +22,7 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: Modules
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Module.Include(c => c.Course);
@@ -72,15 +73,29 @@ namespace LexiconLMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,EndDate,StartDate,Description,Name,CourseId")] Module module)
         {
+            var course = await _context.Course.FindAsync(module.CourseId);
 
-            if (ModelState.IsValid)
+            if (module.StartDate.Date >= course.StartDate.Date && module.EndDate.Date <= course.EndDate.Date)
             {
-                _context.Add(module);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(module);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessText"] = $"Modul: {module.Name} skapades Ok!";
+                    return RedirectToAction(nameof(Index));
+                }
+                TempData["FailText"] = $"Något gick fel vid skapandet av modulen. Försök igen";
+                ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
+                //module.Course = course;
+                return View(module);
             }
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
-            return View(module);
+            else
+            {
+                TempData["FailText"] = $"Startdatum och slutdatum måste ligga inom kursens start- och slutdatum!";
+                ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
+                //module.Course = course;
+                return View(module);
+            }
         }
 
         [Authorize(Roles = "Teacher")]
@@ -120,7 +135,7 @@ namespace LexiconLMS.Controllers
 
             var course = await _context.Course.FindAsync(module.CourseId);
 
-            if (module.StartDate.Date >= course.StartDate.Date && module.EndDate.Date <= course.EndDate.Date)
+            if ((module.StartDate.Date >= course.StartDate.Date && module.EndDate.Date <= course.EndDate.Date) && module.StartDate.Date <= module.EndDate.Date)
             {
                 if (ModelState.IsValid)
                 {
@@ -138,13 +153,14 @@ namespace LexiconLMS.Controllers
 
             else
             {
-                TempData["FailText"] = $"Startdatum och slutdatum måste ligga inom kursens start- och slutdatum!";
+                TempData["FailText"] = "Startdatum och slutdatum måste ligga inom kursens start- och slutdatum/n" +
+                                        "och startdatum kan inte ligga senare än slutdatum!";
                 //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
                 module.Course = course;
                 return View(module);
             }
 
-            //tidigare koden för ej Valid ModelState innan kollen av datum lagts till
+            //tidigare koden (nedan) för ej Valid ModelState innan kollen av datum lagts till
             //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
             //return View(module);
         }
@@ -187,7 +203,7 @@ namespace LexiconLMS.Controllers
 
             var course = await _context.Course.FindAsync(module.CourseId);
 
-            if (module.StartDate.Date >= course.StartDate.Date && module.EndDate.Date <= course.EndDate.Date)
+            if ((module.StartDate.Date >= course.StartDate.Date && module.EndDate.Date <= course.EndDate.Date) && module.StartDate.Date <= module.EndDate.Date)
             {
                 if (ModelState.IsValid)
                 {
@@ -218,7 +234,8 @@ namespace LexiconLMS.Controllers
             }
             else
             {
-                TempData["FailText"] = $"Startdatum och slutdatum måste ligga inom kursens start- och slutdatum!";
+                TempData["FailText"] = "Startdatum och slutdatum måste ligga inom kursens start- och slutdatum/n" +
+                                        "och startdatum kan inte ligga senare än slutdatum!";
                 ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
                 module.Course = course;
                 return View(module);

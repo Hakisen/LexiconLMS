@@ -54,16 +54,16 @@
                 @if (User.IsInRole("Teacher"))
                 {
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Ändra</a> 
+                    <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a> 
                     @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-pill badge-danger">Radera</a>
                 </td>
                 }
                 @if (User.IsInRole("Student"))
                 {
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detaljer</a> 
                     @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
                 </td>
                 }
