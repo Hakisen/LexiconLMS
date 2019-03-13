@@ -23,7 +23,5 @@ namespace LexiconLMS.Models
         //Nav prop
         public int ModuleId { get; set; }
         public Module Module { get; set; }
-
-
     }
 }
