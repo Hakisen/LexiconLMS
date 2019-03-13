@@ -56,14 +56,15 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Ändra</a> 
                     <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a> 
-                    @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
+                    <a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id" class="btn btn-info">Aktiviteter</a> 
                     <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-pill badge-danger">Radera</a>
                 </td>
                 }
                 @if (User.IsInRole("Student"))
                 {
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detaljer</a> 
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detaljer</a>
+                    <a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id" class="btn btn-info">Aktiviteter</a>
                     @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
                 </td>
                 }
@@ -72,5 +73,5 @@
     </tbody>
 </table>
 <div>
-    @*<a asp-action="CourseModules" asp-route-id="@model">Back to List</a>*@
+    <a asp-controller="Courses" asp-action="Index">Tillbaka till kurser</a>
 </div>

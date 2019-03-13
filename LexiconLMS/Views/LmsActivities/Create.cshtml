@@ -4,9 +4,14 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>LmsActivity</h4>
+<h1>Skapa aktivitet i valfri modul</h1>
+<div class="text-danger">
+    @TempData["FailText"]
+</div>
+<div class="text-success">
+    @TempData["SuccessText"]
+</div>
+<h4>Aktivitet</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -34,11 +39,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="ActivityTypeId" class="control-label"></label>
-                <select asp-for="ActivityTypeId" class ="form-control" asp-items="ViewBag.ActivityTypeId"></select>
+                <select asp-for="ActivityTypeId" class="form-control" asp-items="ViewBag.ActivityTypeId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="ModuleId" class="control-label"></label>
-                <select asp-for="ModuleId" class ="form-control" asp-items="ViewBag.ModuleId"></select>
+                <select asp-for="ModuleId" class="form-control" asp-items="ViewBag.ModuleId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -48,7 +53,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Tillbaka till aktivitetslistan</a>
 </div>
 
 @section Scripts {
