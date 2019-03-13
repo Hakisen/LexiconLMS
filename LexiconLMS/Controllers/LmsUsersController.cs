@@ -248,7 +248,7 @@ namespace LexiconLMS.Controllers
         //}
 
         [Authorize(Roles = "Teacher")]
-        public IActionResult CreateCourseStudent(int courseId)
+        public IActionResult CreateCourseStudent(int? courseId)
         {
             if (courseId == null)
             {

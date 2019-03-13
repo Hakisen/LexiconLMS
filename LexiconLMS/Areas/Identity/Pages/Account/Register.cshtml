@@ -5,7 +5,8 @@
 }
 
 <h1>@ViewData["Title"]</h1>
-@if (ViewBag.CourseId == null || ViewBag.CourseId == null)
+
+@if (ViewBag.CourseId == 0 || ViewBag.CourseId == null)
 {
     <div class="row">
         <div class="col-md-4">
@@ -64,9 +65,10 @@
     </div>
 }
 else
-{ 
+{
     <div class="row">
         <div class="col-md-4">
+            <input type="hidden" asp-for="Input.CourseId" value=ViewBag[CourseId] />
             <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
                 <h4>Lägg till användare.</h4>
                 <hr />
@@ -95,13 +97,11 @@ else
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Input.CourseId"></label>
-                    @*<input asp-for="Input.Role" class="form-control" />
-                        <span asp-validation-for="Input.Role" class="text-danger"></span>*@
-                    <select asp-for="Input.CourseId" class="form-control" asp-items="ViewBag.CourseIdList"></select>
-
+                    <label asp-for="Input.Password"></label>
+                    <input asp-for="Input.Password" class="form-control" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
-             
+
                 <div class="form-group">
                     <label asp-for="Input.ConfirmPassword"></label>
                     <input asp-for="Input.ConfirmPassword" class="form-control" />

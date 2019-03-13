@@ -25,7 +25,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _context;
-        private int? _courseId;
+        private int _courseId;
 
         public RegisterModel(
          
@@ -34,8 +34,8 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
-            ApplicationDbContext context,
-            int? CourseId
+            ApplicationDbContext context
+          // int CourseId
             )
         {
             _userManager = userManager;
@@ -44,7 +44,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _roleManager = roleManager;
              _context = context;
-            _courseId = CourseId;
+           // _courseId = CourseId;
         }
 
         [BindProperty]
@@ -84,7 +84,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
 
         }
 
-        public void OnGet(int? CourseId,string returnUrl = null)
+        public void OnGet(int CourseId=0,string returnUrl = null)
 
         {
             _courseId = CourseId;
@@ -97,21 +97,24 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync( string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Phone ,Name=Input.Name };
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Phone ,Name=Input.Name , CourseId=Input.CourseId};
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 var resultAddRole = await _userManager.AddToRoleAsync(user, Input.Role);
-
+                //_courseId = CourseId;
+                //if (_courseId == 0)
+                //    user.CourseId = Input.CourseId;
+                //else user.CourseId = _courseId;
+                //var resultAddCourse = await _userManager.UpdateAsync(user);
+               
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    if (_courseId != null)
-                        user.CourseId = Input.CourseId;
-                    else user.CourseId = _courseId;
+                  
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
