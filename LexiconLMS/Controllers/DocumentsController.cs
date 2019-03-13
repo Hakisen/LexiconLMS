@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LexiconLMS.Data;
 using LexiconLMS.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LexiconLMS.Controllers
 {
@@ -174,5 +175,44 @@ namespace LexiconLMS.Controllers
         {
             return _context.Document.Any(e => e.Id == id);
         }
+
+        // POST: Modules/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Teacher")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCourseDocument([Bind("Id,Title,Description,CourseId")] Document document)
+        {
+
+            var course = await _context.Course.FindAsync(document.CourseId);
+
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(document);
+                await _context.SaveChangesAsync();
+                TempData["SuccessText"] = $"Modul: {document.Title} skapades Ok!";
+                return RedirectToAction(nameof(CourseDocuments), new { document.CourseId });
+            }
+
+            TempData["FailText"] = $"Något gick fel vid skapandet av modulen. Försök igen";
+            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
+            document.Course = course;
+            return View(document);
+        }
+
+
+        public async Task<IActionResult> CourseDocuments(int? courseId)
+        {
+            var applicationDbContext = _context.Document.Include(c => c.Course).Where(c => c.Course.Id == courseId);
+            //return View("Index", await applicationDbContext.ToListAsync());
+            ViewBag.CourseName = _context.Course.Find(courseId).Name;
+            ViewBag.CourseId = courseId;
+            return View(await applicationDbContext.ToListAsync());
+        }
     }
+
+
 }
+

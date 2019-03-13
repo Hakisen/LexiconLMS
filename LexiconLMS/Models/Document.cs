@@ -9,6 +9,8 @@ namespace LexiconLMS.Models
     public class Document
     {
         public string Title { get; set; }
+        public string Description { get; set; }
+
         public DateTime MyProperty { get; set; }
 
         [DataType(DataType.Date)]
