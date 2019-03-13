@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LexiconLMS.Data;
 using LexiconLMS.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LexiconLMS.Controllers
 {
@@ -20,11 +21,23 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: LmsActivities
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.LmsActivity.Include(l => l.ActivityType).Include(l => l.Module);
             return View(await applicationDbContext.ToListAsync());
         }
+
+        //Get: ModuleLmsActivities
+        public async Task<IActionResult> ModuleActivities(int? moduleId)
+        {
+            var applicationDbContext = _context.LmsActivity.Include(m => m.Module).Where(m => m.Module.Id == moduleId);
+            //return View("Index", await applicationDbContext.ToListAsync());
+            ViewBag.ModuleName = _context.Module.Find(moduleId).Name;
+            ViewBag.ModuleId = moduleId;
+            return View(await applicationDbContext.ToListAsync());
+        }
+
 
         // GET: LmsActivities/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -47,32 +60,107 @@ namespace LexiconLMS.Controllers
         }
 
         // GET: LmsActivities/Create
+        [Authorize(Roles = "Teacher")]
         public IActionResult Create()
         {
-            ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Id");
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id");
+            ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type");
+            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name");
             return View();
         }
 
         // POST: LmsActivities/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,EndDate,StartDate,Description,Name,ActivityTypeId,ModuleId")] LmsActivity lmsActivity)
         {
-            if (ModelState.IsValid)
+            var module = await _context.Module.FindAsync(lmsActivity.ModuleId);
+
+            if ((lmsActivity.StartDate.Date >= module.StartDate.Date && lmsActivity.EndDate.Date <= module.EndDate.Date) && module.StartDate.Date <= module.EndDate.Date)
             {
-                _context.Add(lmsActivity);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(lmsActivity);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessText"] = $"Aktivitet: {lmsActivity.Name} skapades Ok!";
+                    return RedirectToAction(nameof(Index));
+                }
+                TempData["FailText"] = $"Något gick fel vid skapandet av aktiviteten. Försök igen.";
+                ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
+                ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", lmsActivity.ModuleId);
+                return View(lmsActivity);
             }
-            ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Id", lmsActivity.ActivityTypeId);
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", lmsActivity.ModuleId);
-            return View(lmsActivity);
+            else
+            {
+                TempData["FailText"] = $"Startdatum och slutdatum måste ligga inom kursens start- och slutdatum!";
+                ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
+                ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", lmsActivity.ModuleId);
+                return View(module);
+            }
         }
 
+
+        //Get: LmsActivities/Create ModuleActivity
+        [Authorize(Roles = "Teacher")]
+        public IActionResult CreateModuleActivity(int moduleId)
+        {
+            var module = _context.Module.Find(moduleId);
+
+            LmsActivity model = new LmsActivity
+            {
+                ModuleId = moduleId,
+                StartDate = module.StartDate,
+                EndDate = module.EndDate,
+                Module = module
+            };
+
+            ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type");
+            //ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id");
+            return base.View(model);
+        }
+
+        // POST: LmsActivities/Create ModuleActivity
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Teacher")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateModuleActivity([Bind("Id,EndDate,StartDate,Description,Name,ActivityTypeId,ModuleId")] LmsActivity lmsActivity)
+        {
+            var module = await _context.Module.FindAsync(lmsActivity.ModuleId);
+
+            if ((lmsActivity.StartDate.Date >= module.StartDate.Date && lmsActivity.EndDate.Date <= module.EndDate.Date) && lmsActivity.StartDate.Date <= lmsActivity.EndDate.Date)
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Add(lmsActivity);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessText"] = $"Aktivitet: {lmsActivity.Name} skapades Ok!";
+                    return RedirectToAction(nameof(ModuleActivities), new { lmsActivity.ModuleId });
+                }
+                TempData["FailText"] = $"Något gick fel vid skapandet av aktiviteten. Försök igen.";
+                ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
+                //ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", lmsActivity.ModuleId);
+                lmsActivity.Module = module;
+                return View(lmsActivity);
+            }
+            else
+            {
+                TempData["FailText"] = "Startdatum och slutdatum måste ligga inom modulens start- och slutdatum\n" +
+                    "och startdatum kan inte ligga senare än slutdatum !";
+                ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
+                //ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", lmsActivity.ModuleId);
+                lmsActivity.Module = module;
+                return View(module);
+            }
+        }
+
+
         // GET: LmsActivities/Edit/5
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,14 +173,19 @@ namespace LexiconLMS.Controllers
             {
                 return NotFound();
             }
-            ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Id", lmsActivity.ActivityTypeId);
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", lmsActivity.ModuleId);
+
+            var module = await _context.Module.FindAsync(lmsActivity.ModuleId);
+            lmsActivity.Module = module;
+
+            ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
+            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", lmsActivity.ModuleId);
             return View(lmsActivity);
         }
 
         // POST: LmsActivities/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,EndDate,StartDate,Description,Name,ActivityTypeId,ModuleId")] LmsActivity lmsActivity)
@@ -102,32 +195,51 @@ namespace LexiconLMS.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var module = await _context.Module.FindAsync(lmsActivity.ModuleId);
+
+            if ((lmsActivity.StartDate.Date >= module.StartDate.Date && lmsActivity.EndDate.Date <= module.EndDate.Date) && lmsActivity.StartDate.Date <= lmsActivity.EndDate.Date)
             {
-                try
+
+                if (ModelState.IsValid)
                 {
-                    _context.Update(lmsActivity);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LmsActivityExists(lmsActivity.Id))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(lmsActivity);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!LmsActivityExists(lmsActivity.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    //return RedirectToAction(nameof(Index));
+                    TempData["SuccessText"] = $"Aktivitet: {lmsActivity.Name} Uppdaterad Ok!";
+                    return RedirectToAction(nameof(ModuleActivities), new { lmsActivity.ModuleId });
                 }
-                return RedirectToAction(nameof(Index));
+                ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
+                ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", lmsActivity.ModuleId);
+                TempData["FailText"] = $"Något gick fel. Aktivitet: {lmsActivity.Name} uppdaterades inte!";
+                return View(lmsActivity);
             }
-            ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Id", lmsActivity.ActivityTypeId);
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", lmsActivity.ModuleId);
-            return View(lmsActivity);
+            else
+            {
+                TempData["FailText"] = "Startdatum och slutdatum måste ligga inom modulens start- och slutdatum/n" +
+                        "och startdatum kan inte ligga senare än slutdatum!";
+                ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
+                ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", lmsActivity.ModuleId);
+                lmsActivity.Module = module;
+                return View(lmsActivity);
+            }
         }
 
         // GET: LmsActivities/Delete/5
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -148,6 +260,7 @@ namespace LexiconLMS.Controllers
         }
 
         // POST: LmsActivities/Delete/5
+        [Authorize(Roles = "Teacher")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -155,7 +268,9 @@ namespace LexiconLMS.Controllers
             var lmsActivity = await _context.LmsActivity.FindAsync(id);
             _context.LmsActivity.Remove(lmsActivity);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction(nameof(Index));
+            TempData["SuccessText"] = $"Aktivitet: {lmsActivity.Name} raderad Ok!";
+            return RedirectToAction(nameof(ModuleActivities), new { lmsActivity.ModuleId });
         }
 
         private bool LmsActivityExists(int id)

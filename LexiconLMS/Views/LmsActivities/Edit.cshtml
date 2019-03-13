@@ -4,9 +4,17 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h2>Ändra aktivitet</h2>
+<h3> i modul: @Model.Module.Name, startdatum: @Model.Module.StartDate.ToShortDateString(), slutdatum: @Model.Module.EndDate.ToShortDateString()</h3>
 
-<h4>LmsActivity</h4>
+<div class="text-danger">
+    @TempData["FailText"]
+</div>
+<div class="text-success">
+    @TempData["SuccessText"]
+</div>
+
+<h4>Aktivitet</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -51,7 +59,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="ModuleActivities" asp-route-modulesId="@Model.ModuleId">Tillbaka till modulaktiviteter</a>
 </div>
 
 @section Scripts {
