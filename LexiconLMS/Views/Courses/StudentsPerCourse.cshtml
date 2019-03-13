@@ -8,7 +8,9 @@
 }
 
 <h1>Deltagare i kurs: @Model.Name</h1>
-@{var test = Model.ApplicationUser.First();}
+@{var test = Model.ApplicationUser.FirstOrDefault();}
+@if (test != null)
+{
 <table class="table">
     <thead>
         <tr>
@@ -47,3 +49,6 @@
 
     </tbody>
 </table class="table">
+}
+else
+{ <h1>Inga elever på denna kurs</h1>}

@@ -1,0 +1,65 @@
+﻿@model LexiconLMS.Models.StudentModulesViewModel
+
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "StudentModules";
+}
+
+<h1>StudentModules</h1>
+
+
+
+@{
+    ViewData["Title"] = "Moduler på din kurs";
+}
+<h2>Moduler på kurs @Model.StudentCourse.Name för dig, @Model.Student.Name </h2>
+
+
+@{var test = Model.StudentCourse.Modules.First();}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(modelitem => test.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(modelitem => test.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(modelitem => test.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(modelitem => test.Description)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @foreach (var student in Model.StudentCourse.Modules.OrderBy(s => s.StartDate))
+        {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelitem => student.StartDate)
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelitem => student.EndDate)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelitem => student.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelitem => student.Description)
+            </td>
+        </tr>
+        }
+
+
+    </tbody>
+</table>
