@@ -27,6 +27,7 @@ namespace LexiconLMS.Models
         //nav prop
         public ICollection<ApplicationUser> ApplicationUser { get; set; }
         public ICollection<Module> Modules { get; set; }
+        public ICollection<Document> Documents { get; set; }
 
 
     }

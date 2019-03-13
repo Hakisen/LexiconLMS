@@ -29,5 +29,6 @@ namespace LexiconLMS.Models
         public Course Course { get; set; }
 
         public ICollection<LmsActivity> LmsActivities { get; set; }
+        public ICollection<Document> Documents { get; set; }
     }
 }

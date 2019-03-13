@@ -15,5 +15,6 @@ namespace LexiconLMS.Models
         [Display(Name = "Kurs")]
         public Course Course { get; set; }
         public int? CourseId { get; set; }
+        public ICollection<Document> Documents { get; set; }
     }
 }
