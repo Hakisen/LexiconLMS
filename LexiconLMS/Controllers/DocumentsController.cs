@@ -8,17 +8,23 @@ using Microsoft.EntityFrameworkCore;
 using LexiconLMS.Data;
 using LexiconLMS.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace LexiconLMS.Controllers
 {
     public class DocumentsController : Controller
     {
+        
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public DocumentsController(ApplicationDbContext context)
+        public DocumentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+
             _context = context;
+            _userManager = userManager;
         }
+
 
         // GET: Documents
         public async Task<IActionResult> Index()
@@ -202,7 +208,35 @@ namespace LexiconLMS.Controllers
             return View(document);
         }
 
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> CreateCourseDocument(int courseId)
+        {
 
+            if (courseId == null)
+            {
+                return NotFound();
+            }
+
+            //ViewData["CourseId"] = courseId;
+            //var CourseId = id;  //sätter Id (för module) till CourseId ????
+            //ViewBag.ModuleCourseId = id;
+            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name");
+
+            var course = _context.Course.Find(courseId);
+            //ViewBag.CourseName = course.Name; behövs ej nu när vi inkluderar en Course = course i modellen (Module)
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var userId= await _userManager.GetUserIdAsync(user);
+            
+            Document model = new Document
+            {
+                CourseId = courseId,
+                ApplicationUser = user,
+                ApplicationUserId = userId,
+                Course = course
+            };
+
+            return base.View(model);
+        }
         public async Task<IActionResult> CourseDocuments(int? courseId)
         {
             var applicationDbContext = _context.Document.Include(c => c.Course).Where(c => c.Course.Id == courseId);

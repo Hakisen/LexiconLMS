@@ -8,6 +8,7 @@
 @*<h2>Create Course Document</h2> <h3>in Course: @ViewBag.CourseName</h3>*@
 <h2>Skapa kursdokument</h2>
 <h3>i kurs: @Model.Course.Name</h3>
+<h3>för användare: @Model.ApplicationUser.Name</h3>
 
 <div class="text-danger">
     @TempData["FailText"]
@@ -32,16 +33,13 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-         
+           
+
             <div class="form-group">
                 @*<label asp-for="CourseId" class="control-label"></label>*@
                 @*<select asp-for="CourseId" class ="form-control" asp-items="ViewBag.CourseId"></select>*@
                 @*<input type="hidden" value="@CourseId" name="CourseId" class="form-control" asp-item="ViewBag.ModuleCourseId" />*@
+                <input type="hidden" asp-for="ApplicationUserId" />
                 <input type="hidden" asp-for="CourseId" />
             </div>
             <div class="form-group">
