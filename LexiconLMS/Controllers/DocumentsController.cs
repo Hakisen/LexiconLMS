@@ -188,7 +188,7 @@ namespace LexiconLMS.Controllers
         [Authorize(Roles = "Teacher")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCourseDocument([Bind("Id,Title,Description,CourseId")] Document document)
+        public async Task<IActionResult> CreateCourseDocument([Bind("Id,Title,Description,CourseId,ApplicationUserId,CreatedDate")] Document document)
         {
 
             var course = await _context.Course.FindAsync(document.CourseId);
@@ -203,7 +203,7 @@ namespace LexiconLMS.Controllers
             }
 
             TempData["FailText"] = $"Något gick fel vid skapandet av modulen. Försök igen";
-            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", module.CourseId);
+            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", document.CourseId);
             document.Course = course;
             return View(document);
         }
@@ -232,7 +232,8 @@ namespace LexiconLMS.Controllers
                 CourseId = courseId,
                 ApplicationUser = user,
                 ApplicationUserId = userId,
-                Course = course
+                Course = course,
+                CreatedDate=DateTime.Today
             };
 
             return base.View(model);

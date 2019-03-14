@@ -81,12 +81,12 @@ namespace LexiconLMS
 
 
                 }
-                if (context.Users.Any())
-                {
-                    context.Users.RemoveRange(context.Users);
+                //if (context.Users.Any())
+                //{
+                //    context.Users.RemoveRange(context.Users);
                   
                    
-                }
+                //}
                 context.SaveChanges();
                 // Let's seed!
                 var courses = new List<Course>();
@@ -159,14 +159,23 @@ namespace LexiconLMS
                 }
                 //if (!context.Users.Any())
                 //{
+                var teachers = new List<LmsUser>();
 
-
-                var teacheremails = new[] { "admin@lexicon.se", "stefan@lexicon.se", "John@lexicon.se", "teacher1@lexicon.se", "teacher2@lexicon.se", "teacher3@lexicon.se" };
-                foreach (var email in teacheremails)
+                for (int i = 6; i < 10; i++)
                 {
-                    var foundUser = await userManager.FindByEmailAsync(email);
+                    var fakename = $"Teacher{i}";
+                    LmsUser newTeacher = new LmsUser { UserName = $"{fakename}@lexicon.se", Email = $"{fakename}@lexicon.se", Name = $"{fakename} Olsson"/*, PhoneNumber = Faker.Phone.Number()*/ };
+
+
+                    teachers.Add(newTeacher);
+                }
+
+                
+                foreach (var teacher in teachers)
+                {
+                    var foundUser = await userManager.FindByEmailAsync(teacher.Email);
                     if (foundUser != null) continue;
-                    var user = new ApplicationUser { UserName = email, Email = email/*, PhoneNumber = Faker.Phone.()*/ };
+                    var user = new ApplicationUser { UserName = teacher.UserName, Email = teacher.Email,Name=teacher.Name};
                     var addUserResult = await userManager.CreateAsync(user, adminPw);
                     if (!addUserResult.Succeeded)
                     {
