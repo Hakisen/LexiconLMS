@@ -1,0 +1,80 @@
+﻿
+
+
+
+
+@model IEnumerable<LexiconLMS.Models.Document>
+
+@{
+    ViewData["Title"] = "CourseDocuments";
+}
+<h1>Kurs dokument</h1>
+
+
+
+
+<h3>i kurs @ViewBag.CourseName</h3>
+<div class="text-success">
+    @TempData["SuccessText"]
+</div>
+<p>
+    <a asp-action="CreateCourseDocument" asp-route-courseId="@ViewBag.CourseId">Skapa nytt kursdokument</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationUser.Name)
+            </th>
+            
+            <th>@Html.DisplayNameFor(model => model.Course.Name)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
+                </td>
+                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Course.Name)
+                </td>
+                @if (User.IsInRole("Teacher"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Ändra</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
+                        @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-pill badge-danger">Radera</a>
+                    </td>
+                }
+                @if (User.IsInRole("Student"))
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detaljer</a>
+                        @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    @*<a asp-action="CourseModules" asp-route-id="@model">Back to List</a>*@
+</div>
+

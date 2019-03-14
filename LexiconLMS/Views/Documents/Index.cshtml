@@ -61,16 +61,16 @@
                 @Html.DisplayFor(modelItem => item.MimeType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Course.Id)
+                @Html.DisplayFor(modelItem => item.Course.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Module.Id)
+                @Html.DisplayFor(modelItem => item.Module.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LmsActivity.Id)
+                @Html.DisplayFor(modelItem => item.LmsActivity.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -53,7 +53,8 @@
                         <a asp-action="Details" asp-route-id="@item.Id">Mer info</a> |
                         <a asp-action="Delete" asp-route-id="@item.Id">Ta bort</a> |
                         <a asp-controller="Modules" asp-action="CourseModules" asp-route-courseId="@item.Id">Moduler</a> |
-                        <a  asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@item.Id" >Lägg till elev</a>
+                        <a asp-controller="Documents" asp-action="CourseDocuments" asp-route-courseId="@item.Id">Dokument</a> |
+                        <a asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@item.Id">Lägg till elev</a>
                         <a asp-action="StudentsPerCourse" asp-route-id="@item.Id">Lista Elever</a>
                     </td>
                     <td>

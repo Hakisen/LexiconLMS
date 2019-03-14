@@ -7,17 +7,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LexiconLMS.Data;
 using LexiconLMS.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace LexiconLMS.Controllers
 {
     public class DocumentsController : Controller
     {
+        
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public DocumentsController(ApplicationDbContext context)
+        public DocumentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+
             _context = context;
+            _userManager = userManager;
         }
+
 
         // GET: Documents
         public async Task<IActionResult> Index()
@@ -174,5 +181,73 @@ namespace LexiconLMS.Controllers
         {
             return _context.Document.Any(e => e.Id == id);
         }
+
+        // POST: Modules/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Teacher")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCourseDocument([Bind("Id,Title,Description,CourseId,ApplicationUserId,CreatedDate")] Document document)
+        {
+
+            var course = await _context.Course.FindAsync(document.CourseId);
+
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(document);
+                await _context.SaveChangesAsync();
+                TempData["SuccessText"] = $"Modul: {document.Title} skapades Ok!";
+                return RedirectToAction(nameof(CourseDocuments), new { document.CourseId });
+            }
+
+            TempData["FailText"] = $"Något gick fel vid skapandet av modulen. Försök igen";
+            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", document.CourseId);
+            document.Course = course;
+            return View(document);
+        }
+
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> CreateCourseDocument(int courseId)
+        {
+
+            if (courseId == null)
+            {
+                return NotFound();
+            }
+
+            //ViewData["CourseId"] = courseId;
+            //var CourseId = id;  //sätter Id (för module) till CourseId ????
+            //ViewBag.ModuleCourseId = id;
+            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name");
+
+            var course = _context.Course.Find(courseId);
+            //ViewBag.CourseName = course.Name; behövs ej nu när vi inkluderar en Course = course i modellen (Module)
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var userId= await _userManager.GetUserIdAsync(user);
+            
+            Document model = new Document
+            {
+                CourseId = courseId,
+                ApplicationUser = user,
+                ApplicationUserId = userId,
+                Course = course,
+                CreatedDate=DateTime.Today
+            };
+
+            return base.View(model);
+        }
+        public async Task<IActionResult> CourseDocuments(int? courseId)
+        {
+            var applicationDbContext = _context.Document.Include(c => c.Course).Where(c => c.Course.Id == courseId);
+            //return View("Index", await applicationDbContext.ToListAsync());
+            ViewBag.CourseName = _context.Course.Find(courseId).Name;
+            ViewBag.CourseId = courseId;
+            return View(await applicationDbContext.ToListAsync());
+        }
     }
+
+
 }
+
