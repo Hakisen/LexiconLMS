@@ -36,30 +36,32 @@
             </th>
         </tr>
     </thead>
+   
+    
     <tbody>
-
-
-        @foreach (var student in Model.StudentCourse.Modules.OrderBy(s => s.StartDate))
+        @foreach (var module in Model.StudentCourse.Modules.OrderBy(s => s.StartDate))
         {
         <tr>
 
             <td>
-                @Html.DisplayFor(modelitem => student.StartDate)
+                @Html.DisplayFor(modelitem => module.StartDate)
 
             </td>
             <td>
-                @Html.DisplayFor(modelitem => student.EndDate)
+                @Html.DisplayFor(modelitem => module.EndDate)
             </td>
 
             <td>
-                @Html.DisplayFor(modelitem => student.Name)
+                @Html.DisplayFor(modelitem => module.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelitem => student.Description)
+                @Html.DisplayFor(modelitem => module.Description)
+            </td>
+            <td>
+               <a asp-controller="Modules" asp-action="details" asp-route-id="@module.Id" class="btn btn-info">Detaljer</a>
             </td>
         </tr>
         }
-
-
     </tbody>
-</table>
+
+    </table>
