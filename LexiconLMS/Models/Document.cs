@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,8 +11,11 @@ namespace LexiconLMS.Models
     {
         public string Title { get; set; }
         public string Description { get; set; }
+        public string OwnerFileName { get; set; }
+        public IFormFile MyUploadedFile { set; get; }
 
         public DateTime MyProperty { get; set; }
+
 
         [DataType(DataType.Date)]
         [Display(Name = "Skapad datum")]

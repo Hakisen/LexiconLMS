@@ -9,6 +9,8 @@ using LexiconLMS.Data;
 using LexiconLMS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace LexiconLMS.Controllers
 {
@@ -238,6 +240,31 @@ namespace LexiconLMS.Controllers
 
             return base.View(model);
         }
+        [HttpPost]
+        public IActionResult CreateCourseDocument1( IFormFile model)
+        {
+            // do other validations on your model as needed
+            if (model.FileName != null)
+            {
+                var uniqueFileName = GetUniqueFileName(model.FileName);
+                var uploads = Path.Combine(wwwroot, "uploads");
+                var filePath = Path.Combine(uploads, uniqueFileName);
+                model.MyImage.CopyTo(new FileStream(filePath, FileMode.Create));
+
+                //to do : Save uniqueFileName  to your db table   
+            }
+            // to do  : Return something
+            return RedirectToAction("Index", "Home");
+        }
+        private string GetUniqueFileName(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+            return Path.GetFileNameWithoutExtension(fileName)
+                      + "_"
+                      + Guid.NewGuid().ToString().Substring(0, 4)
+                      + Path.GetExtension(fileName);
+        }
+
         public async Task<IActionResult> CourseDocuments(int? courseId)
         {
             var applicationDbContext = _context.Document.Include(c => c.Course).Where(c => c.Course.Id == courseId);
