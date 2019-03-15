@@ -5,7 +5,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h2>Detaljer</h2><h3>för kurs @Html.DisplayFor(model => model.Name)</h3>
 
 <div>
     <h4>Course</h4>
@@ -38,6 +38,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @if (User.IsInRole("Teacher"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="badge badge-success">Ändra</a> 
+    }
+    <a asp-action="Index">Tillbaka till kurslistan</a>
 </div>

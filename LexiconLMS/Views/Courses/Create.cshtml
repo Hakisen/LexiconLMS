@@ -4,9 +4,12 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h2>Skapa kurs</h2>
+<div class="text-danger blink_me">
+    @TempData["FailText"]
+</div>
 
-<h4>Course</h4>
+<h4>Kurs</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -40,7 +43,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Tillbaka till kurslistan</a>
 </div>
 
 @section Scripts {

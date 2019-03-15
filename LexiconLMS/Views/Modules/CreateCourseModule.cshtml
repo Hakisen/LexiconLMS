@@ -8,10 +8,10 @@
 @*<h2>Create Course Module</h2> <h3>in Course: @ViewBag.CourseName</h3>*@
 <h2>Skapa kursmodul</h2> <h3>i kurs: @Model.Course.Name, startdatum: @Model.Course.StartDate.ToShortDateString(), slutdatum: @Model.Course.EndDate.Date.ToShortDateString()</h3>
 
-<div class="text-danger">
+<div class="text-danger blink_me">
     @TempData["FailText"]
 </div>
-<div class="text-success">
+<div class="text-success blink_me">
     @TempData["SuccessText"]
 </div>
 
