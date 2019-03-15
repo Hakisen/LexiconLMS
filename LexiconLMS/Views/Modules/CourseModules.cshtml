@@ -5,7 +5,7 @@
 }
 
 <h2>Kursmoduler</h2> <h3>i kurs @ViewBag.CourseName</h3>
-<div class="text-success">
+<div class="text-success blink_me">
     @TempData["SuccessText"]
 </div>
 <p>
@@ -54,18 +54,18 @@
                 @if (User.IsInRole("Teacher"))
                 {
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Ändra</a> 
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a> 
                     <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a> 
-                    <a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id" class="btn btn-info">Aktiviteter</a> 
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-pill badge-danger">Radera</a>
+                    <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@item.Id" class="badge badge-info">Aktiviteter</a> 
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a>
                 </td>
                 }
                 @if (User.IsInRole("Student"))
                 {
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detaljer</a>
-                    <a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id" class="btn btn-info">Aktiviteter</a>
-                    <a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller
+                    <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
+                    <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@item.Id" class="badge badge-info">Aktiviteter</a>
+                    @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
                 </td>
                 }
             </tr>

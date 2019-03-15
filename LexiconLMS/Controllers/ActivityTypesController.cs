@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LexiconLMS.Data;
 using LexiconLMS.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LexiconLMS.Controllers
 {
+    [Authorize(Roles = "Teacher")]
     public class ActivityTypesController : Controller
     {
         private readonly ApplicationDbContext _context;
