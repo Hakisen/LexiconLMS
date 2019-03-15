@@ -6,6 +6,10 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Data\Migrations\**" />
     <Content Remove="Data\Migrations\**" />
@@ -28,6 +32,7 @@
 
 
   <ItemGroup>
+    <Folder Include="LMSDocument\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

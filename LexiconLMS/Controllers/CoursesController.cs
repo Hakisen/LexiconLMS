@@ -9,6 +9,7 @@ using LexiconLMS.Data;
 using LexiconLMS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using LexiconLMS.Utility;
 
 namespace LexiconLMS.Controllers
 {
@@ -104,8 +105,10 @@ namespace LexiconLMS.Controllers
             {
                 _context.Add(course);
                 await _context.SaveChangesAsync();
+                DirectoryHandler.CreateNewCourseFolders(course.Name);
                 return RedirectToAction(nameof(Index));
             }
+            
             return View(course);
         }
 
