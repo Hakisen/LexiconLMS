@@ -256,15 +256,20 @@ namespace LexiconLMS.Controllers
             {
 
                 var uniqueFileName = GetUniqueFileName(document.MyUploadedFile.FileName);
-                var uploads = Path.Combine(hostingEnvironment.WebRootPath, "uploads");
-                var filePath = Path.Combine(uploads, uniqueFileName);
-                document.MyUploadedFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                var documentroot = Path.Combine(hostingEnvironment.WebRootPath,"documents");
+
+                var fullpath = Path.Combine(documentroot, uniqueFileName);
+
+
+                document.MyUploadedFile.CopyTo(new FileStream(fullpath, FileMode.Create));
 
                 //to do : Save uniqueFileName  to your db table   
 
                 var course = await _context.Course.FindAsync(document.CourseId);
                 document.OwnerFileName = document.MyUploadedFile.FileName;
-                document.StoredFilePath = filePath;
+                document.StoredFilePath = uniqueFileName;
+                document.ContentType = document.MyUploadedFile.ContentType;
+                document.Length = document.MyUploadedFile.Length;
 
                 if (ModelState.IsValid)
                 {
@@ -275,11 +280,11 @@ namespace LexiconLMS.Controllers
                 }
 
                 TempData["FailText"] = $"Något gick fel vid skapandet av modulen. Försök igen";
-                //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", document.CourseId);
+              
                 document.Course = course;
             }
 
-            // to do  : Return something
+          
             return RedirectToAction("CourseDocuments", "Documents");
         }
         private string GetUniqueFileName(string fileName)
@@ -304,18 +309,10 @@ namespace LexiconLMS.Controllers
         
         public async Task<IActionResult> CreateCourseDocument1(int courseId)
         {
-            if (courseId == null)
-            {
-                return NotFound();
-            }
-
-            //ViewData["CourseId"] = courseId;
-            //var CourseId = id;  //sätter Id (för module) till CourseId ????
-            //ViewBag.ModuleCourseId = id;
-            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name");
+            
 
             var course = _context.Course.Find(courseId);
-            //ViewBag.CourseName = course.Name; behövs ej nu när vi inkluderar en Course = course i modellen (Module)
+     
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var userId = await _userManager.GetUserIdAsync(user);
 
@@ -332,26 +329,56 @@ namespace LexiconLMS.Controllers
 
         }
         private string fileName { get; set; }
-        public IActionResult createFile()
-        {
-            string wwwrootPath = hostingEnvironment.WebRootPath;
-            fileName = @"Employees.xlsx";
-            FileInfo file = new FileInfo(Path.Combine(wwwrootPath, fileName));
-            return downloadFile(wwwrootPath);
-        }
-        public FileResult downloadFile(string filePath)
+        private string uniqueFileName { get; set; }
+
+        //public IActionResult getFile()
+        //{
+        //    string wwwrootPath = hostingEnvironment.WebRootPath;
+        //    fileName = @"Employees.xlsx";
+        //    FileInfo file = new FileInfo(Path.Combine(wwwrootPath, fileName));
+        //    return downloadFile(wwwrootPath);
+        //}
+        public FileResult downloadFile(string filePath,string mimetype)
         {
             IFileProvider provider = new PhysicalFileProvider(filePath);
-            IFileInfo fileInfo = provider.GetFileInfo(fileName);
+            IFileInfo fileInfo = provider.GetFileInfo(uniqueFileName);
             var readStream = fileInfo.CreateReadStream();
-            var mimeType = "application/vnd.ms-excel";
-            return File(readStream, mimeType, fileName);
+       
+            return File(readStream, mimetype, fileName);
+        }
+
+        // GET: Documents/Details/5
+        public async Task<IActionResult> GetDocument(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var document = await _context.Document
+                
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (document == null)
+            {
+                return NotFound();
+            }
+          uniqueFileName = document.StoredFilePath;
+            var mimeType = document.ContentType;
+            var documentroot = Path.Combine(hostingEnvironment.WebRootPath, "documents");
+            FileInfo file = new FileInfo(Path.Combine(documentroot, uniqueFileName));
+            fileName = document.OwnerFileName;
+
+            return downloadFile(documentroot, mimeType);
+            //var readStream = fileInfo.CreateReadStream();
+            //var mimeType = document.ContentType;
+            //return File(readStream, mimeType, fileName);
+          
         }
 
 
 
 
-            
+
 
 
     }
