@@ -344,7 +344,7 @@ namespace LexiconLMS.Controllers
             IFileInfo fileInfo = provider.GetFileInfo(uniqueFileName);
             var readStream = fileInfo.CreateReadStream();
        
-            return File(readStream, mimetype, fileName);
+            return File(readStream, mimetype, fileName,true);
         }
 
         // GET: Documents/Details/5
