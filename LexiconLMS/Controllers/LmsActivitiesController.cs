@@ -32,16 +32,14 @@ namespace LexiconLMS.Controllers
         //Get: ModuleLmsActivities
         public async Task<IActionResult> ModuleActivities(int? moduleId)
         {
-            var applicationDbContext = _context.LmsActivity.Include(m => m.Module).Where(m => m.Module.Id == moduleId);
+            var applicationDbContext = _context.LmsActivity.Include(l => l.ActivityType).Include(m => m.Module).Where(m => m.Module.Id == moduleId);
             //return View("Index", await applicationDbContext.ToListAsync());
 
             var module = _context.Module.Find(moduleId);
             ViewBag.ModuleName = module.Name;
-            //ViewBag.ModuleId = module.Id;
-            ViewBag.CourseId = module.CourseId;
-            
-            //ViewBag.ModuleName = _context.Module.Find(moduleId).Name;
+            ViewBag.CourseId = module.CourseId;            
             ViewBag.ModuleId = moduleId;
+
             return View(await applicationDbContext.ToListAsync());
         }
 

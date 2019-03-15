@@ -1,4 +1,4 @@
-﻿@model LexiconLMS.Models.StudentModulesViewModel
+﻿@model LexiconLMS.Models.StudentViewModel
 
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> UserManager
@@ -7,9 +7,7 @@
     ViewData["Title"] = "StudentModules";
 }
 
-<h1>StudentModules</h1>
-
-
+<h2>Kursmoduler</h2>
 
 @{
     ViewData["Title"] = "Moduler på din kurs";
@@ -36,32 +34,28 @@
             </th>
         </tr>
     </thead>
-   
-    
     <tbody>
         @foreach (var module in Model.StudentCourse.Modules.OrderBy(s => s.StartDate))
         {
-        <tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelitem => module.StartDate)
 
-            <td>
-                @Html.DisplayFor(modelitem => module.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => module.EndDate)
+                </td>
 
-            </td>
-            <td>
-                @Html.DisplayFor(modelitem => module.EndDate)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelitem => module.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelitem => module.Description)
-            </td>
-            <td>
-               <a asp-controller="Modules" asp-action="details" asp-route-id="@module.Id" class="btn btn-info">Detaljer</a>
-            </td>
-        </tr>
+                <td>
+                    @Html.DisplayFor(modelitem => module.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => module.Description)
+                </td>
+                <td>
+                    <a asp-controller="Modules" asp-action="details" asp-route-id="@module.Id" class="badge badge-primary">Detaljer</a>
+                </td>
+            </tr>
         }
     </tbody>
-
-    </table>
+</table>

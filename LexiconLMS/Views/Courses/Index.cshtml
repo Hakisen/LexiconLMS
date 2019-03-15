@@ -28,7 +28,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-
         </tr>
     </thead>
     <tbody>
@@ -50,14 +49,25 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Mer info</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a> |
+                    @*<td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a> 
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Mer info</a> 
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a> 
                         <a asp-controller="Modules" asp-action="CourseModules" asp-route-courseId="@item.Id" class="badge badge-info">Moduler</a> 
                         <a asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@item.Id" class="badge badge-secondary">Lägg till elev</a>
                         <a asp-action="StudentsPerCourse" asp-route-id="@item.Id" class="badge badge-dark">Lista Elever</a>
-                        <a asp-controller="Documents" asp-action="CourseDocuments" asp-route-courseId="@item.Id" class="badge badge-light">Dokument</a> |
+                        <a asp-controller="Documents" asp-action="CourseDocuments" asp-route-courseId="@item.Id" class="badge badge-light">Dokument</a> 
+                    </td>*@
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a> 
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Mer info</a> 
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a> 
+                        <a asp-controller="Modules" asp-action="CourseModules" asp-route-courseId="@item.Id" class="badge badge-info">Moduler</a>
+                        <a asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@item.Id" class="badge badge-secondary">Lägg till elev</a>
+                        <a asp-action="StudentsPerCourse" asp-route-id="@item.Id" class="badge badge-dark">Lista Elever</a>
+                        <a asp-controller="Documents" asp-action="CourseDocuments" asp-route-courseId="@item.Id" class="badge badge-warning">Dokument</a> 
                     </td>
                 </tr>
             }

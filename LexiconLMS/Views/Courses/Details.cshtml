@@ -40,7 +40,7 @@
 <div>
     @if (User.IsInRole("Teacher"))
     {
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="badge badge-success">Ändra</a> 
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="badge badge-success">Ändra</a><a> | </a>
+        <a asp-action="Index" class="badge badge-light">Tillbaka till kurslistan</a>
     }
-    <a asp-action="Index">Tillbaka till kurslistan</a>
 </div>
