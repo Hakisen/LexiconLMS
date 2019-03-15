@@ -4,8 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Kurser</h1>
-
+<h2>Kurser</h2>
+<div class="text-success blink_me">
+    @TempData["SuccessText"]
+</div>
 <p>
     <a asp-action="Create">Skapa ny kurs</a>
 </p>
@@ -49,20 +51,16 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Ändra</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Mer info</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Ta bort</a> |
-                        <a asp-controller="Modules" asp-action="CourseModules" asp-route-courseId="@item.Id">Moduler</a> |
-                        <a  asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@item.Id" >Lägg till elev</a>
-                        <a asp-action="StudentsPerCourse" asp-route-id="@item.Id">Lista Elever</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Mer info</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a> |
+                        <a asp-controller="Modules" asp-action="CourseModules" asp-route-courseId="@item.Id" class="badge badge-info">Moduler</a> 
+                        <a asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@item.Id" class="badge badge-secondary">Lägg till elev</a>
+                        <a asp-action="StudentsPerCourse" asp-route-id="@item.Id" class="badge badge-dark">Lista Elever</a>
                     </td>
-                    <td>
-
                 </tr>
             }
         }
 
-        
-        
     </tbody>
 </table>
