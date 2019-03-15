@@ -75,7 +75,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,MyProperty,CreatedDate,Path,MimeType,Id,CourseId,ModuleId,LmsActivityId,ApplicationUserId")] Document document)
+        public async Task<IActionResult> Create([Bind("Title,DueDate,CreatedDate,Path,MimeType,Id,CourseId,ModuleId,LmsActivityId,ApplicationUserId")] Document document)
         {
             if (ModelState.IsValid)
             {
@@ -115,7 +115,7 @@ namespace LexiconLMS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Title,MyProperty,CreatedDate,Path,MimeType,Id,CourseId,ModuleId,LmsActivityId,ApplicationUserId")] Document document)
+        public async Task<IActionResult> Edit(int id, [Bind("Title,DueDate,CreatedDate,Path,MimeType,Id,CourseId,ModuleId,LmsActivityId,ApplicationUserId")] Document document)
         {
             if (id != document.Id)
             {
@@ -244,20 +244,42 @@ namespace LexiconLMS.Controllers
             return base.View(model);
         }
         [HttpPost]
-        public IActionResult CreateCourseDocument1( Document model)
+        public async Task<IActionResult> CreateCourseDocument1([Bind("MyUploadedFile,Title,DueDate,CreatedDate,Path,MimeType,Id,CourseId,ModuleId,LmsActivityId,ApplicationUserId,OwnerFileName")]Document document)
         {
+
+
+
+
             // do other validations on your model as needed
-            if (model.MyUploadedFile.FileName != null)
+            if (document.MyUploadedFile.FileName != null)
             {
-                var uniqueFileName = GetUniqueFileName(model.MyUploadedFile.FileName);
+
+                var uniqueFileName = GetUniqueFileName(document.MyUploadedFile.FileName);
                 var uploads = Path.Combine(hostingEnvironment.WebRootPath, "uploads");
                 var filePath = Path.Combine(uploads, uniqueFileName);
-                model.MyUploadedFile.CopyTo(new FileStream(filePath, FileMode.Create));
+                document.MyUploadedFile.CopyTo(new FileStream(filePath, FileMode.Create));
 
                 //to do : Save uniqueFileName  to your db table   
+
+                var course = await _context.Course.FindAsync(document.CourseId);
+                document.OwnerFileName = document.MyUploadedFile.FileName;
+                document.StoredFilePath = filePath;
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(document);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessText"] = $"Modul: {document.Title} skapades Ok!";
+                    return RedirectToAction(nameof(CourseDocuments), new { document.CourseId });
+                }
+
+                TempData["FailText"] = $"Något gick fel vid skapandet av modulen. Försök igen";
+                //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", document.CourseId);
+                document.Course = course;
             }
+
             // to do  : Return something
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("CourseDocuments", "Documents");
         }
         private string GetUniqueFileName(string fileName)
         {
@@ -279,10 +301,36 @@ namespace LexiconLMS.Controllers
 
 
         
-        public IActionResult CreateCourseDocument1()
+        public async Task<IActionResult> CreateCourseDocument1(int courseId)
         {
+            if (courseId == null)
+            {
+                return NotFound();
+            }
 
-            return View(new Document());
+            //ViewData["CourseId"] = courseId;
+            //var CourseId = id;  //sätter Id (för module) till CourseId ????
+            //ViewBag.ModuleCourseId = id;
+            //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name");
+
+            var course = _context.Course.Find(courseId);
+            //ViewBag.CourseName = course.Name; behövs ej nu när vi inkluderar en Course = course i modellen (Module)
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var userId = await _userManager.GetUserIdAsync(user);
+
+            Document model = new Document
+            {
+                CourseId = courseId,
+                ApplicationUser = user,
+                ApplicationUserId = userId,
+                Course = course,
+                CreatedDate = DateTime.Today
+            };
+
+
+
+
+            return View(model);
           
         }
     }

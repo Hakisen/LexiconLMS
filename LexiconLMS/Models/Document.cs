@@ -10,13 +10,20 @@ namespace LexiconLMS.Models
 {
     public class Document
     {
+
+
         public string Title { get; set; }
         public string Description { get; set; }
         public string OwnerFileName { get; set; }
+        public string StoredFilePath { get; set; }
+        public long Length { get; set; }
+        public string ContentType { get; set; }
         [NotMapped]
         public IFormFile MyUploadedFile { set; get; }
 
-        public DateTime MyProperty { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime DueDate { get; set; }
 
 
         [DataType(DataType.Date)]
