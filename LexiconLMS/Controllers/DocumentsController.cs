@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.FileProviders;
 
 namespace LexiconLMS.Controllers
 {
@@ -327,12 +328,32 @@ namespace LexiconLMS.Controllers
                 CreatedDate = DateTime.Today
             };
 
-
-
-
             return View(model);
-          
+
         }
+        private string fileName { get; set; }
+        public IActionResult createFile()
+        {
+            string wwwrootPath = hostingEnvironment.WebRootPath;
+            fileName = @"Employees.xlsx";
+            FileInfo file = new FileInfo(Path.Combine(wwwrootPath, fileName));
+            return downloadFile(wwwrootPath);
+        }
+        public FileResult downloadFile(string filePath)
+        {
+            IFileProvider provider = new PhysicalFileProvider(filePath);
+            IFileInfo fileInfo = provider.GetFileInfo(fileName);
+            var readStream = fileInfo.CreateReadStream();
+            var mimeType = "application/vnd.ms-excel";
+            return File(readStream, mimeType, fileName);
+        }
+
+
+
+
+            
+
+
     }
 
 
