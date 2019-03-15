@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace LexiconLMS.Controllers
 {
@@ -19,12 +20,14 @@ namespace LexiconLMS.Controllers
         
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHostingEnvironment hostingEnvironment;
 
-        public DocumentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public DocumentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IHostingEnvironment environment)
         {
 
             _context = context;
             _userManager = userManager;
+            hostingEnvironment = environment;
         }
 
 
@@ -241,15 +244,15 @@ namespace LexiconLMS.Controllers
             return base.View(model);
         }
         [HttpPost]
-        public IActionResult CreateCourseDocument1( IFormFile model)
+        public IActionResult CreateCourseDocument1( Document model)
         {
             // do other validations on your model as needed
-            if (model.FileName != null)
+            if (model.MyUploadedFile.FileName != null)
             {
-                var uniqueFileName = GetUniqueFileName(model.FileName);
-                var uploads = Path.Combine(wwwroot, "uploads");
+                var uniqueFileName = GetUniqueFileName(model.MyUploadedFile.FileName);
+                var uploads = Path.Combine(hostingEnvironment.WebRootPath, "uploads");
                 var filePath = Path.Combine(uploads, uniqueFileName);
-                model.MyImage.CopyTo(new FileStream(filePath, FileMode.Create));
+                model.MyUploadedFile.CopyTo(new FileStream(filePath, FileMode.Create));
 
                 //to do : Save uniqueFileName  to your db table   
             }
@@ -275,18 +278,12 @@ namespace LexiconLMS.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult CreateCourseDocument1(IFormFile model)
+        
+        public IActionResult CreateCourseDocument1()
         {
-            var img = model.MyImage;
-            var imgCaption = model.ImageCaption;
 
-            //Getting file meta data
-            var fileName = Path.GetFileName(model.MyImage.FileName);
-            var contentType = model.MyImage.ContentType;
-
-            // do something with the above data
-            // to do : return something
+            return View(new Document());
+          
         }
     }
 

@@ -1,0 +1,81 @@
+﻿@model LexiconLMS.Models.Document
+@{
+    ViewData["Title"] = "CreateCourseDocument1";
+}
+
+
+<h1>CreateCourseDocument</h1>
+
+@*<h2>Create Course Document</h2> <h3>in Course: @ViewBag.CourseName</h3>*@
+<h2>Skapa kursdokument</h2>
+<h3>i kurs: @Model.Course.Name</h3>
+<h3>för användare: @Model.ApplicationUser.Name</h3>
+
+<div class="text-danger">
+    @TempData["FailText"]
+</div>
+<div class="text-success">
+    @TempData["SuccessText"]
+</div>
+
+<h4>Document</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+
+    
+
+
+        <form asp-action="CreateCourseDocument1" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="CreatedDate" />
+
+            </div>
+
+            <div class="form-group">
+                <input type="hidden" asp-for="ApplicationUserId" />
+
+            </div>
+            <div class="form-group">
+
+                <input type="hidden" asp-for="CourseId" />
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <p>Upload one or more files using this form:</p>
+                    <input type="file" name="files" multiple />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" value="Upload" />
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="CreateCourseDocument" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    @*<a asp-action="Index">Back to List</a>*@
+    <a asp-action="CourseModules" asp-route-courseId="@Model.CourseId">Tillbaka till kursmoduler</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
