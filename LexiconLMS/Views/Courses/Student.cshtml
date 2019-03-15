@@ -3,49 +3,44 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> UserManager
 
-    @{
+@{
     ViewData["Title"] = "Elever på din kurs";
-    }
-                       <h2>Elever på kurs @Model.StudentCourse.Name som går på samma kurs som dig, @Model.Student.Name </h2>
-   
+}
+<h2>Elever på kurs @Model.StudentCourse.Name som går på samma kurs som dig, @Model.Student.Name </h2>
 
-    @{var test = Model.StudentCourse.ApplicationUser.First();}
+@{var test = Model.StudentCourse.ApplicationUser.First();}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(modelitem => test.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(modelitem => test.Email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(modelitem => test.PhoneNumber)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-
-
-            @foreach (var student in Model.StudentCourse.ApplicationUser.OrderBy(s => s.Name))
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(modelitem => test.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(modelitem => test.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(modelitem => test.PhoneNumber)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model.StudentCourse.ApplicationUser.OrderBy(s => s.Name))
         {
             <tr>
-
                 <td>
                     @Html.DisplayFor(modelitem => student.Name)
-
                 </td>
                 <td>
                     @Html.DisplayFor(modelitem => student.Email)
                 </td>
-
                 <td>
                     @Html.DisplayFor(modelitem => student.PhoneNumber)
                 </td>
             </tr>
         }
+    </tbody>
+</table>
+<div>
 
-
-        </tbody>
-    </table>
+</div>
