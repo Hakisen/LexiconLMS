@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace LexiconLMS.Controllers
 {
+    [Authorize]
     public class LmsActivitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -33,7 +34,13 @@ namespace LexiconLMS.Controllers
         {
             var applicationDbContext = _context.LmsActivity.Include(m => m.Module).Where(m => m.Module.Id == moduleId);
             //return View("Index", await applicationDbContext.ToListAsync());
-            ViewBag.ModuleName = _context.Module.Find(moduleId).Name;
+
+            var module = _context.Module.Find(moduleId);
+            ViewBag.ModuleName = module.Name;
+            //ViewBag.ModuleId = module.Id;
+            ViewBag.CourseId = module.CourseId;
+            
+            //ViewBag.ModuleName = _context.Module.Find(moduleId).Name;
             ViewBag.ModuleId = moduleId;
             return View(await applicationDbContext.ToListAsync());
         }
@@ -154,7 +161,7 @@ namespace LexiconLMS.Controllers
                 ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
                 //ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", lmsActivity.ModuleId);
                 lmsActivity.Module = module;
-                return View(module);
+                return View(lmsActivity);
             }
         }
 
@@ -219,12 +226,13 @@ namespace LexiconLMS.Controllers
                         }
                     }
                     //return RedirectToAction(nameof(Index));
-                    TempData["SuccessText"] = $"Aktivitet: {lmsActivity.Name} Uppdaterad Ok!";
+                    TempData["SuccessText"] = $"Aktivitet: {lmsActivity.Name} uppdaterad Ok!";
                     return RedirectToAction(nameof(ModuleActivities), new { lmsActivity.ModuleId });
                 }
                 ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
                 ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", lmsActivity.ModuleId);
                 TempData["FailText"] = $"Något gick fel. Aktivitet: {lmsActivity.Name} uppdaterades inte!";
+                lmsActivity.Module = module;
                 return View(lmsActivity);
             }
             else
