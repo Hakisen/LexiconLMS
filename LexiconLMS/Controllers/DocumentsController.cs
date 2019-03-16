@@ -296,13 +296,18 @@ namespace LexiconLMS.Controllers
                       + Path.GetExtension(fileName);
         }
 
-        public async Task<IActionResult> CourseDocuments(int? courseId)
+        public async Task<IActionResult> CourseDocuments(int? courseId,String LmsType)
         {
             var applicationDbContext = _context.Document.Include(c => c.Course).Where(c => c.Course.Id == courseId);
-            //return View("Index", await applicationDbContext.ToListAsync());
-            ViewBag.CourseName = _context.Course.Find(courseId).Name;
-            ViewBag.CourseId = courseId;
-            return View(await applicationDbContext.ToListAsync());
+            if (LmsType == "Course")
+            {
+               
+                //return View("Index", await applicationDbContext.ToListAsync());
+                ViewBag.CourseName = _context.Course.Find(courseId).Name;
+                ViewBag.CourseId = courseId;
+            }
+                return View(await applicationDbContext.ToListAsync());
+            
         }
 
 
@@ -369,10 +374,72 @@ namespace LexiconLMS.Controllers
             fileName = document.OwnerFileName;
 
             return downloadFile(documentroot, mimeType);
-            //var readStream = fileInfo.CreateReadStream();
-            //var mimeType = document.ContentType;
-            //return File(readStream, mimeType, fileName);
           
+          
+        }
+
+
+
+
+        public async Task<IActionResult> LmsDocuments(int? Id, String LmsType)
+        {
+           
+            if (LmsType == "Course")
+            {
+                var applicationDbContext = _context.Document.Include(c => c.Course).Where(c => c.Course.Id == Id);
+
+              
+                ViewBag.CourseName = _context.Course.Find(Id).Name;
+                ViewBag.CourseId = Id;
+                return View(await applicationDbContext.ToListAsync());
+            }
+            if (LmsType == "Module")
+            {
+                var applicationDbContext = _context.Document.Include(c => c.Module).Where(c => c.Module.Id == Id);
+
+               
+                ViewBag.ModuleName = _context.Module.Find(Id).Name;
+                ViewBag.ModuleId = Id;
+                return View(await applicationDbContext.ToListAsync());
+
+            }
+            if (LmsType == "LmsActivity")
+            {
+                var applicationDbContext = _context.Document.Include(c => c.Module).Where(c => c.Module.Id == Id);
+
+              
+                ViewBag.LmsActivityName = _context.LmsActivity.Find(Id).Name;
+                ViewBag.LmsActivityId = Id;
+                return View(await applicationDbContext.ToListAsync());
+
+            }
+            else
+            return View(await _context.Document.ToListAsync());  //Should not happen
+
+        }
+
+
+
+        public async Task<IActionResult> CreateLmsDocument(int Id)
+        {
+
+
+            var course = _context.Course.Find(Id);
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var userId = await _userManager.GetUserIdAsync(user);
+
+            Document model = new Document
+            {
+                CourseId = Id,
+                ApplicationUser = user,
+                ApplicationUserId = userId,
+                Course = course,
+                CreatedDate = DateTime.Today
+            };
+
+            return View(model);
+
         }
 
 

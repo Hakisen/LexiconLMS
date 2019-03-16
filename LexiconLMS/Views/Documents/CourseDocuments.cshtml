@@ -8,18 +8,21 @@
 @{
     ViewData["Title"] = "CourseDocuments";
 }
-<h1>Kurs dokument</h1>
 
+<h1>Kurs dokument</h1>
+@if (ViewBag.CourseId != 0) { 
 
 
 
 <h3>i kurs @ViewBag.CourseName</h3>
+
 <div class="text-success">
     @TempData["SuccessText"]
 </div>
 <p>
     <a asp-action="CreateCourseDocument1" asp-route-courseId="@ViewBag.CourseId">Skapa nytt kursdokument</a>
 </p>
+}
 <table class="table">
     <thead>
         <tr>
