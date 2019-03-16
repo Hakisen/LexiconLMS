@@ -29,33 +29,35 @@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-          
+
             <th>
                 @Html.DisplayNameFor(model => model.ApplicationUser.Name)
             </th>
-            
+            <th>@Html.DisplayNameFor(model => model.OwnerFileName)</th>
+            <th>@Html.DisplayNameFor(model => model.Length)</th>
             <th>@Html.DisplayNameFor(model => model.Course.Name)</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
-                </td>
-                
-                <td>
-                    @Html.DisplayFor(modelItem => item.Course.Name)
-                </td>
-                @if (User.IsInRole("Teacher"))
-                {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
+            </td>
+            <th>@Html.DisplayFor(modelItem => item.OwnerFileName)</th>
+            <th>@Html.DisplayFor(modelItem => item.Length)</th>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course.Name)
+            </td>
+            @if (User.IsInRole("Teacher"))
+            {
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Ändra</a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
@@ -63,16 +65,16 @@
                     @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
                     <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-pill badge-danger">Radera</a>
                 </td>
-                }
-                @if (User.IsInRole("Student"))
-                {
+            }
+            @if (User.IsInRole("Student"))
+            {
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detaljer</a>
                     <a asp-action="GetDocument" asp-route-id="@item.Id" class="badge badge-primary">Ladda ned</a>
                     @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
                 </td>
-                }
-            </tr>
+            }
+        </tr>
         }
     </tbody>
 </table>
