@@ -11,44 +11,40 @@
 @{var test = Model.ApplicationUser.FirstOrDefault();}
 @if (test != null)
 {
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(modelitem => test.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(modelitem => test.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(modelitem => test.PhoneNumber)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-
-
-        @foreach (var student in Model.ApplicationUser.Where(m => m.CourseId == Model.Id).OrderBy(s => s.Name))
-        {
+    <table class="table">
+        <thead>
             <tr>
-
-                <td>
-                    @Html.DisplayFor(modelitem => student.Name)
-
-                </td>
-                <td>
-                    @Html.DisplayFor(modelitem => student.Email)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelitem => student.PhoneNumber)
-                </td>
+                <th>
+                    @Html.DisplayNameFor(modelitem => test.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(modelitem => test.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(modelitem => test.PhoneNumber)
+                </th>
             </tr>
-        }
-
-
-    </tbody>
-</table class="table">
+        </thead>
+        <tbody>
+            @foreach (var student in Model.ApplicationUser.Where(m => m.CourseId == Model.Id).OrderBy(s => s.Name))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelitem => student.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelitem => student.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelitem => student.PhoneNumber)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 else
 { <h1>Inga elever på denna kurs</h1>}
+<div>
+    <a asp-action="Index" class="badge badge-light">Tillbaka till kurslistan</a>
+</div>

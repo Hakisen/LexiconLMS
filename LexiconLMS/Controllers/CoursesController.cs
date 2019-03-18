@@ -31,7 +31,7 @@ namespace LexiconLMS.Controllers
         {
             return View(await _context.Course.Include(a => a.ApplicationUser).ToListAsync());
         }
-        // GET: Students per course
+        // GET: Students per course in Teacher View
         [Authorize(Roles = "Teacher, Student")]
         public IActionResult StudentsPerCourse(int? id)
         {
@@ -39,30 +39,47 @@ namespace LexiconLMS.Controllers
                  FirstOrDefault(u => u.Id == id);
             return View(studentspercourse);
         }
-        // GET: Modules per course
+
+        [Authorize(Roles = "teacher, Student")]
+        public async Task<IActionResult> StudentHomePage()
+        {
+            var studentName = User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(studentName);
+            ViewBag.StudentName = user.Name;
+            var courseId = (int)user.CourseId;
+
+            var modules = _context.Module.Include(c => c.Course).Where(c => c.CourseId == courseId).Select(m => m.StartDate <= DateTime.Now && m.EndDate >= DateTime.Now);
+
+            return View(modules);
+        }
+
+
+
+
+
+        // GET: Modules per course for Student View
         [Authorize(Roles = "Teacher, Student")]
         public async Task<IActionResult> StudentModules(int? id)
         {
-            var student = new StudentModulesViewModel();
+            var student = new StudentViewModel();
             var studentName = User.Identity.Name;
             var user = await _userManager.FindByNameAsync(studentName);
             var courseId = (int)user.CourseId;
 
-
             student.StudentCourse = await _context.Course.Include(a => a.ApplicationUser).Include(u => u.Modules).FirstOrDefaultAsync(u => u.Id == courseId);
             student.Student = user;
-
 
             return View(student);
         }
 
-        //Get:Course students and student and student
+        //Get:Course students. Lists all students in a course for Student View
         [Authorize(Roles = "Teacher, Student")]
         public async Task<IActionResult> Student()
         {
             var student = new StudentViewModel();
             var studentName = User.Identity.Name;
             var user = await _userManager.FindByNameAsync(studentName);
+            ViewBag.StudentName = user.Name;
             var courseId = (int)user.CourseId;
 
 
