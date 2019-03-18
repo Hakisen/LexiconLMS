@@ -11,12 +11,7 @@
 <table class="table">
     <thead>
         <tr>
-           
-            
-
-
-
-            <th>
+             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Name)</a>
             </th>
             <th>
@@ -27,7 +22,9 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["CourseSortParm"]">@Html.DisplayNameFor(model => model.Course.Name)</a>
             
             </th>
-
+            <th>
+                <p style="color:blue;"font-size:30%;">Användare</p>
+            </th>
 
         </tr>
     </thead>
@@ -56,9 +53,10 @@
                     </td>
 
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Ändra</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Detaljer</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Radera</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a>
+                        
                     </td>
                   
                 </tr>
