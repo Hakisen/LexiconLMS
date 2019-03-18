@@ -78,6 +78,7 @@ namespace LexiconLMS
 
                     context.Course.RemoveRange(context.Course);
                     context.Module.RemoveRange(context.Module);
+                    context.LmsActivity.RemoveRange(context.LmsActivity);
 
 
                 }
@@ -103,7 +104,7 @@ namespace LexiconLMS
                         {
                             Name = name,
                             StartDate = DateTime.Today,
-                            EndDate = DateTime.Today.AddDays(7),
+                            EndDate = DateTime.Today.AddDays(25),
                             Description = Faker.Lorem.Sentence(3),
                         };
                         courses.Add(course);
@@ -116,7 +117,7 @@ namespace LexiconLMS
 
                 
 
-                    for (int i = 20; i < 40; i++)
+                    for (int i = 1; i < 20; i++)
                     {
 
 
@@ -128,7 +129,7 @@ namespace LexiconLMS
                         {
                             Name = $"module{i}",
                             StartDate = DateTime.Today,
-                            EndDate = DateTime.Today.AddDays(7),
+                            EndDate = DateTime.Today.AddDays(10),
                             Description = Faker.Lorem.Sentence(3),
 
                             CourseId = courses[random].Id
@@ -137,7 +138,68 @@ namespace LexiconLMS
                     }
                     context.Module.AddRange(modules);
                     context.SaveChanges();
-               
+
+                var activityTypes = new List<ActivityType>();
+                var activityTypeNames = new[] { "E-learningpass", "Föreläsning", "Övningsuppgift" };
+
+
+                foreach (var name in activityTypeNames)
+                {
+
+
+
+
+                    var activityType = new ActivityType
+                    {
+                        Type = name,
+                      
+                    };
+                    activityTypes.Add(activityType);
+                }
+
+                context.ActivityType.AddRange(activityTypes);
+                context.SaveChanges();
+
+
+
+                var activities = new List<LmsActivity>();
+
+
+
+                for (int i = 1; i < 50; i++)
+                {
+
+
+
+
+
+                    var random = Faker.RandomNumber.Next(14);
+                    var random1= Faker.RandomNumber.Next(3);
+                    var activity = new LmsActivity
+                    {
+                        Name = $"activity{i}",
+                        StartDate = DateTime.Today,
+                        EndDate = DateTime.Today.AddDays(4),
+                        Description = Faker.Lorem.Sentence(3),
+
+                        ModuleId = modules[random].Id,
+                       ActivityTypeId = activityTypes[random1].Id
+
+                    };
+                    activities.Add(activity);
+                }
+                context.LmsActivity.AddRange(activities);
+                context.SaveChanges();
+
+
+
+
+
+
+
+
+
+
 
 
                 if (roleManager == null || userManager == null)

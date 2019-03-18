@@ -62,9 +62,9 @@
             @if (User.IsInRole("Teacher"))
             {
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Ändra</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a>
                     <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
-                    <a asp-action="GetDocument" asp-route-id="@item.Id" class="badge badge-primary">Ladda ned</a>
+                    <a asp-action="GetDocument" asp-route-id="@item.Id" class="badge badge-warning">Ladda ned</a>
                     @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
                     <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-pill badge-danger">Radera</a>
                 </td>
@@ -72,8 +72,8 @@
             @if (User.IsInRole("Student"))
             {
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detaljer</a>
-                    <a asp-action="GetDocument" asp-route-id="@item.Id" class="badge badge-primary">Ladda ned</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="badge btn-primary">Detaljer</a>
+                    <a asp-action="GetDocument" asp-route-id="@item.Id" class="badge badge-warning">Ladda ned</a>
                     @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
                 </td>
             }

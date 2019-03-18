@@ -54,9 +54,10 @@
                 @if (User.IsInRole("Teacher"))
                 {
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a> 
-                    <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a> 
-                    <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@item.Id" class="badge badge-info">Aktiviteter</a> 
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
+                    <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@item.Id" class="badge badge-info">Aktiviteter</a>
+                    <a asp-controller="Documents" asp-action="ModuleDocuments" asp-route-moduleId="@item.Id" class="badge badge-warning">Dokument</a>
                     <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a>
                 </td>
                 }
@@ -64,8 +65,9 @@
                 {
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
-                    <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@item.Id" class="badge badge-info">Aktiviteter</a>
-                    @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
+                    <a asp-controller="Documents" asp-action="ModuleDocuments" asp-route-moduleId="@item.Id" class="badge badge-warning">Dokument</a> <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@item.Id" class="badge badge-info">Aktiviteter</a>
+                                                                                                                                                      <a asp-controller="Documents" asp-action="ModuleDocuments" asp-route-moduleId="@item.Id" class="badge badge-warning">Dokument</a>
+    @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
                 </td>
                 }
             </tr>
