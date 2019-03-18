@@ -46,6 +46,16 @@ namespace LexiconLMS.Utility
             string newMap = applicationPath + @"\LMSDocument\" + course + @"\Activity";
             return newMap;
         }
+
+        public static bool isDateInRange(DateTime first, DateTime last, DateTime actual)
+        {
+            if (actual > first && actual < last)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
     }
     
 }
