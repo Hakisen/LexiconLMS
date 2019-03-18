@@ -296,16 +296,15 @@ namespace LexiconLMS.Controllers
                       + Path.GetExtension(fileName);
         }
 
-        public async Task<IActionResult> CourseDocuments(int? courseId,String LmsType)
+        public async Task<IActionResult> CourseDocuments(int? courseId)
         {
             var applicationDbContext = _context.Document.Include(c => c.Course).Where(c => c.Course.Id == courseId);
-            if (LmsType == "Course")
-            {
+          
                
                 //return View("Index", await applicationDbContext.ToListAsync());
                 ViewBag.CourseName = _context.Course.Find(courseId).Name;
                 ViewBag.CourseId = courseId;
-            }
+         
                 return View(await applicationDbContext.ToListAsync());
             
         }
