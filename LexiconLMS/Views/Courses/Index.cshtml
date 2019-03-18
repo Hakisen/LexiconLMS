@@ -57,7 +57,7 @@
                         <a asp-controller="Modules" asp-action="CourseModules" asp-route-courseId="@item.Id" class="badge badge-info">Moduler</a> 
                         <a asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@item.Id" class="badge badge-secondary">Lägg till elev</a>
                         <a asp-action="StudentsPerCourse" asp-route-id="@item.Id" class="badge badge-dark">Lista Elever</a>
-                        <a asp-controller="Documents" asp-action="CourseDocuments" asp-route-courseId="@item.Id" asp-route-LmsType="Course"    class="badge badge-light">Dokument</a> |
+                        <a asp-controller="Documents" asp-action="LmsDocuments" asp-route-Id="@item.Id" asp-route-LmsType="Course"    class="badge badge-light">Dokument</a> |
                     </td>
                 </tr>
             }

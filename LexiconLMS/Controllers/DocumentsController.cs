@@ -442,7 +442,49 @@ namespace LexiconLMS.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateLmsDocument1([Bind("MyUploadedFile,Title,DueDate,CreatedDate,Path,MimeType,Id,CourseId,ModuleId,LmsActivityId,ApplicationUserId,OwnerFileName")]Document document)
+        {
 
+
+
+
+            // do other validations on your model as needed
+            if (document.MyUploadedFile.FileName != null)
+            {
+
+                var uniqueFileName = GetUniqueFileName(document.MyUploadedFile.FileName);
+                var documentroot = Path.Combine(hostingEnvironment.WebRootPath, "documents");
+
+                var fullpath = Path.Combine(documentroot, uniqueFileName);
+
+
+                document.MyUploadedFile.CopyTo(new FileStream(fullpath, FileMode.Create));
+
+             
+
+                var course = await _context.Course.FindAsync(document.CourseId);
+                document.OwnerFileName = document.MyUploadedFile.FileName;
+                document.StoredFilePath = uniqueFileName;
+                document.ContentType = document.MyUploadedFile.ContentType;
+                document.Length = document.MyUploadedFile.Length;
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(document);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessText"] = $"Dokument {document.Title} skapades Ok!";
+                    return RedirectToAction(nameof(LmsDocuments), new { document.CourseId });
+                }
+
+                TempData["FailText"] = $"Något gick fel vid skapandet av dokumentet. Försök igen";
+
+                document.Course = course;
+            }
+
+
+            return RedirectToAction("CourseDocuments", "Documents");
+        }
 
 
 
