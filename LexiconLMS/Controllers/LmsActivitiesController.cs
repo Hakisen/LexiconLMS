@@ -36,9 +36,13 @@ namespace LexiconLMS.Controllers
             //return View("Index", await applicationDbContext.ToListAsync());
 
             var module = _context.Module.Find(moduleId);
+
             ViewBag.ModuleName = module.Name;
             ViewBag.CourseId = module.CourseId;            
             ViewBag.ModuleId = moduleId;
+
+            //var course = _context.Course.Find(module.CourseId);
+            //course.Name
 
             return View(await applicationDbContext.ToListAsync());
         }
