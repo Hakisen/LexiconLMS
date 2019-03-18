@@ -17,7 +17,7 @@ namespace LexiconLMS.Utility
           string applicationPath = Directory.GetCurrentDirectory();
            // string path =@"C:\Users\LexTottedq\Source\Repos\Hakisen\LexiconLMS\LexiconLMS\LMSDocument\";
            // Root folder + LMSDocument folder + önskad foldernamn
-            string newMap = applicationPath + @"\LMSDocument\"+name;
+            string newMap = applicationPath + @"\LMSDocument\"+"Kurs"+name;
 
             DirectoryInfo di = new DirectoryInfo(newMap);
            // skapar kursfoldern           
@@ -27,6 +27,34 @@ namespace LexiconLMS.Utility
             DirectoryInfo s = d2.CreateSubdirectory("Student");
             DirectoryInfo s2 = d2.CreateSubdirectory("Module");
             DirectoryInfo s3 = d2.CreateSubdirectory("Activity");
+        }
+        public static string GetStudentDirectoryString(string course)
+        {
+            string applicationPath = Directory.GetCurrentDirectory();
+            string newMap = applicationPath + @"\LMSDocument\" + course +@"\Student";
+            return newMap;
+        }
+        public static string GetModuleDirectoryString(string course)
+        {
+            string applicationPath = Directory.GetCurrentDirectory();
+            string newMap = applicationPath + @"\LMSDocument\" + course + @"\Module";
+            return newMap;
+        }
+        public static string GetActivityDirectoryString(string course)
+        {
+            string applicationPath = Directory.GetCurrentDirectory();
+            string newMap = applicationPath + @"\LMSDocument\" + course + @"\Activity";
+            return newMap;
+        }
+
+        public static bool isDateInRange(DateTime first, DateTime last, DateTime actual)
+        {
+            if (actual > first && actual < last)
+            {
+                return true;
+            }
+            else
+                return false;
         }
     }
     

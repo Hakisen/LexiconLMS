@@ -8,6 +8,8 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,6 +36,7 @@
   <ItemGroup>
     <Folder Include="LMSDocument\" />
     <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\documents\" />
   </ItemGroup>
 
 </Project>
