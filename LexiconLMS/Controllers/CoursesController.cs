@@ -9,6 +9,7 @@ using LexiconLMS.Data;
 using LexiconLMS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using LexiconLMS.Utility;
 
 namespace LexiconLMS.Controllers
 {
@@ -112,6 +113,9 @@ namespace LexiconLMS.Controllers
                     _context.Add(course);
                     await _context.SaveChangesAsync();
                     TempData["SuccessText"] = $"Kurs: {course.Name} skapades Ok!";
+                    // Skapar mapp i filsystemet
+                    DirectoryHandler.CreateNewCourseFolders(course.Id.ToString());
+                    
                     return RedirectToAction(nameof(Index));
                 }
                 TempData["FailText"] = "Något gick fel vid skapandet av modulen. Försök igen";
