@@ -64,10 +64,10 @@ namespace LexiconLMS.Controllers
         // GET: Documents/Create
         public IActionResult Create()
         {
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Id");
-            ViewData["LmsActivityId"] = new SelectList(_context.LmsActivity, "Id", "Id");
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id");
+            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Name");
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name");
+            ViewData["LmsActivityId"] = new SelectList(_context.LmsActivity, "Id", "Name");
+            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name");
             return View();
         }
 
@@ -84,10 +84,10 @@ namespace LexiconLMS.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", document.ApplicationUserId);
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Id", document.CourseId);
-            ViewData["LmsActivityId"] = new SelectList(_context.LmsActivity, "Id", "Id", document.LmsActivityId);
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", document.ModuleId);
+            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Name", document.ApplicationUserId);
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", document.CourseId);
+            ViewData["LmsActivityId"] = new SelectList(_context.LmsActivity, "Id", "Name", document.LmsActivityId);
+            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", document.ModuleId);
             return View(document);
         }
 
@@ -188,6 +188,8 @@ namespace LexiconLMS.Controllers
             return _context.Document.Any(e => e.Id == id);
         }
 
+
+
         // POST: Modules/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -214,6 +216,7 @@ namespace LexiconLMS.Controllers
             return View(document);
         }
 
+        //Get
         [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> CreateCourseDocument(int courseId)
         {

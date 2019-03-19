@@ -40,22 +40,45 @@ namespace LexiconLMS.Controllers
             return View(studentspercourse);
         }
 
+        //New landing page for logged-in students
         [Authorize(Roles = "teacher, Student")]
         public async Task<IActionResult> StudentHomePage()
         {
             var studentName = User.Identity.Name;
             var user = await _userManager.FindByNameAsync(studentName);
-            ViewBag.StudentName = user.Name;
+
+            ApplicationUser appUserStudent = user;
+            ViewBag.AppUserStudentName = appUserStudent.Name; //ApplicationUser-Name
+
+            ViewBag.StudentName = user.Name; //IdentityUser-Name = e-mail
             var courseId = (int)user.CourseId;
 
-            var modules = _context.Module.Include(c => c.Course).Where(c => c.CourseId == courseId).Select(m => m.StartDate <= DateTime.Now && m.EndDate >= DateTime.Now);
+            var course = await _context.Course.FindAsync(courseId);
+            ViewBag.CourseName = course.Name;
 
-            return View(modules);
+
+            //Fungerar, ger en Ienumerable av Modules
+            var modules = _context.Module.Include(c => c.Course).Where(c => c.Course.Id == courseId).Where(m => m.StartDate.Date <= DateTime.Now.Date && m.EndDate.Date >= DateTime.Now.Date);
+
+            var modules2 = _context.Module.Include(c => c.Course).Include(a => a.LmsActivities).Include(d => d.Documents).Where(c => c.Course.Id == courseId).Where(m => m.StartDate.Date <= DateTime.Now.Date && m.EndDate.Date >= DateTime.Now.Date);
+            
+            //Select ger en lista av <bool>???????
+            //.Select(m => m.StartDate.Date <= DateTime.Now.Date && m.EndDate.Date >= DateTime.Now.Date);
+
+            //var test = module.Where(m => m.StartDate.Date <= DateTime.Now.Date && m.EndDate >= DateTime.Now.Date);
+
+            //Fungerar, ger första (enda) modulen
+            var module = modules2.FirstOrDefault();
+            var moduleId = module.Id;
+            ViewBag.ModuleName = module.Name;
+            //module.LmsActivities
+
+            var moduleActivities = _context.LmsActivity.Include(a => a.ActivityType).Include(m => m.Module).Include(m => m.Module.Documents) .Where(m => m.Module.Id == moduleId);
+
+            return View(moduleActivities);
         }
 
-
-
-
+               
 
         // GET: Modules per course for Student View
         [Authorize(Roles = "Teacher, Student")]
@@ -175,27 +198,37 @@ namespace LexiconLMS.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (course.StartDate.Date <= course.EndDate.Date)
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    _context.Update(course);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CourseExists(course.Id))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(course);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!CourseExists(course.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    TempData["SuccessText"] = $"Kurs: {course.Name} uppdaterad Ok!";
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                TempData["FailText"] = $"Något gick fel. Kurs: {course.Name} uppdaterades inte!";
+                return View(course);
             }
-            return View(course);
+            else
+            {
+                TempData["FailText"] = "Startdatum kan inte ligga senare än slutdatum!";
+                return View(course);
+            }
         }
 
         // GET: Courses/Delete/5
@@ -226,6 +259,7 @@ namespace LexiconLMS.Controllers
             var course = await _context.Course.FindAsync(id);
             _context.Course.Remove(course);
             await _context.SaveChangesAsync();
+            TempData["SuccessText"] = $"Kurs: {course.Name} raderad Ok!";
             return RedirectToAction(nameof(Index));
         }
 

@@ -104,7 +104,7 @@ namespace LexiconLMS
                         {
                             Name = name,
                             StartDate = DateTime.Today,
-                            EndDate = DateTime.Today.AddDays(25),
+                            EndDate = DateTime.Today.AddDays(90),
                             Description = Faker.Lorem.Sentence(3),
                         };
                         courses.Add(course);
