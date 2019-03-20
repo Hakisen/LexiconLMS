@@ -4,8 +4,7 @@
     ViewData["Title"] = "ModuleActivities";
 }
 
-<h2>Modulaktiviteter</h2>
-<h3>i modul @ViewBag.ModuleName</h3>
+<h3>Modulaktiviteter för modul @ViewBag.ModuleName</h3>
 
 <div class="text-success blink_me">
     @TempData["SuccessText"]
@@ -13,8 +12,8 @@
 <p>
     <a asp-action="CreateModuleActivity" asp-route-moduleId="@ViewBag.ModuleId">Skapa ny modulaktivitet</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-striped">
+    <thead  class="table-dark">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.EndDate)

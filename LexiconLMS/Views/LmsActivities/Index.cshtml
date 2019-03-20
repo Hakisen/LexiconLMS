@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<LexiconLMS.Models.LmsActivity>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Skapa ny aktivitet";
 }
 
-<h1>Index</h1>
+@*<h1>Index</h1>*@
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Skapa ny aktivitet</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-striped">
+    <thead class="table-dark">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.EndDate)
@@ -55,9 +55,9 @@
                 @Html.DisplayFor(modelItem => item.Module.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Ändra</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Detaljer</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Radera</a>
             </td>
         </tr>
 }

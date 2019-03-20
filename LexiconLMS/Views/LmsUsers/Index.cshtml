@@ -8,22 +8,20 @@
 
 <h1>Användare</h1>
 
-<table class="table">
-    <thead>
+<table class="table table-striped">
+    <thead  class="table-dark">
         <tr>
              <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Name)</a>
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["EmailSortParm"]">@Html.DisplayNameFor(model => model.Email)</a>
-              
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["CourseSortParm"]">@Html.DisplayNameFor(model => model.Course.Name)</a>
-            
             </th>
-            <th>
-                <p style="color:blue;"font-size:30%;">Användare</p>
+            <th>  
+                <p style="color:#007bff;" font-size:30%;">Användare</p>
             </th>
 
         </tr>

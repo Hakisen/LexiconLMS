@@ -6,7 +6,7 @@
 }
 
 @*<h2>Create Course Module</h2> <h3>in Course: @ViewBag.CourseName</h3>*@
-<h2>Skapa kursmodul</h2> <h3>i kurs: @Model.Course.Name, startdatum: @Model.Course.StartDate.ToShortDateString(), slutdatum: @Model.Course.EndDate.Date.ToShortDateString()</h3>
+<h3>Skapa kursmodul för kurs: @Model.Course.Name, startdatum: @Model.Course.StartDate.ToShortDateString(), slutdatum: @Model.Course.EndDate.Date.ToShortDateString()</h3>
 
 <div class="text-danger blink_me">
     @TempData["FailText"]
@@ -15,7 +15,7 @@
     @TempData["SuccessText"]
 </div>
 
-<h4>Modul</h4>
+@*<h4>Modul</h4>*@
 <hr />
 <div class="row">
     <div class="col-md-4">

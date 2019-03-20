@@ -1,11 +1,10 @@
 ﻿@model LexiconLMS.Models.LmsActivity
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Ändra";
 }
 
-<h2>Ändra aktivitet</h2>
-<h3> i modul: @Model.Module.Name, startdatum: @Model.Module.StartDate.ToShortDateString(), slutdatum: @Model.Module.EndDate.ToShortDateString()</h3>
+<h3>Ändra aktivitet för modul: @Model.Module.Name, startdatum: @Model.Module.StartDate.ToShortDateString(), slutdatum: @Model.Module.EndDate.ToShortDateString()</h3>
 
 <div class="text-danger blink_me">
     @TempData["FailText"]
@@ -14,7 +13,7 @@
     @TempData["SuccessText"]
 </div>*@
 
-<h4>Aktivitet</h4>
+@*<h4>Aktivitet</h4>*@
 <hr />
 <div class="row">
     <div class="col-md-4">
