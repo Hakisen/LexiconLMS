@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190320083516_initial5.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Views\LmsUsers\CreateCourseStudent.cshtml" />
   </ItemGroup>
 

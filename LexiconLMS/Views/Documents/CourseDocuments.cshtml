@@ -1,8 +1,4 @@
 ﻿
-
-
-
-
 @model IEnumerable<LexiconLMS.Models.Document>
 
 @{
@@ -20,7 +16,7 @@
     @TempData["SuccessText"]
 </div>
 <p>
-    <a asp-action="CreateCourseDocument1" asp-route-courseId="@ViewBag.CourseId">Skapa nytt kursdokument</a>
+    <a asp-action="CreateCourseDocument1" asp-route-courseId="@ViewBag.CourseId" class="btn btn-outline-primary">Skapa nytt kursdokument</a>
 </p>
 }
 <table class="table">
