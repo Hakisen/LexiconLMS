@@ -10,7 +10,10 @@
     @TempData["SuccessText"]
 </div>
 <p>
-    <a asp-action="CreateModuleActivity" asp-route-moduleId="@ViewBag.ModuleId">Skapa ny modulaktivitet</a>
+    @if (User.IsInRole("Teacher"))
+    {
+        <a asp-action="CreateModuleActivity" asp-route-moduleId="@ViewBag.ModuleId" class="btn btn-outline-primary">Skapa ny modulaktivitet</a>
+    }
 </p>
 <table class="table table-striped">
     <thead  class="table-dark">
@@ -79,6 +82,14 @@
     </tbody>
 </table>
 <div>
-    <a asp-controller="Modules" asp-action="CourseModules" asp-route-courseId="@ViewBag.CourseId" class="btn btn-primary">Tillbaka till kursmoduler</a>
+    @if (User.IsInRole("Teacher"))
+    {
+        <a asp-controller="Modules" asp-action="CourseModules" asp-route-courseId="@ViewBag.CourseId" class="btn btn-primary">Tillbaka till kursmoduler</a>
+    }
+    @if (User.IsInRole("Student"))
+    {
+        <a asp-controller="Course" asp-action="StudentModules" class="badge badge-primary">Tillbaka till kursmoduler</a>
+    }
+
 </div>
 

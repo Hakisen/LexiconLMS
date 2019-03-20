@@ -9,7 +9,10 @@
     @TempData["SuccessText"]
 </div>
 <p>
-    <a asp-action="CreateCourseModule" asp-route-courseId="@ViewBag.CourseId">Skapa ny kursmodul</a>
+    @if (User.IsInRole("Teacher"))
+    {
+        <a asp-action="CreateCourseModule" asp-route-courseId="@ViewBag.CourseId" class="btn btn-outline-primary">Skapa ny kursmodul</a>
+    }
 </p>
 <table class="table table-striped">
     <thead class="table-dark">
@@ -53,22 +56,23 @@
                 </td>
                 @if (User.IsInRole("Teacher"))
                 {
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
-                    <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@item.Id" class="badge badge-info">Aktiviteter</a>
-                    <a asp-controller="Documents" asp-action="ModuleDocuments" asp-route-moduleId="@item.Id" class="badge badge-warning">Dokument</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a>
-                </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
+                        <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@item.Id" class="badge badge-info">Aktiviteter</a>
+                        <a asp-controller="Documents" asp-action="ModuleDocuments" asp-route-moduleId="@item.Id" class="badge badge-warning">Dokument</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a>
+                    </td>
                 }
                 @if (User.IsInRole("Student"))
                 {
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
-                    <a asp-controller="Documents" asp-action="ModuleDocuments" asp-route-moduleId="@item.Id" class="badge badge-warning">Dokument</a> <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@item.Id" class="badge badge-info">Aktiviteter</a>
-                                                                                                                                                      <a asp-controller="Documents" asp-action="ModuleDocuments" asp-route-moduleId="@item.Id" class="badge badge-warning">Dokument</a>
-    @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
-                </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
+                        @*<a asp-controller="Documents" asp-action="ModuleDocuments" asp-route-moduleId="@item.Id" class="badge badge-warning">Dokument</a>*@ 
+                        <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@item.Id" class="badge badge-info">Aktiviteter</a>
+                        <a asp-controller="Documents" asp-action="ModuleDocuments" asp-route-moduleId="@item.Id" class="badge badge-warning">Dokument</a>
+                        @*<a asp-controller="LMSActivities" asp-action="ModulesActivities" asp-route-moduleId="@item.Id">Activities</a> | Activities controller*@
+                    </td>
                 }
             </tr>
         }
@@ -77,10 +81,10 @@
 <div>
     @if (User.IsInRole("Teacher"))
     {
-        <a asp-controller="Courses" asp-action="Index" class="badge badge-light">Tillbaka till kurser</a>
+        <a asp-controller="Courses" asp-action="Index" class="badge badge-primary">Tillbaka till kurser</a>
     }
     @if (User.IsInRole("Student"))
     {
-        <a asp-controller="Course" asp-action="StudentModules" class="badge badge-light">Tillbaka till kursmoduler</a>
+        <a asp-controller="Course" asp-action="StudentModules" class="badge badge-primary">Tillbaka till kursmoduler</a>
     }
 </div>

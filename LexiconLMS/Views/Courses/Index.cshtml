@@ -14,7 +14,7 @@
 
 
 <table class="table table-striped">
-    <thead>
+    <thead class="table-dark">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.StartDate)
@@ -62,7 +62,7 @@
                 <tr>
                     <td colspan="4">
                         <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a> 
-                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Mer info</a> 
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a> 
                         <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a> 
                         <a asp-controller="Modules" asp-action="CourseModules" asp-route-courseId="@item.Id" class="badge badge-info">Moduler</a>
                         <a asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@item.Id" class="badge badge-secondary">Lägg till elev</a>
