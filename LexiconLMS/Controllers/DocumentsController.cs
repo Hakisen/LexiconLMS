@@ -512,6 +512,9 @@ namespace LexiconLMS.Controllers
                 //to do : Save uniqueFileName  to your db table   
 
                 var module = await _context.Module.FindAsync(document.ModuleId);
+                //var course = await _context.Course.FindAsync(module.CourseId);
+                
+
                 document.OwnerFileName = document.MyUploadedFile.FileName;
                 document.StoredFilePath = uniqueFileName;
                 document.ContentType = document.MyUploadedFile.ContentType;
@@ -521,6 +524,7 @@ namespace LexiconLMS.Controllers
                 {
                     _context.Add(document);
                     await _context.SaveChangesAsync();
+                    //ViewBag.CourseName = course.Name;
                     TempData["SuccessText"] = $"Modul: {document.Title} skapades Ok!";
                     return RedirectToAction(nameof(ModuleDocuments), new { document.ModuleId });
                 }
@@ -564,10 +568,14 @@ namespace LexiconLMS.Controllers
         {
             var applicationDbContext = _context.Document.Include(c => c.Module).Where(c => c.Module.Id == moduleId);
 
-
+            //var course = _context.Course.Find()
             //return View("Index", await applicationDbContext.ToListAsync());
-            ViewBag.ModuleName = _context.Module.Find(moduleId).Name;
+            var module = _context.Module.Find(moduleId);
+            //ViewBag.ModuleName = _context.Module.Find(moduleId).Name;
+            ViewBag.ModuleName = module.Name;
             ViewBag.ModuleId = moduleId;
+            var course = _context.Course.Find(module.CourseId);
+            ViewBag.CourseName = course.Name;
 
             return View(await applicationDbContext.ToListAsync());
 

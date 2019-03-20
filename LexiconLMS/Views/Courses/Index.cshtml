@@ -4,16 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Kurser</h2>
+<h3>Kurser</h3>
 <div class="text-success blink_me">
     @TempData["SuccessText"]
 </div>
 <p>
-    <a asp-action="Create">Skapa ny kurs</a>
+    <a asp-action="Create" class="btn btn-outline-primary">Skapa ny kurs</a>
 </p>
 
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>

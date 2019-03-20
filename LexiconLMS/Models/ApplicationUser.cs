@@ -11,9 +11,12 @@ namespace LexiconLMS.Models
     {
         [Display(Name = "Namn")]
         public string Name { get; set; }
+
         //public string TelNr { get; set; }
         [Display(Name = "Kurs")]
         public Course Course { get; set; }
+
+        [Display(Name = "KursId")]
         public int? CourseId { get; set; }
         public ICollection<Document> Documents { get; set; }
     }

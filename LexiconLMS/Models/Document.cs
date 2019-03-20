@@ -10,30 +10,40 @@ namespace LexiconLMS.Models
 {
     public class Document
     {
+        public int Id { get; set; }  //DokumantId
 
-
+        [Display(Name = "Titel")]
         public string Title { get; set; }
+
+        [Display(Name = "Beskrivning")]
         public string Description { get; set; }
+
+        [Display(Name = "Filnamn")]
         public string OwnerFileName { get; set; }
+
+        [Display(Name = "Filsökväg")]
         public string StoredFilePath { get; set; }
+
+        [Display(Name = "Filstorlek")]
         public long Length { get; set; }
+
+        [Display(Name = "Filtyp")]
         public string ContentType { get; set; }
+
         [NotMapped]
         public IFormFile MyUploadedFile { set; get; }
 
-
         [DataType(DataType.Date)]
+        [Display(Name = "Dead-line")]
         public DateTime DueDate { get; set; }
 
 
         [DataType(DataType.Date)]
         [Display(Name = "Skapad datum")]
         public System.DateTime CreatedDate { get; set; }
+
         public string Path { get; set; }
         public string MimeType { get; set; }
-
-
-        public int Id { get; set; }  //DokumantId
 
         public int? CourseId { get; set; } //FK
         public Course Course { get; set; }
@@ -43,6 +53,5 @@ namespace LexiconLMS.Models
         public LmsActivity LmsActivity { get; set; }
         public string ApplicationUserId { get; set; } //FK
         public ApplicationUser ApplicationUser  { get; set; }
-
     }
 }

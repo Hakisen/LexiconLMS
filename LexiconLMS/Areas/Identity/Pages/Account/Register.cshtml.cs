@@ -84,17 +84,26 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
 
         }
 
-        public void OnGet(int CourseId=0,string returnUrl = null)
+        public PageResult OnGet(int CourseId = 0, string returnUrl = null)
 
         {
             _courseId = CourseId;
+            Input = new InputModel();
             ViewData["RoleName"] = new SelectList(_roleManager.Roles, "Name", "Name");
 
             ViewData["CourseIdList"] = new SelectList(_context.Course, "Id", "Name");
             ViewData["CourseId"] = _courseId;
-
-            //return View();
-            ReturnUrl = returnUrl;
+            if (CourseId != 0)
+            {
+                Input.CourseId = CourseId;
+                Input.Role = "Student";
+            }
+            else
+            { Input.CourseId = CourseId; }
+            
+            return Page();
+            ////return View();
+            //ReturnUrl = returnUrl;
         }
 
         public async Task<IActionResult> OnPostAsync( string returnUrl = null)
