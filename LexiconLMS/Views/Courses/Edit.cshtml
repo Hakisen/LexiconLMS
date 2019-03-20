@@ -4,13 +4,13 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Ändra kurs: @Html.DisplayFor(model => model.Name)</h2>
+<h3>Ändra kurs: @Html.DisplayFor(model => model.Name)</h3>
 
 <div class="text-danger blink_me">
     @TempData["FailText"]
 </div>
 
-<h4>Kurs</h4>
+@*<h4>Kurs</h4>*@
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -38,8 +38,8 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" /> |
-                <a asp-action="Index" class="badge badge-light">Tillbaka till kurslistan</a>
+                <input type="submit" value="Spara" class="btn btn-success" /> |
+                <a asp-action="Index" class="badge badge-primary">Tillbaka till kurslistan</a>
             </div>
         </form>
     </div>
