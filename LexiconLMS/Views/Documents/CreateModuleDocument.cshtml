@@ -1,15 +1,13 @@
-﻿<h1>CreateModuleDocument</h1>
-
-@model LexiconLMS.Models.Document
+﻿@model LexiconLMS.Models.Document
 @{
     ViewData["Title"] = "CreateModuleDocument";
 }
 
-<h1>CreateModuleDocument</h1>
+@*<h1>CreateModuleDocument</h1>*@
 @*<h2>Create Course Document</h2> <h3>in Module: @ViewBag.ModuleName</h3>*@
-<h2>Skapa moduldokument</h2>
-<h3>i modul: @Model.Module.Name</h3>
-<h3>för användare: @Model.ApplicationUser.Name</h3>
+<h3>Skapa dokument i modul: @Model.Module.Name </h3>
+@*<h3>i modul: @Model.Module.Name</h3>
+<h3>för användare: @Model.ApplicationUser.Name</h3>*@
 
 <div class="text-danger">
     @TempData["FailText"]
@@ -18,7 +16,7 @@
     @TempData["SuccessText"]
 </div>
 
-<h4>Document</h4>
+@*<h4>Document</h4>*@
 <hr />
 <div class="row">
     <div class="col-md-4">

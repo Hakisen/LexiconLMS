@@ -4,12 +4,12 @@
 }
 
 
-<h1>CreateCourseDocument</h1>
+@*<h1>CreateCourseDocument</h1>*@
 
 @*<h2>Create Course Document</h2> <h3>in Course: @ViewBag.CourseName</h3>*@
-<h2>Skapa kursdokument</h2>
-<h3>i kurs: @Model.Course.Name</h3>
-<h3>för användare: @Model.ApplicationUser.Name</h3>
+<h3>Skapa dokument i kurs: @Model.Course.Name</h3>
+@*<h3>Kurs: @Model.Course.Name</h3>*@
+@*<h3>för användare: @Model.ApplicationUser.Name</h3>*@
 
 <div class="text-danger">
     @TempData["FailText"]
@@ -18,14 +18,10 @@
     @TempData["SuccessText"]
 </div>
 
-<h4>Document</h4>
+@*<h4>Document</h4>*@
 <hr />
 <div class="row">
     <div class="col-md-4">
-
-    
-
-
         <form asp-action="CreateCourseDocument1" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">

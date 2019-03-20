@@ -9,11 +9,11 @@
 }
 
 
-<h1>CreateLmsActivityDocument</h1>
+@*<h1>CreateLmsActivityDocument</h1>*@
 @*<h2>Create Course Document</h2> <h3>in LmsActivity: @ViewBag.LmsActivityName</h3>*@
-<h2>Skapa aktivitetsdokument</h2>
-<h3>i aktivitet: @Model.LmsActivity.Name</h3>
-<h3>för användare: @Model.ApplicationUser.Name</h3>
+<h3>Skapa dokument i aktivitet: @Model.LmsActivity.Name</h3>
+@*<h3>i aktivitet: @Model.LmsActivity.Name</h3>
+<h3>för användare: @Model.ApplicationUser.Name</h3>*@
 
 <div class="text-danger">
     @TempData["FailText"]
@@ -72,7 +72,7 @@
 </div>
 
 <div>
-    @*<a asp-action="Index">Back to List</a>*@
+    <a asp-action="Index">Back to List</a>
     <a asp-action="LmsActivityDocuments" asp-route-lmsActivityId="@Model.LmsActivityId">Tillbaka till aktivitetsdokument</a>
 </div>
 
