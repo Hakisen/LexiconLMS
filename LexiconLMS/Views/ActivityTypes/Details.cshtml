@@ -1,13 +1,13 @@
 ﻿@model LexiconLMS.Models.ActivityType
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detaljer ";
 }
 
-<h1>Details</h1>
+<h3>Detaljer</h3>
 
 <div>
-    <h4>ActivityType</h4>
+    @*<h4>ActivityType</h4>*@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -19,6 +19,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Ändra</a> |
+    <a asp-action="Index">Tillbaka till listan</a>
 </div>

@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<LexiconLMS.Models.Module>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Moduler";
 }
 
-<h1>Moduler i samtliga kurser</h1>
+<h3>Moduler i samtliga kurser</h3>
 
 <p>
     <a asp-action="Create">Skapa ny modul</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-striped">
+    <thead  class="table-dark">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.StartDate)
