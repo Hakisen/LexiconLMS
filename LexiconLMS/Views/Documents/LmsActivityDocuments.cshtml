@@ -26,8 +26,8 @@
         <a asp-action="CreateLmsActivityDocument" asp-route-lmsActivityId="@ViewBag.LmsActivityId" class="btn btn-outline-primary">Skapa nytt moduldokument</a>
     </p>
 }
-    <table class="table">
-        <thead>
+    <table class="table table-striped">
+        <thead class="table-dark">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Title)

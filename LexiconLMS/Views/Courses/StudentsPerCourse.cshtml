@@ -11,8 +11,8 @@
 @{var test = Model.ApplicationUser.FirstOrDefault();}
 @if (test != null)
 {
-    <table class="table">
-        <thead>
+    <table class="table table-striped">
+        <thead class="table-dark">
             <tr>
                 <th>
                     @Html.DisplayNameFor(modelitem => test.Name)
