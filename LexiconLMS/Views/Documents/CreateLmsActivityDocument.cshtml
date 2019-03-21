@@ -22,7 +22,7 @@
     @TempData["SuccessText"]
 </div>
 
-<h4>Document</h4>
+<h3>Document</h3>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -57,13 +57,13 @@
             </div>
             <div class="form-group">
                 <div class="col-md-10">
-                    <p>Upload one or more files using this form:</p>
+                    <p>Ladda upp en eller flera dokument:</p>
                     <input type="file" name="document.MyUploadedFile" />
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-md-10">
-                    <input type="submit" value="Upload document" />
+                    <input type="submit" value="Ladda upp dokument" />
                 </div>
             </div>
 
@@ -73,7 +73,7 @@
 
 <div>
     <a asp-action="Index">Back to List</a>
-    <a asp-action="LmsActivityDocuments" asp-route-lmsActivityId="@Model.LmsActivityId">Tillbaka till aktivitetsdokument</a>
+    <a asp-action="LmsActivityDocuments" asp-route-lmsActivityId="@Model.LmsActivityId" class="badge badge-primary">Tillbaka till aktivitetsdokument</a>
 </div>
 
 @section Scripts {

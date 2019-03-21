@@ -4,7 +4,8 @@
     ViewData["Title"] = "Radera";
 }
 
-<h3>Radera: Är du säker på att du vill radera?</h3>
+<h3>Radera: OBS! Du får inte radera en aktivitetstyp om det finns aktiviteter med enna aktivitetstyp!</h3>
+<h3>Är du säker på att du vill radera denna aktivitetstyp?</h3>
 <div>
     @*<h4>ActivityType</h4>*@
     <hr />
@@ -20,6 +21,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Radera" class="btn btn-danger" /> |
-        <a asp-action="Index">Tillbaka till listan</a>
+        <a asp-action="Index" class="badge badge-primary">Tillbaka till aktivitetstyplistan</a>
     </form>
 </div>

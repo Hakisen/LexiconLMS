@@ -45,7 +45,7 @@
 <div>
     @if (User.IsInRole("Teacher"))
     {
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success">Ändra</a><a> | </a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="badge badge-success">Ändra</a><a> | </a>
         <a asp-action="CourseModules" asp-route-courseId="@Model.CourseId" class="bagde badge-primary">Tillbaka till kursmoduler</a>
     }
     @if (User.IsInRole("Student"))

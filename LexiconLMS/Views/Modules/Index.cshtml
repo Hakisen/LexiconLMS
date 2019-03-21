@@ -4,6 +4,7 @@
     ViewData["Title"] = "Moduler";
 }
 
+@*DENNA VY ANVÄNDS INTE!*@
 <h3>Moduler i samtliga kurser</h3>
 
 <p>
@@ -50,8 +51,8 @@
                     @Html.DisplayFor(modelItem => item.Course.Name)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Editera</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Detaljer</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Editera</a> 
+                    <a asp-action="Details" asp-route-id="@item.Id">Detaljer</a> 
                     <a asp-action="Delete" asp-route-id="@item.Id">Radera</a>
                     <a asp-controller="Documents" asp-action="ModuleDocuments" asp-route-moduleId="@item.Id" class="badge badge-warning">Dokument</a>
                 </td>
@@ -60,5 +61,5 @@
     </tbody>
 </table>
 <div>
-    <a asp-action="Index">Tillbaka till huvudmenyn</a>
+    <a asp-action="Index" class="badge badge-primary">Tillbaka till huvudmenyn</a>
 </div>
