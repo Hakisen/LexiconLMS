@@ -1,7 +1,7 @@
 ﻿@model LexiconLMS.Models.Course
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Radera";
 }
 
 @*<h1>Radera</h1>*@
@@ -41,6 +41,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Radera" class="btn btn-danger" /> |
-        <a asp-action="Index" class="badge badge-light">Tillbaka till kurslistan</a>
+        <a asp-action="Index"  class="badge badge-primary">Tillbaka till kurslistan</a>
     </form>
 </div>
