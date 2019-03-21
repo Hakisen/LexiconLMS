@@ -14,7 +14,7 @@ namespace LexiconLMS.Utility
         public static void CreateNewCourseFolders(string name)
         {
           //   Root foldern
-          string applicationPath = Directory.GetCurrentDirectory();
+          string applicationPath = @"C:\Users\Stefan Willgert\source\repos\LexiconLMS\LexiconLMS";
            // string path =@"C:\Users\LexTottedq\Source\Repos\Hakisen\LexiconLMS\LexiconLMS\LMSDocument\";
            // Root folder + LMSDocument folder + önskad foldernamn
             string newMap = applicationPath + @"\LMSDocument\"+"Kurs"+name;
