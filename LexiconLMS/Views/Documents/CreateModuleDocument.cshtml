@@ -51,13 +51,13 @@
             </div>
             <div class="form-group">
                 <div class="col-md-10">
-                    <p>Upload one or more files using this form:</p>
+                    <p>Ladda upp en eller flera filer:</p>
                     <input type="file" name="document.MyUploadedFile" />
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-md-10">
-                    <input type="submit" value="Upload document" />
+                    <input type="submit" value="Ladda upp document" />
                 </div>
             </div>
 
@@ -67,7 +67,7 @@
 
 <div>
     @*<a asp-action="Index">Back to List</a>*@
-    <a asp-action="ModuleDocuments" asp-route-moduleId="@Model.ModuleId">Tillbaka till moduldokument</a>
+    <a asp-action="ModuleDocuments" asp-route-moduleId="@Model.ModuleId" class="badge badge-primary">Tillbaka till moduldokument</a>
 </div>
 
 @section Scripts {
