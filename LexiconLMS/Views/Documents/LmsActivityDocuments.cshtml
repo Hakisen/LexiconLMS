@@ -9,28 +9,30 @@
 @*<h1>Activitetsdokument</h1>*@
 <h3>Aktivitetsdokument </h3>
 @if (ViewBag.LmsActivityId != 0)
-{
-    <h3>i kurs @ViewBag.LmsActivityName</h3>
+    {
+<h3>i kurs @ViewBag.LmsActivityName</h3>
 
-    <div class="text-success">
-        @TempData["SuccessText"]
-    </div>
-    <p>
-        @if (User.IsInRole("Teacher"))
-        {
-            <a asp-action="CreateLmsActivityDocument" asp-route-lmsActivityId="@ViewBag.LmsActivityId" class="btn btn-outline-primary">Skapa nytt moduldokument</a>
-        }
-    </p>
-}
-    <table class="table table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
+<div class="text-success">
+    @TempData["SuccessText"]
+</div>
+<p>
+    @if (User.IsInRole("Teacher"))
+    {
+        <a asp-action="CreateLmsActivityDocument" asp-route-lmsActivityId="@ViewBag.LmsActivityId" class="btn btn-outline-primary">Skapa nytt akvtivitetsdokument</a>
+    }
+</p>
+
+}    
+
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
 
             <th>
                 @Html.DisplayNameFor(model => model.ApplicationUser.Name)

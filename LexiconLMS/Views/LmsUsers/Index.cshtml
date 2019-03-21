@@ -44,9 +44,9 @@
                     </td>
                     <td>
                         @if (await UserManager.IsInRoleAsync(item, "Teacher"))
-                        {<p>Teacher</p>}
+                        {<p>Lärare</p>}
                         @if (await UserManager.IsInRoleAsync(item, "Student"))
-                        {<p>Student</p>}
+                        {<p>Elev</p>}
 
                     </td>
 
@@ -55,8 +55,7 @@
                         <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a> |
                         <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a>
                         
-                    </td>
-                  
+                    </td>                  
                 </tr>
             }
         }
@@ -82,9 +81,9 @@
                         </th>
                         <td>
                             @if (await UserManager.IsInRoleAsync(item, "Teacher"))
-                            {<p>Teacher</p>}
+                            {<p>Lärare</p>}
                             @if (await UserManager.IsInRoleAsync(item, "Student"))
-                            {<p>Student</p>}
+                            {<p>Elev</p>}
 
                         </td>
 
