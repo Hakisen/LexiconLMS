@@ -19,10 +19,13 @@
     <div class="text-success">
         @TempData["SuccessText"]
     </div>
+   @if (User.IsInRole("Teacher")) { 
     <p>
         <a asp-action="CreateModuleDocument" asp-route-moduleId="@ViewBag.ModuleId" class="btn btn-outline-primary">Skapa nytt moduldokument</a>
     </p>
+   }
 }
+
 <table class="table table-striped">
     <thead class="table-dark">
         <tr>
@@ -83,6 +86,14 @@
 </table>
 <div>
     @*<a asp-action="ModuleModules" asp-route-id="@model">Back to List</a>*@
+    @if (User.IsInRole("Student"))
+    {
+        <a asp-controller="Courses" asp-action="StudentModules" class="badge badge-primary">Tillbaka till kursmoduler</a>
+    }
+    @if (User.IsInRole("Teacher"))
+    {
+        <a asp-controller="Modules" asp-action="CourseModules" asp-route-courseId="@ViewBag.CourseId"  class="badge badge-primary">Tillbaka till kursmoduler lärare</a>
+    }
 </div>
 
 
