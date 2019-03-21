@@ -48,7 +48,8 @@
                 <input type="hidden" asp-for="CourseId" />
             </div>
             <div class="form-group">
-                <input type="submit" value="CreateCourseModule" class="btn btn-primary" />
+                <input type="submit" value="CreateCourseModule" class="btn btn-success" /> | 
+                <a asp-action="CourseModules" asp-route-courseId="@Model.CourseId" class="badge badge-primary">Tillbaka till kursmoduler</a>
             </div>
         </form>
     </div>
@@ -56,7 +57,6 @@
 
 <div>
     @*<a asp-action="Index">Back to List</a>*@
-    <a asp-action="CourseModules" asp-route-courseId="@Model.CourseId" class="badge badge-primary">Tillbaka till kursmoduler</a>
 </div>
 
 @section Scripts {

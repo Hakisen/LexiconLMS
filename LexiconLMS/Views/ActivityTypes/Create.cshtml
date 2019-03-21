@@ -18,15 +18,15 @@
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Spara" class="btn btn-primary" />
+                <input type="submit" value="Spara" class="btn btn-success" /> | 
+                <a asp-action="Index" class="badge badge-primary">Tillbaka till aktivitetstyplistan</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Tillbaka till listan</a>
-</div>
+@*<div>
+</div>*@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
