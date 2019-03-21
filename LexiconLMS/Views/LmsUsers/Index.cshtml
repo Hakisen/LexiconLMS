@@ -21,10 +21,10 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["CourseSortParm"]">@Html.DisplayNameFor(model => model.Course.Name)</a>
             </th>
             <th>  
-                <p style="color:#007bff;" font-size:30%;">Användare</p>
+                <p id="special" style="color:#007bff;" font-size:30%;">Användare</p>
             </th>
             <th>
-
+                @*Avsiktligt tom för att få rubrik bakgrunden hela vägen*@
             </th>
         </tr>
     </thead>

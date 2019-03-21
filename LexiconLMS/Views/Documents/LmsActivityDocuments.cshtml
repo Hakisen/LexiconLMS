@@ -7,23 +7,25 @@
 
 @*<h1>LmsActivityDocuments</h1>*@
 @*<h1>Activitetsdokument</h1>*@
-<h3>Aktivitetsdokument </h3>
+
 @if (ViewBag.LmsActivityId != 0)
-    {
-<h3>i kurs @ViewBag.LmsActivityName</h3>
+{
+    <h3>Aktivitetsdokument för kurs @ViewBag.LmsActivityName</h3>
 
-<div class="text-success">
-    @TempData["SuccessText"]
-</div>
-<p>
-    @if (User.IsInRole("Teacher"))
-    {
-        <a asp-action="CreateLmsActivityDocument" asp-route-lmsActivityId="@ViewBag.LmsActivityId" class="btn btn-outline-primary">Skapa nytt akvtivitetsdokument</a>
-    }
-</p>
-
-}    
-
+    <div class="text-success">
+        @TempData["SuccessText"]
+    </div>
+    <p>
+        @if (User.IsInRole("Teacher"))
+        {
+            <a asp-action="CreateLmsActivityDocument" asp-route-lmsActivityId="@ViewBag.LmsActivityId" class="btn btn-outline-primary">Skapa nytt aktivitetsdokument</a>
+        }
+    </p>
+}
+else
+{
+    <h3>Aktivitetsdokument </h3>
+}
 <table class="table table-striped">
     <thead class="table-dark">
         <tr>
@@ -82,10 +84,16 @@
         }
     </tbody>
 </table>
-<div>
-    @*<a asp-action="ModuleModules" asp-route-id="@model">Back to List</a>*@
-</div>
 
+@if (User.IsInRole("Student"))
+{
+    <a asp-controller="Courses" asp-action="StudentModules" class="badge badge-primary">Tillbaka till kursmoduler</a>
+}
+@if (User.IsInRole("Teacher"))
+{
+    <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@ViewBag.ModuleId" class="badge badge-primary">Tillbaka till modulaktiviter </a>
+    <a asp-controller="Modules" asp-action="CourseModules" asp-route-courseId="@ViewBag.CourseId" class="badge badge-primary">Tillbaka till kursmoduler lärare</a>
 
+}
 
 

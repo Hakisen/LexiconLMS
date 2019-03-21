@@ -44,7 +44,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _roleManager = roleManager;
              _context = context;
-           // _courseId = CourseId;
+
         }
 
         [BindProperty]
@@ -89,21 +89,24 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
         {
             _courseId = CourseId;
             Input = new InputModel();
+            //Används från navbar
             ViewData["RoleName"] = new SelectList(_roleManager.Roles, "Name", "Name");
 
             ViewData["CourseIdList"] = new SelectList(_context.Course, "Id", "Name");
             ViewData["CourseId"] = _courseId;
-            if (CourseId != 0)
+            //Om registering sker från kurs
+            if (CourseId != 0) 
             {
+                //Blir förvalda i registrerings vyn och visas ej
                 Input.CourseId = CourseId;
                 Input.Role = "Student";
             }
             else
-            { Input.CourseId = CourseId; }
+            //Om registrering sker från navbar,
+            { Input.CourseId = CourseId; } //
             
             return Page();
-            ////return View();
-            //ReturnUrl = returnUrl;
+         
         }
 
         public async Task<IActionResult> OnPostAsync( string returnUrl = null)
@@ -112,13 +115,10 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Phone ,Name=Input.Name , CourseId=Input.CourseId};
+                //CourseId satt antingen via navbar eller via kurslista
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 var resultAddRole = await _userManager.AddToRoleAsync(user, Input.Role);
-                //_courseId = CourseId;
-                //if (_courseId == 0)
-                //    user.CourseId = Input.CourseId;
-                //else user.CourseId = _courseId;
-                //var resultAddCourse = await _userManager.UpdateAsync(user);
+       
                
                 if (result.Succeeded)
                 {
@@ -145,7 +145,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+         
             return Page();
         }
     }

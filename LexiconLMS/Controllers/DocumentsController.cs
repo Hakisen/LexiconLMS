@@ -573,6 +573,7 @@ namespace LexiconLMS.Controllers
             //ViewBag.ModuleName = _context.Module.Find(moduleId).Name;
             ViewBag.ModuleName = module.Name;
             ViewBag.ModuleId = moduleId;
+            ViewBag.CourseId = module.CourseId;
             var course = _context.Course.Find(module.CourseId);
             ViewBag.CourseName = course.Name;
 
@@ -661,9 +662,13 @@ namespace LexiconLMS.Controllers
 
 
             //return View("Index", await applicationDbContext.ToListAsync());
+            var lmsActivity= _context.LmsActivity.Find(lmsActivityId);
+            var module= _context.Module.Find(lmsActivity.ModuleId);
             ViewBag.LmsActivityName = _context.LmsActivity.Find(lmsActivityId).Name;
             ViewBag.LmsActivityId = lmsActivityId;
 
+            ViewBag.ModuleId = lmsActivity.ModuleId;
+            ViewBag.CourseId = module.CourseId;
             return View(await applicationDbContext.ToListAsync());
 
         }
