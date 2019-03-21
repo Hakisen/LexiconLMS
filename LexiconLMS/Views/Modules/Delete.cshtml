@@ -4,51 +4,52 @@
     ViewData["Title"] = "Radera";
 }
 
-<h2>Radera</h2>
+@*<h3>Radera</h3>
+    <h3>Är du säker på att du vill radera denna modul?</h3>*@
 
-<h3>Är du säker på att du vill radera denna modul?</h3>
+<h3>Är du säker på att du vill radera modul: @Model.Name?</h3>
+<h5>Alla tillhörande aktiviteter och dokument raderas!</h5>
 
 <div>
     @*<h4>Modul</h4>*@
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EndDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.EndDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Course)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Course.Name)
-        </dd class>
+        </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         @*<a asp-action="Index">Back to List</a>*@
-        <a asp-action="CourseModules" asp-route-courseId="@Model.CourseId">Tillbaka till kursmoduler</a>
-
+        <a asp-action="CourseModules" asp-route-courseId="@Model.CourseId" class="badge badge-primary">Tillbaka till kursmoduler</a>
     </form>
 </div>

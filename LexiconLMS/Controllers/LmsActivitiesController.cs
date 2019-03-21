@@ -38,7 +38,7 @@ namespace LexiconLMS.Controllers
             var module = _context.Module.Find(moduleId);
 
             ViewBag.ModuleName = module.Name;
-            ViewBag.CourseId = module.CourseId;            
+            ViewBag.CourseId = module.CourseId;
             ViewBag.ModuleId = moduleId;
 
             //var course = _context.Course.Find(module.CourseId);

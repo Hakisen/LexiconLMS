@@ -40,7 +40,6 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelitem => module.StartDate)
-
                 </td>
                 <td>
                     @Html.DisplayFor(modelitem => module.EndDate)
@@ -54,6 +53,8 @@
                 </td>
                 <td>
                     <a asp-controller="Modules" asp-action="details" asp-route-id="@module.Id" class="badge badge-primary">Detaljer</a>
+                    <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@module.Id" class="badge badge-info">Aktiviteter</a>
+                    <a asp-controller="Documents" asp-action="ModuleDocuments" asp-route-moduleId="@module.Id" class="badge badge-warning">Dokument</a>
                 </td>
             </tr>
         }

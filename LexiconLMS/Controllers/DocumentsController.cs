@@ -31,7 +31,7 @@ namespace LexiconLMS.Controllers
             hostingEnvironment = environment;
         }
 
-
+        // NOT USED!
         // GET: Documents
         public async Task<IActionResult> Index()
         {
@@ -61,6 +61,7 @@ namespace LexiconLMS.Controllers
             return View(document);
         }
 
+        //NOT USED!
         // GET: Documents/Create
         public IActionResult Create()
         {
@@ -71,6 +72,7 @@ namespace LexiconLMS.Controllers
             return View();
         }
 
+        //NOT USED!
         // POST: Documents/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -104,10 +106,10 @@ namespace LexiconLMS.Controllers
             {
                 return NotFound();
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", document.ApplicationUserId);
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Id", document.CourseId);
-            ViewData["LmsActivityId"] = new SelectList(_context.LmsActivity, "Id", "Id", document.LmsActivityId);
-            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", document.ModuleId);
+            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Name", document.ApplicationUserId);
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", document.CourseId);
+            ViewData["LmsActivityId"] = new SelectList(_context.LmsActivity, "Id", "Name", document.LmsActivityId);
+            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", document.ModuleId);
             return View(document);
         }
 
@@ -143,9 +145,9 @@ namespace LexiconLMS.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", document.ApplicationUserId);
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Id", document.CourseId);
-            ViewData["LmsActivityId"] = new SelectList(_context.LmsActivity, "Id", "Id", document.LmsActivityId);
+            ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Name", document.ApplicationUserId);
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", document.CourseId);
+            ViewData["LmsActivityId"] = new SelectList(_context.LmsActivity, "Id", "Name", document.LmsActivityId);
             ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Id", document.ModuleId);
             return View(document);
         }
@@ -190,7 +192,7 @@ namespace LexiconLMS.Controllers
 
 
 
-        // POST: Modules/Create
+        // POST: CreateCourseDocument
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize(Roles = "Teacher")]
@@ -206,11 +208,11 @@ namespace LexiconLMS.Controllers
             {
                 _context.Add(document);
                 await _context.SaveChangesAsync();
-                TempData["SuccessText"] = $"Modul: {document.Title} skapades Ok!";
+                TempData["SuccessText"] = $"Dokument: {document.Title} skapades Ok!";
                 return RedirectToAction(nameof(CourseDocuments), new { document.CourseId });
             }
 
-            TempData["FailText"] = $"Något gick fel vid skapandet av modulen. Försök igen";
+            TempData["FailText"] = $"Något gick fel vid skapandet av dokumentet. Försök igen";
             //ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Name", document.CourseId);
             document.Course = course;
             return View(document);
@@ -247,13 +249,11 @@ namespace LexiconLMS.Controllers
 
             return base.View(model);
         }
+
+        //Post CreateCourseDocument1
         [HttpPost]
         public async Task<IActionResult> CreateCourseDocument1([Bind("MyUploadedFile,Title,DueDate,CreatedDate,Path,MimeType,Id,CourseId,ModuleId,LmsActivityId,ApplicationUserId,OwnerFileName")]Document document)
         {
-
-
-
-
             // do other validations on your model as needed
             if (document.MyUploadedFile.FileName != null)
             {
@@ -278,18 +278,18 @@ namespace LexiconLMS.Controllers
                 {
                     _context.Add(document);
                     await _context.SaveChangesAsync();
-                    TempData["SuccessText"] = $"Modul: {document.Title} skapades Ok!";
+                    TempData["SuccessText"] = $"Dokument: {document.Title} skapades Ok!";
                     return RedirectToAction(nameof(CourseDocuments), new { document.CourseId });
                 }
 
-                TempData["FailText"] = $"Något gick fel vid skapandet av modulen. Försök igen";
+                TempData["FailText"] = $"Något gick fel vid skapandet av dokumentet. Försök igen";
               
                 document.Course = course;
             }
-
-          
+            
             return RedirectToAction("CourseDocuments", "Documents");
         }
+
         private string GetUniqueFileName(string fileName)
         {
             fileName = Path.GetFileName(fileName);
@@ -299,6 +299,7 @@ namespace LexiconLMS.Controllers
                       + Path.GetExtension(fileName);
         }
 
+        //Get CourceDocuments(?)
         public async Task<IActionResult> CourseDocuments(int? courseId)
         {
             var applicationDbContext = _context.Document.Include(c => c.Course).Where(c => c.Course.Id == courseId);
@@ -308,10 +309,8 @@ namespace LexiconLMS.Controllers
                 ViewBag.CourseName = _context.Course.Find(courseId).Name;
                 ViewBag.CourseId = courseId;
          
-                return View(await applicationDbContext.ToListAsync());
-            
+                return View(await applicationDbContext.ToListAsync());            
         }
-
 
         
         public async Task<IActionResult> CreateCourseDocument1(int courseId)

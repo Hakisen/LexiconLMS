@@ -4,7 +4,7 @@
     ViewData["Title"] = "Detaljer";
 }
 
-<h3>Detaljer för modul @Html.DisplayFor(model => model.Course.Name)</h3>
+<h3>Detaljer för modul @Html.DisplayFor(model => model.Name)</h3>
 
 <div>
     @*<h4>Modul</h4>*@
@@ -46,11 +46,12 @@
     @if (User.IsInRole("Teacher"))
     {
         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success">Ändra</a><a> | </a>
-        <a asp-action="CourseModules" asp-route-courseId="@Model.CourseId">Tillbaka till kursmoduler</a>
+        <a asp-action="CourseModules" asp-route-courseId="@Model.CourseId" class="bagde badge-primary">Tillbaka till kursmoduler</a>
     }
     @if (User.IsInRole("Student"))
     {
-        <a asp-controller="Courses" asp-action="StudentModules" class="badge badge-light">Tillbaka till kursmoduler</a>
+        <a asp-controller="Courses" asp-action="StudentModules" class="badge badge-primary">Tillbaka till kursmoduler</a>
+        @*courseId not needed, it's handled in the Action*@
         @*<a asp-action="StudentModules">Back to List</a>*@
     }
 
