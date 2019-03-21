@@ -117,11 +117,14 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Phone ,Name=Input.Name , CourseId=Input.CourseId};
                 //CourseId satt antingen via navbar eller via kurslista
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                var resultAddRole = await _userManager.AddToRoleAsync(user, Input.Role);
+                //Flyttad, Roll skall bara läggas till om lyckad registrering
+                //var resultAddRole = await _userManager.AddToRoleAsync(user, Input.Role);  
        
                
                 if (result.Succeeded)
                 {
+                    //Ny plats för addering av roll
+                    var resultAddRole = await _userManager.AddToRoleAsync(user, Input.Role);
                     _logger.LogInformation("User created a new account with password.");
                   
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
