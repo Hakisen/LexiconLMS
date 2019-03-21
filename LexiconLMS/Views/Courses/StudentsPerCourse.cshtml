@@ -7,7 +7,7 @@
     ViewData["Title"] = "StudentsPerCourse";
 }
 
-<h1>Deltagare i kurs: @Model.Name</h1>
+<h3>Deltagare i kurs: @Model.Name</h3>
 @{var test = Model.ApplicationUser.FirstOrDefault();}
 @if (test != null)
 {

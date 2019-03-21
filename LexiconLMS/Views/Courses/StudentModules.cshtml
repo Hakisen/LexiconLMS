@@ -7,12 +7,12 @@
     ViewData["Title"] = "StudentModules";
 }
 
-<h2>Kursmoduler</h2>
+<h3>Kursmoduler</h3>
 
 @{
     ViewData["Title"] = "Moduler på din kurs";
 }
-<h2>Moduler på kurs @Model.StudentCourse.Name för dig, @Model.Student.Name </h2>
+<h3>Moduler på kurs @Model.StudentCourse.Name för dig, @Model.Student.Name </h3>
 
 
 @{var test = Model.StudentCourse.Modules.First();}
