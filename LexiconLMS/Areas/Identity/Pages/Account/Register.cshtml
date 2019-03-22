@@ -4,11 +4,17 @@
     ViewData["Title"] = "Registrera";
 }
 
-<h1>@ViewData["Title"]</h1> 
+<div class="text-danger">
+    @TempData["FailText"]
+</div>
+<div class="text-success">
+    @TempData["SuccessText"]
+</div>
 
-@if ((Model.Input.CourseId==0))  //Om via navbar
+
+@if ((Model.Input.CourseId == 0) || (Model.Input.CourseId == null))  //Om via navbar
 {
-        
+
     <div class="row">
         <div class="col-md-4">
             <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
@@ -32,14 +38,14 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.Role"></label>
-               
+
                     <select asp-for="Input.Role" class="form-control" asp-items="ViewBag.RoleName"></select>
 
                 </div>
 
                 <div class="form-group">
                     <label asp-for="Input.CourseId">Kurs</label>
-         
+
                     <select asp-for="Input.CourseId" class="form-control" asp-items="ViewBag.CourseIdList"></select>
 
                 </div>
@@ -68,11 +74,11 @@ else //Om via kurslistan
     <div class="row">
         <div class="col-md-4">
 
-            
-          
+
+
 
             <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-
+                @*Hidden CourseId sätts till värde enligt get action*@
                 <input type="hidden" asp-for="Input.CourseId" value="@Model.Input.CourseId" />
                 <input type="hidden" asp-for="Input.Role" value="@Model.Input.Role" />
                 <h4>Lägg till användare.</h4>
@@ -93,7 +99,7 @@ else //Om via kurslistan
                     <input asp-for="Input.Name" class="form-control" />
                     <span asp-validation-for="Input.Name" class="text-danger"></span>
                 </div>
-           
+
 
                 <div class="form-group">
                     <label asp-for="Input.Password"></label>
@@ -112,6 +118,7 @@ else //Om via kurslistan
 
 
                 <button type="submit" class="btn btn-success">Skapa</button>
+
             </form>
         </div>
     </div>

@@ -13,6 +13,7 @@ using LexiconLMS.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using LexiconLMS.Data;
 using System.Runtime.InteropServices;
+using System.Linq;
 
 namespace LexiconLMS.Areas.Identity.Pages.Account
 {
@@ -25,7 +26,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _context;
-        private int _courseId;
+        private int? _courseId;
 
         public RegisterModel(
          
@@ -63,7 +64,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             public string Phone { get; set; }
             [Required]
             [Display(Name = "Namn")]
-            public string Name { get; set; }
+            public string Name { get; set; }   //Namn
 
 
             [Display(Name = "Roll")]
@@ -80,22 +81,26 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
             [Display(Name = "Course")]
-            public int CourseId { get; set; }
+            public int? CourseId { get; set; }   //KursId
 
         }
 
-        public PageResult OnGet(int CourseId = 0, string returnUrl = null)
+        public PageResult OnGet(int? CourseId, string returnUrl = null)
 
         {
             _courseId = CourseId;
             Input = new InputModel();
             //Används från navbar
             ViewData["RoleName"] = new SelectList(_roleManager.Roles, "Name", "Name");
-
-            ViewData["CourseIdList"] = new SelectList(_context.Course, "Id", "Name");
+            var list = new SelectList(_context.Course, "Id", "Name").ToList();
+            
+            list.Insert(0, (new SelectListItem { Text = "Ingen kurs", Value = "0" }));
+            //ViewData["CourseIdList"] = new SelectList(_context.Course, "Id", "Name");
+            ViewData["CourseIdList"] = list;
             ViewData["CourseId"] = _courseId;
+
             //Om registering sker från kurs
-            if (CourseId != 0) 
+            if (CourseId > 0) 
             {
                 //Blir förvalda i registrerings vyn och visas ej
                 Input.CourseId = CourseId;
@@ -114,7 +119,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Phone ,Name=Input.Name , CourseId=Input.CourseId};
+                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Phone ,Name=Input.Name };
                 //CourseId satt antingen via navbar eller via kurslista
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 //Flyttad, Roll skall bara läggas till om lyckad registrering
@@ -125,6 +130,12 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
                 {
                     //Ny plats för addering av roll
                     var resultAddRole = await _userManager.AddToRoleAsync(user, Input.Role);
+                    if (Input.CourseId >0)
+                    {
+                        user.CourseId = Input.CourseId;
+                        var resultaddCourseId = await _userManager.UpdateAsync(user);
+                    }
+                    TempData["SuccessText"] = $"Användare : {user.Name} skapades Ok!";
                     _logger.LogInformation("User created a new account with password.");
                   
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -142,6 +153,7 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
 
                     return LocalRedirect(returnUrl);
                 }
+                TempData["FailText"] = $"Något gick fel vid skapandet av dokumentet. Försök igen";
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
