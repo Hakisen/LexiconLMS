@@ -82,6 +82,9 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
             [Display(Name = "Course")]
             public int? CourseId { get; set; }   //KursId
+            public string CourseName { get; set; }
+            public List<SelectListItem> Courses { get; set; }
+            public SelectList LmsRoles { get; set; }
 
         }
 
@@ -91,18 +94,20 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
             _courseId = CourseId;
             Input = new InputModel();
             //Används från navbar
-            ViewData["RoleName"] = new SelectList(_roleManager.Roles, "Name", "Name");
-            var list = new SelectList(_context.Course, "Id", "Name").ToList();
-            
-            list.Insert(0, (new SelectListItem { Text = "Ingen kurs", Value = "0" }));
+            Input.LmsRoles = new SelectList(_roleManager.Roles, "Name", "Name");
+
+            Input.Courses = new SelectList(_context.Course, "Id", "Name").ToList();
+            Input.Courses.Insert(0, (new SelectListItem { Text = "Ingen kurs", Value = "0" }));
+
             //ViewData["CourseIdList"] = new SelectList(_context.Course, "Id", "Name");
-            ViewData["CourseIdList"] = list;
+           
             ViewData["CourseId"] = _courseId;
 
             //Om registering sker från kurs
             if (CourseId > 0) 
             {
                 //Blir förvalda i registrerings vyn och visas ej
+                Input.CourseName= _context.Course.Find(CourseId).Name;
                 Input.CourseId = CourseId;
                 Input.Role = "Student";
             }
@@ -124,17 +129,32 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 //Flyttad, Roll skall bara läggas till om lyckad registrering
                 //var resultAddRole = await _userManager.AddToRoleAsync(user, Input.Role);  
-       
-               
+                
+                Input.LmsRoles = new SelectList(_roleManager.Roles, "Name", "Name");  
+
+                Input.Courses = new SelectList(_context.Course, "Id", "Name").ToList();
+                Input.Courses.Insert(0, (new SelectListItem { Text = "Ingen kurs", Value = "0" }));
+
                 if (result.Succeeded)
                 {
                     //Ny plats för addering av roll
                     var resultAddRole = await _userManager.AddToRoleAsync(user, Input.Role);
-                    if (Input.CourseId >0)
+                    if (Input.CourseId > 0)
                     {
+                        //Blir förvalda i registrerings vyn och visas ej
+                        Input.CourseName = _context.Course.Find(Input.CourseId).Name;
+                       
+                        Input.Role = "Student";
                         user.CourseId = Input.CourseId;
                         var resultaddCourseId = await _userManager.UpdateAsync(user);
                     }
+                    //else
+                    ////Om registrering sker från navbar,
+                    //{ Input.CourseId = CourseId; } // if (Input.CourseId >0)
+                    //{
+                    //    user.CourseId = Input.CourseId;
+                    //    var resultaddCourseId = await _userManager.UpdateAsync(user);
+                    //}
                     TempData["SuccessText"] = $"Användare : {user.Name} skapades Ok!";
                     _logger.LogInformation("User created a new account with password.");
                   
@@ -148,12 +168,16 @@ namespace LexiconLMS.Areas.Identity.Pages.Account
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                 //Stefan  await _signInManager.SignInAsync(user, isPersistent: false);
-             
+                    //Stefan  await _signInManager.SignInAsync(user, isPersistent: false);
+
+
+                    return Page();  //Continue registration
+
 
                     return LocalRedirect(returnUrl);
                 }
-                TempData["FailText"] = $"Något gick fel vid skapandet av dokumentet. Försök igen";
+       
+                TempData["FailText"] = $"Något gick fel vid skapandet. Försök igen";
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);

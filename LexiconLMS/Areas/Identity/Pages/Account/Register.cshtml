@@ -39,14 +39,14 @@
                 <div class="form-group">
                     <label asp-for="Input.Role"></label>
 
-                    <select asp-for="Input.Role" class="form-control" asp-items="ViewBag.RoleName"></select>
+                    <select asp-for="Input.Role" class="form-control" asp-items="@Model.Input.LmsRoles"></select>
 
                 </div>
 
                 <div class="form-group">
                     <label asp-for="Input.CourseId">Kurs</label>
 
-                    <select asp-for="Input.CourseId" class="form-control" asp-items="ViewBag.CourseIdList"></select>
+                    <select asp-for="Input.CourseId" class="form-control" asp-items="@Model.Input.Courses"></select>
 
                 </div>
                 <div class="form-group">
@@ -65,7 +65,12 @@
 
 
                 <button type="submit" class="btn btn-success">Skapa</button>
+
             </form>
+            <div class="form-group">
+                            
+            <div ><a asp-controller="Home" asp-action="Index" class="badge badge-primary">Avsluta registrering</a></div>
+                </div>
         </div>
     </div>
 }
@@ -81,7 +86,7 @@ else //Om via kurslistan
                 @*Hidden CourseId sätts till värde enligt get action*@
                 <input type="hidden" asp-for="Input.CourseId" value="@Model.Input.CourseId" />
                 <input type="hidden" asp-for="Input.Role" value="@Model.Input.Role" />
-                <h4>Lägg till användare.</h4>
+                <h4>Lägg till elev i kurs @Model.Input.CourseName</h4>
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
@@ -120,6 +125,11 @@ else //Om via kurslistan
                 <button type="submit" class="btn btn-success">Skapa</button>
 
             </form>
+
+            <div class="form-group">
+
+                <div><a asp-controller="Courses" asp-action="Index"  class="badge badge-primary">Tillbaka till kurslistan</a></div>
+            </div>
         </div>
     </div>
 }
