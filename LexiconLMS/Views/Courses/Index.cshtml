@@ -65,7 +65,7 @@
                         <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a> 
                         <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a> 
                         <a asp-controller="Modules" asp-action="CourseModules" asp-route-courseId="@item.Id" class="badge badge-info">Moduler</a>
-                        <a asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@item.Id" class="badge badge-secondary">Lägg till elev</a>
+                        <a asp-area="Identity" asp-page="/Account/Register" asp-route-courseId="@item.Id" asp-route-addStudentForCourse="@true" class="badge badge-secondary">Lägg till elev</a>
                         <a asp-action="StudentsPerCourse" asp-route-id="@item.Id" class="badge badge-dark">Lista Elever</a>
                         <a asp-controller="Documents" asp-action="CourseDocuments" asp-route-courseId="@item.Id" class="badge badge-warning">Dokument</a> 
                     </td>

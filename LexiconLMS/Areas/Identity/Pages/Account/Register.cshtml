@@ -12,28 +12,28 @@
 </div>
 
 
-@if ((Model.Input.CourseId == 0) || (Model.Input.CourseId == null))  //Om via navbar
+@if ((!Model.Input.AddStudentForCourse)||(Model.Input.CourseId == 0) || (Model.Input.CourseId == null))  //Om via navbar
 {
 
     <div class="row">
         <div class="col-md-4">
-            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <form asp-route-returnUrl="@Model.ReturnUrl" method="post" >
                 <h4>Lägg till användare.</h4>
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" />
+                    <label asp-for="Input.Email"  ></label>
+                    <input asp-for="Input.Email" class="form-control" ondblclick="value=''" />
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.Phone"></label>
-                    <input asp-for="Input.Phone" class="form-control" />
+                    <input asp-for="Input.Phone" class="form-control" ondblclick="value=''" />
                     <span asp-validation-for="Input.Phone" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.Name"></label>
-                    <input asp-for="Input.Name" class="form-control" />
+                    <input asp-for="Input.Name" class="form-control" ondblclick="value=''" />
                     <span asp-validation-for="Input.Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -86,22 +86,23 @@ else //Om via kurslistan
                 @*Hidden CourseId sätts till värde enligt get action*@
                 <input type="hidden" asp-for="Input.CourseId" value="@Model.Input.CourseId" />
                 <input type="hidden" asp-for="Input.Role" value="@Model.Input.Role" />
+                <input type="hidden" asp-for="Input.AddStudentForCourse" value="@Model.Input.AddStudentForCourse" />
                 <h4>Lägg till elev i kurs @Model.Input.CourseName</h4>
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" />
+                    <input asp-for="Input.Email" class="form-control" ondblclick="value=''"  />
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.Phone"></label>
-                    <input asp-for="Input.Phone" class="form-control" />
+                    <input asp-for="Input.Phone" class="form-control" ondblclick="value=''"/>
                     <span asp-validation-for="Input.Phone" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Input.Name"></label>
-                    <input asp-for="Input.Name" class="form-control" />
+                    <input asp-for="Input.Name" class="form-control" ondblclick="value=''"/>
                     <span asp-validation-for="Input.Name" class="text-danger"></span>
                 </div>
 
