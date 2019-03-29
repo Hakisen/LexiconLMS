@@ -504,7 +504,7 @@ namespace LexiconLMS.Controllers
                 var documentroot = Path.Combine(hostingEnvironment.WebRootPath, "documents");
 
                 var fullpath = Path.Combine(documentroot, uniqueFileName);
-
+                
 
                 document.MyUploadedFile.CopyTo(new FileStream(fullpath, FileMode.Create));
 

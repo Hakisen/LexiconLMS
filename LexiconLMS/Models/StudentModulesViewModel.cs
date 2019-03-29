@@ -13,6 +13,9 @@ namespace LexiconLMS.Models
 
         [Display(Name = "Elev")]
         public ApplicationUser Student { get; set; }
+        
+      
+
 
     }
 }
