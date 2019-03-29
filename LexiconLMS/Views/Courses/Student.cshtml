@@ -71,11 +71,11 @@
             </th>
         </tr>
     </thead>
-    <tbody>
-        <tr>
-            @foreach (var module in Model.StudentCourse.Modules.OrderBy(s => s.StartDate))
-            {
+    <tbody class="table-bordered table-primary">
 
+        @foreach (var module in Model.StudentCourse.Modules.OrderBy(s => s.StartDate))
+        {
+            <tr>
                 <td>
                     @Html.DisplayFor(modelitem => module.StartDate)
                 </td>
@@ -90,48 +90,140 @@
                     @Html.DisplayFor(modelitem => module.Description)
                 </td>
 
-            <td>
-                <button class="btn" data-target="#@($"Module{module.Id}")" data-toggle="collapse" type="button">Click to expand</button>
-            </td>
+                <td>
+                    @if ((module.LmsActivities.Count != 0) || (module.Documents.Count != 0))
+                    {
+                        <button class="btn" data-target="#@($"Module{module.Id}")" data-toggle="collapse" type="button">></button>
+                    }
 
-            @foreach (var LmsActivity in module.LmsActivities)
+                </td>
+        <thead class="table-dark">
+            <tr class="collapse" id=@($"Module{module.Id}")>
+                <th>
+                    @Html.DisplayNameFor(modelitem => module.Documents.FirstOrDefault().Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(modelitem => module.Documents.FirstOrDefault().Description)
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        @foreach (var Document in module.Documents)
+        {
+            @*<div class="collapse" id="collapseme">
+                <div class="content">*@
+
+            <tr class="collapse" id=@($"Module{module.Id}")>
+                <td>
+
+                    @Html.DisplayFor(modelitem => Document.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => Document.Description)
+                </td>
+                <td>
+                    <a asp-controller="Documents" asp-action="GetDocument" asp-route-id="@Document.Id" class="badge badge-warning">Ladda ned</a>
+
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        }
+        <thead class="table-dark">
+            <tr class="collapse" id=@($"Module{module.Id}")>
+                <th>
+                    @Html.DisplayNameFor(modelitem => modulex.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(modelitem => modulex.EndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(modelitem => modulex.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(modelitem => modulex.Description)
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        @foreach (var LmsActivity in module.LmsActivities)
+        {
+            @*<div class="collapse" id="collapseme">
+                <div class="content">*@
+
+            <tr class="collapse" id=@($"Module{module.Id}")>
+                <td>
+
+                    @Html.DisplayFor(modelitem => LmsActivity.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => LmsActivity.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => LmsActivity.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => LmsActivity.Description)
+                </td>
+                <td>
+                    @if ( (LmsActivity.Documents.Count != 0))
+                    {
+                        <button class="btn" data-target="#@($"Activity{LmsActivity.Id}")" data-toggle="collapse" type="button">></button>
+                    }
+                </td>
+            </tr> 
+            @foreach (var document in LmsActivity.Documents)
             {
                 @*<div class="collapse" id="collapseme">
                     <div class="content">*@
 
-                        <tr class="collapse" id=@($"Module{module.Id}")>
-                            <td>
-                                @Html.DisplayFor(modelitem => LmsActivity.StartDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelitem => LmsActivity.EndDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelitem => LmsActivity.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelitem => LmsActivity.Description)
-                            </td>
-                        </tr>
-                        }
+                <tr class="collapse" id=@($"Activity{LmsActivity.Id}")>
+                    <td>
 
+                        @Html.DisplayFor(modelitem => document.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelitem => document.Description)
+                    </td>
+                    <td>
+                        <a asp-controller="Documents" asp-action="GetDocument" asp-route-id="@document.Id" class="badge badge-warning">Ladda ned</a>
 
-
-                        @*<a asp-controller="Modules" asp-action="details" asp-route-id="@module.Id" class="badge badge-primary">Detaljer</a>
-                            <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@module.Id" class="badge badge-info">Aktiviteter</a>
-                            <a asp-controller="Documents" asp-action="ModuleDocuments" asp-route-moduleId="@module.Id" class="badge badge-warning">Dokument</a>*@
-
-
-                    @*</div>
-                </div>*@
-
-
-
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
             }
         }
+
+
+
+        @*<a asp-controller="Modules" asp-action="details" asp-route-id="@module.Id" class="badge badge-primary">Detaljer</a>
+            <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-moduleId="@module.Id" class="badge badge-info">Aktiviteter</a>
+            <a asp-controller="Documents" asp-action="ModuleDocuments" asp-route-moduleId="@module.Id" class="badge badge-warning">Dokument</a>*@
+
+
+        @*</div>
+            </div>*@
+
+
+
+
         </tr>
-    </tbody>
-</table>
+    }
+
+
+        </tbody>
+    </table>
 
 
 
