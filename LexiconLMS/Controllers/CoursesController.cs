@@ -113,6 +113,35 @@ namespace LexiconLMS.Controllers
                 .Include(u => u.Modules).ThenInclude(v => v.LmsActivities).ThenInclude(x => x.Documents)
                 .Include(u => u.Modules)
                 .ThenInclude(x => x.Documents).FirstOrDefaultAsync(u => u.Id == courseId);
+            student.StudentDocuments = new List<Document>();
+            foreach (var item in student.StudentCourse.Documents)
+            {
+                student.StudentDocuments.Add(item);
+            }
+            
+            
+            foreach (var module in student.StudentCourse.Modules)
+            {
+                foreach (var moduldocs in module.Documents)
+                {
+                    student.StudentDocuments.Add(moduldocs);
+                }
+
+            }
+            foreach (var module in student.StudentCourse.Modules)
+            {
+                foreach (var activity in module.LmsActivities)
+                {
+                    foreach (var activityDocs in activity.Documents)
+                    {
+                        student.StudentDocuments.Add(activityDocs);
+                    }
+
+                }
+
+            }
+
+            
             student.CourseDocument = await _context.Document.Include(u => u.Course).FirstOrDefaultAsync(u => u.Id == courseId);
             student.ModuleDocument
                 = await _context.Document.Include(u => u.Course).ThenInclude(u => u.Modules).FirstOrDefaultAsync(u => u.Id == courseId);

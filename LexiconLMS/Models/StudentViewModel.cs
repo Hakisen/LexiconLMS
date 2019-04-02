@@ -15,7 +15,7 @@ namespace LexiconLMS.Models
 
         [Display(Name = "Elev")]
         public ApplicationUser Student { get; set; }
-
+        public List<Document> StudentDocuments { get; set; }
         public Document CourseDocument { get; set; }
         public Document ModuleDocument { get; set; }
         public Document ActivityDocument { get; set; }
