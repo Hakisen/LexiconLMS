@@ -10,220 +10,326 @@
 
 @{var test = Model.StudentCourse.ApplicationUser.First();}
 
-@{ int currentDocument=1;
 
-    <div class="row">
 
-        <div class="col-md-5">
-            <div class="table-responsive">
-                <table class="table table-striped" height="10">
-                    <thead class="table-dark">
+<div class="row">
+
+    <div class="col-md-5">
+        <div class="table-responsive">
+            <table class="table table-striped" height="10">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="col-xs-2">
+                            @Html.DisplayNameFor(modelitem => test.Name)
+                        </th>
+                        <th class="col-xs-2">
+                            @Html.DisplayNameFor(modelitem => test.Email)
+                        </th>
+                        <th class="col-xs-1">
+                            @Html.DisplayNameFor(modelitem => test.PhoneNumber)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in Model.StudentCourse.ApplicationUser.OrderBy(s => s.Name))
+                    {
                         <tr>
-                            <th class="col-xs-2">
-                                @Html.DisplayNameFor(modelitem => test.Name)
-                            </th>
-                            <th class="col-xs-2">
-                                @Html.DisplayNameFor(modelitem => test.Email)
-                            </th>
-                            <th class="col-xs-1">
-                                @Html.DisplayNameFor(modelitem => test.PhoneNumber)
-                            </th>
+                            <td class="col-xs-2">
+                                @Html.DisplayFor(modelitem => student.Name)
+                            </td>
+                            <td class="col-xs-2">
+                                @Html.DisplayFor(modelitem => student.Email)
+                            </td>
+                            <td class="col-xs-1">
+                                @Html.DisplayFor(modelitem => student.PhoneNumber)
+                            </td>
                         </tr>
-                    </thead>
+                    }
+                </tbody>
+                @*</table>
+                        </div>
+                    </div>*@
+
+
+
+                @*<div class="table-responsive">*@
+                @*<table class="table table-striped">
+
+
+                    <tbody>*@
+                <thead class="table-dark">
+                    <tr>
+                        <th class="col-xs-1">
+                            <span>Dokument</span>
+                        </th>
+                        <th class="col-xs-1">
+                            @Html.DisplayNameFor(modelitem => Model.StudentDocuments.FirstOrDefault().Title)
+                        </th>
+                        <th class="col-xs-2">
+                            @Html.DisplayNameFor(modelitem => Model.StudentDocuments.FirstOrDefault().Description)
+                        </th>
+                        <th class="col-xs-1">
+
+                        </th>
+
+                    </tr>
+                </thead>
+                @foreach (var module in Model.StudentCourse.Modules.OrderBy(s => s.StartDate))
+                {
+
+
+
                     <tbody>
-                        @foreach (var student in Model.StudentCourse.ApplicationUser.OrderBy(s => s.Name))
+                        @foreach (var Document in module.Documents)
                         {
-                            <tr>
-                                <td class="col-xs-2">
-                                    @Html.DisplayFor(modelitem => student.Name)
-                                </td>
-                                <td class="col-xs-2">
-                                    @Html.DisplayFor(modelitem => student.Email)
-                                </td>
-                                <td class="col-xs-1">
-                                    @Html.DisplayFor(modelitem => student.PhoneNumber)
-                                </td>
-                            </tr>
+
+
+                        <tr class="collapse" id=@($"Module{module.Id}")>
+                            <td class="col-xs-1">
+
+                                @Html.DisplayFor(modelitem => Document.Module.Name)
+                            </td>
+                            <td class="col-xs-1">
+
+                                @Html.DisplayFor(modelitem => Document.Title)
+                            </td>
+                            <td class="col-xs-2">
+                                @Html.DisplayFor(modelitem => Document.Description)
+                            </td>
+                            <td class="col-xs-1">
+
+                                <a asp-controller="Documents" asp-action="GetDocument" asp-route-id="@Document.Id" class="badge badge-warning">Ladda ned</a>
+
+                            </td>
+
+                        </tr>
                         }
                     </tbody>
-                </table>
-            </div>
-        </div>
 
-        @{var modulex = Model.StudentCourse.Modules.First(); }
-        <div class="col-md-7">
-            <div class="table-responsive">
-                <table class="table table-striped">
                     <thead class="table-dark">
+
+                    </thead>
+                    <tbody>
+                        @foreach (var LmsActivity in module.LmsActivities)
+                        {
+
+                            @foreach (var document in LmsActivity.Documents)
+                            {
+
+
+                        <tr class="collapse" id=@($"Activity{LmsActivity.Id}")>
+                            <td class="col-xs-1">
+
+                                @Html.DisplayFor(modelitem => document.LmsActivity.Name)
+                            </td>
+                            <td class="col-xs-1">
+
+                                @Html.DisplayFor(modelitem => document.Title)
+                            </td>
+                            <td class="col-xs-2">
+                                @Html.DisplayFor(modelitem => document.Description)
+                            </td>
+                            <td class="col-xs-1">
+                                <a asp-controller="Documents" asp-action="GetDocument" asp-route-id="@document.Id" class="badge badge-warning">Ladda ned</a>
+
+                            </td>
+
+                        </tr>
+                            }
+                        }
+
+                    </tbody>
+                }
+
+
+            </table>
+        </div>
+    </div>
+
+
+
+
+    @{var modulex = Model.StudentCourse.Modules.First(); }
+    <div class="col-md-7">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="col-xs-2">
+                            @Html.DisplayNameFor(modelitem => modulex.StartDate)
+                        </th>
+                        <th class="col-xs-2">
+                            @Html.DisplayNameFor(modelitem => modulex.EndDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(modelitem => modulex.Name)
+                        </th>
+                        <th class="col-xs-1">
+                            @Html.DisplayNameFor(modelitem => modulex.Description)
+                        </th>
+                        <th class="col-xs-2">
+
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var module in Model.StudentCourse.Modules.OrderBy(s => s.StartDate))
+                    {
                         <tr>
+                            <td class="col-xs-2">
+                                @Html.DisplayFor(modelitem => module.StartDate)
+                            </td>
+                            <td class="col-xs-2">
+                                @Html.DisplayFor(modelitem => module.EndDate)
+                            </td>
+
+                            <td class="col-xs-1">
+                                @Html.DisplayFor(modelitem => module.Name)
+                            </td>
+                            <td class="col-xs-1">
+                                @Html.DisplayFor(modelitem => module.Description)
+                            </td>
+
+                            <td class="col-xs-1">
+                                @if ((module.LmsActivities.Count != 0) || (module.Documents.Count != 0))
+                                {
+                                    <button class="btn" data-target="#@($"Module{module.Id}")" data-toggle="collapse" type="button">></button>
+                                }
+
+                            </td>
+                        </tr>
+
+
+                    @*<thead class="table-dark">
+                        <tr class="collapse" id=@($"Module{module.Id}")>
+                            <th class="col-xs-2">
+                                @Html.DisplayNameFor(modelitem => module.Documents.FirstOrDefault().Title)
+                            </th>
+                            <th class="col-xs-2">
+                                @Html.DisplayNameFor(modelitem => module.Documents.FirstOrDefault().Description)
+                            </th>
+                            <th class="col-xs-1">
+
+                            </th>
+                            <th class="col-xs-1">
+
+                            </th>
+                            <th class="col-xs-1">
+
+                            </th>
+                        </tr>
+                    </thead>*@
+                    @*<tbody>
+                        @foreach (var Document in module.Documents)
+                        {
+
+
+                            <tr class="collapse" id=@($"Module{module.Id}")>
+                                <td class="col-xs-2">
+
+                                    @Html.DisplayFor(modelitem => Document.Title)
+                                </td>
+                                <td class="col-xs-2">
+                                    @Html.DisplayFor(modelitem => Document.Description)
+                                </td>
+                                <td class="col-xs-1">
+
+                                    <a asp-controller="Documents" asp-action="GetDocument" asp-route-id="@Document.Id" class="badge badge-warning">Ladda ned</a>
+
+                                </td>
+                                <td class="col-xs-1"></td>
+                                <td class="col-xs-1"></td>
+                            </tr>
+                        }
+                    </tbody>*@
+
+                    <thead class="table-dark">
+                        <tr class="collapse" id=@($"Module{module.Id}")>
                             <th class="col-xs-2">
                                 @Html.DisplayNameFor(modelitem => modulex.StartDate)
                             </th>
                             <th class="col-xs-2">
                                 @Html.DisplayNameFor(modelitem => modulex.EndDate)
                             </th>
-                            <th>
+                            <th class="col-xs-1">
                                 @Html.DisplayNameFor(modelitem => modulex.Name)
                             </th>
                             <th class="col-xs-1">
                                 @Html.DisplayNameFor(modelitem => modulex.Description)
                             </th>
-                            <th class="col-xs-2">
+                            <th class="col-xs-1">
 
                             </th>
                         </tr>
                     </thead>
-
                     <tbody>
-                        @foreach (var module in Model.StudentCourse.Modules.OrderBy(s => s.StartDate))
+                        @foreach (var LmsActivity in module.LmsActivities)
                         {
-                            <tr>
-                                <td class="col-xs-2">
-                                    @Html.DisplayFor(modelitem => module.StartDate)
-                                </td>
-                                <td class="col-xs-2">
-                                    @Html.DisplayFor(modelitem => module.EndDate)
-                                </td>
+                            @*<div class="collapse" id="collapseme">
+            <div class="content">*@
 
-                                <td class="col-xs-1">
-                                    @Html.DisplayFor(modelitem => module.Name)
-                                </td>
-                                <td class="col-xs-1">
-                                    @Html.DisplayFor(modelitem => module.Description)
-                                </td>
+                            <tr class="collapse" id=@($"Module{module.Id}")>
+                                <td class="col-xs-2">
 
+                                    @Html.DisplayFor(modelitem => LmsActivity.StartDate)
+                                </td>
+                                <td class="col-xs-2">
+                                    @Html.DisplayFor(modelitem => LmsActivity.EndDate)
+                                </td>
                                 <td class="col-xs-1">
-                                    @if ((module.LmsActivities.Count != 0) || (module.Documents.Count != 0))
+                                    @Html.DisplayFor(modelitem => LmsActivity.Name)
+                                </td>
+                                <td class="col-xs-1">
+                                    @Html.DisplayFor(modelitem => LmsActivity.Description)
+                                </td>
+                                <td class="col-xs-1">
+                                    @if ((LmsActivity.Documents.Count != 0))
                                     {
-                                        <button class="btn" data-target="#@($"Module{module.Id}")" data-toggle="collapse" type="button">></button>
+                                        <button class="btn" data-target="#@($"Activity{LmsActivity.Id}")" data-toggle="collapse" type="button">></button>
                                     }
-
                                 </td>
                             </tr>
 
-
-                        <thead class="table-dark">
-                            <tr class="collapse" id=@($"Module{module.Id}")>
-                                <th class="col-xs-2">
-                                    @Html.DisplayNameFor(modelitem => module.Documents.FirstOrDefault().Title)
-                                </th>
-                                <th class="col-xs-2">
-                                    @Html.DisplayNameFor(modelitem => module.Documents.FirstOrDefault().Description)
-                                </th>
-                                <th class="col-xs-1">
-
-                                </th>
-                                <th class="col-xs-1">
-
-                                </th>
-                                <th class="col-xs-1">
-
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var Document in module.Documents)
+                            @*@foreach (var document in LmsActivity.Documents)
                             {
 
 
-                                <tr class="collapse" id=@($"Module{module.Id}")>
+                                <tr class="collapse" id=@($"Activity{LmsActivity.Id}")>
+
                                     <td class="col-xs-2">
 
-                                        @Html.DisplayFor(modelitem => Document.Title)
+                                        @Html.DisplayFor(modelitem => document.Title)
                                     </td>
                                     <td class="col-xs-2">
-                                        @Html.DisplayFor(modelitem => Document.Description)
+                                        @Html.DisplayFor(modelitem => document.Description)
                                     </td>
                                     <td class="col-xs-1">
-                                        @{currentDocument = Document.Id;}
-                                        <a asp-controller="Documents" asp-action="GetDocument" asp-route-id="@Document.Id" class="badge badge-warning">Ladda ned</a>
+                                        <a asp-controller="Documents" asp-action="GetDocument" asp-route-id="@document.Id" class="badge badge-warning">Ladda ned</a>
 
                                     </td>
                                     <td class="col-xs-1"></td>
                                     <td class="col-xs-1"></td>
                                 </tr>
-                            }
-                        </tbody>
-
-                        <thead class="table-dark">
-                            <tr class="collapse" id=@($"Module{module.Id}")>
-                                <th class="col-xs-2">
-                                    @Html.DisplayNameFor(modelitem => modulex.StartDate)
-                                </th>
-                                <th class="col-xs-2">
-                                    @Html.DisplayNameFor(modelitem => modulex.EndDate)
-                                </th>
-                                <th class="col-xs-1">
-                                    @Html.DisplayNameFor(modelitem => modulex.Name)
-                                </th>
-                                <th class="col-xs-1">
-                                    @Html.DisplayNameFor(modelitem => modulex.Description)
-                                </th>
-                                <th class="col-xs-1">
-
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var LmsActivity in module.LmsActivities)
-                            {
-                                @*<div class="collapse" id="collapseme">
-                                    <div class="content">*@
-
-                                <tr class="collapse" id=@($"Module{module.Id}")>
-                                    <td class="col-xs-2">
-
-                                        @Html.DisplayFor(modelitem => LmsActivity.StartDate)
-                                    </td>
-                                    <td class="col-xs-2">
-                                        @Html.DisplayFor(modelitem => LmsActivity.EndDate)
-                                    </td>
-                                    <td class="col-xs-1">
-                                        @Html.DisplayFor(modelitem => LmsActivity.Name)
-                                    </td>
-                                    <td class="col-xs-1">
-                                        @Html.DisplayFor(modelitem => LmsActivity.Description)
-                                    </td>
-                                    <td class="col-xs-1">
-                                        @if ((LmsActivity.Documents.Count != 0))
-                                        {
-                                            <button class="btn" data-target="#@($"Activity{LmsActivity.Id}")" data-toggle="collapse" type="button">></button>
-                                        }
-                                    </td>
-                                </tr>
-                                @foreach (var document in LmsActivity.Documents)
-                                {
+                            }*@
+                        }
+                    </tbody>
+                    
+                }
 
 
-                                    <tr class="collapse" id=@($"Activity{LmsActivity.Id}")>
-                                        <td class="col-xs-2">
-
-                                            @Html.DisplayFor(modelitem => document.Title)
-                                        </td>
-                                        <td class="col-xs-2">
-                                            @Html.DisplayFor(modelitem => document.Description)
-                                        </td>
-                                        <td class="col-xs-1">
-                                            <a asp-controller="Documents" asp-action="GetDocument" asp-route-id="@document.Id" class="badge badge-warning">Ladda ned</a>
-
-                                        </td>
-                                        <td class="col-xs-1"></td>
-                                        <td class="col-xs-1"></td>
-                                    </tr>
-                                }
-                            }
-
-                        </tbody>
-                    }
-
-
-                    </table>
-                </div>
+                </table>
             </div>
         </div>
-}
 
-  
-<div>
-    <a asp-controller="Courses" asp-action="StudentModules" class="badge badge-primary">Tillbaka till kursmoduler</a>
-</div>
+    </div>
+
+
+
+
+
+
+
+    <div>
+        <a asp-controller="Courses" asp-action="StudentModules" class="badge badge-primary">Tillbaka till kursmoduler</a>
+    </div>
