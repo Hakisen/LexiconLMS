@@ -32,5 +32,6 @@ namespace LexiconLMS.Models
         public int ModuleId { get; set; }
         public Module Module { get; set; }
         public ICollection<Document> Documents { get; set; }
+        public ICollection<LmsTask> LmsTasks { get; set; }
     }
 }

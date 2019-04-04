@@ -20,5 +20,6 @@ namespace LexiconLMS.Data
         public DbSet<LexiconLMS.Models.LmsActivity> LmsActivity { get; set; }
         public DbSet<LexiconLMS.Models.ActivityType> ActivityType { get; set; }
         public DbSet<LexiconLMS.Models.Document> Document { get; set; }
+        public DbSet<LexiconLMS.Models.LmsTask> LmsTask { get; set; }
     }
 }

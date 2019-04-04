@@ -1,0 +1,57 @@
+﻿@model LexiconLMS.Models.LmsTask
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>LmsTask</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TeacherFeedback" class="control-label"></label>
+                <input asp-for="TeacherFeedback" class="form-control" />
+                <span asp-validation-for="TeacherFeedback" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReadyDate" class="control-label"></label>
+                <input asp-for="ReadyDate" class="form-control" />
+                <span asp-validation-for="ReadyDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudentAnswer" class="control-label"></label>
+                <input asp-for="StudentAnswer" class="form-control" />
+                <span asp-validation-for="StudentAnswer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudentComment" class="control-label"></label>
+                <input asp-for="StudentComment" class="form-control" />
+                <span asp-validation-for="StudentComment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReadyStateId" class="control-label"></label>
+                <select asp-for="ReadyStateId" class ="form-control" asp-items="ViewBag.ReadyStateId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="LmsActivityId" class="control-label"></label>
+                <select asp-for="LmsActivityId" class ="form-control" asp-items="ViewBag.LmsActivityId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <select asp-for="ApplicationUserId" class ="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -44,7 +44,8 @@ namespace LexiconLMS.Models
 
         public string Path { get; set; }
         public string MimeType { get; set; }
-
+        public int? LmsTaskId { get; set; } //FK
+        public LmsTask LmsTask { get; set; }
         public int? CourseId { get; set; } //FK
         public Course Course { get; set; }
         public int? ModuleId { get; set; } //FK
