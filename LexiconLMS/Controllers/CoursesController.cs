@@ -113,7 +113,31 @@ namespace LexiconLMS.Controllers
                 .Include(u => u.Modules).ThenInclude(v => v.LmsActivities).ThenInclude(x => x.Documents)
                 .Include(u => u.Modules)
                 .ThenInclude(x => x.Documents).FirstOrDefaultAsync(u => u.Id == courseId);
+
+            var course = _context.Course
+             .Include(d => d.Documents)
+             .FirstOrDefault(c => c.ApplicationUser.Contains(user));
+            DateTime date;
+            var modules = _context.Module
+                .Include(a => a.LmsActivities)
+                .ThenInclude(b => b.Documents)
+                .Include(a => a.Documents)
+                .Where(a => a.CourseId == course.Id)
+                .Where(c=> DateTime.Today>c.StartDate && DateTime.Today < c.EndDate)
+                .OrderBy(b => b.StartDate)
+                .ThenBy(c => c.EndDate).ToList();
+
+
+
+
             student.StudentDocuments = new List<Document>();
+
+            
+
+
+
+
+
             foreach (var item in student.StudentCourse.Documents)
             {
                 student.StudentDocuments.Add(item);
