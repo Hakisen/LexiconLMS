@@ -248,6 +248,100 @@ namespace LexiconLMS.Controllers
             }
         }
 
+
+        // GET: LmsActivities/SubmitTask/5
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> SubmitTask(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+
+
+            var lmsActivity = await _context.LmsActivity.FindAsync(id);
+            if (lmsActivity == null)
+            {
+                return NotFound();
+            }
+
+
+            var studentmodule = await _context.Module.FindAsync(lmsActivity.ModuleId);
+            var studentcourse = await _context.Course.FindAsync(studentmodule.CourseId);
+            var studentspercourse = _context.Course.Include(a => a.ApplicationUser).
+                FirstOrDefault(u => u.Id == studentcourse.Id);
+            var submitTask = new SubmitTaskViewModel();
+            submitTask.StudentCourse = studentcourse;
+            submitTask.StudentModule = studentmodule;
+            submitTask.LmsActivity =await _context.LmsActivity.FindAsync(id);
+
+
+            ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
+            ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", lmsActivity.ModuleId);
+            return View(lmsActivity);
+        }
+
+        // POST: LmsActivities/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Teacher")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,EndDate,StartDate,Description,Name,ActivityTypeId,ModuleId")] LmsActivity lmsActivity)
+        {
+            if (id != lmsActivity.Id)
+            {
+                return NotFound();
+            }
+
+            var module = await _context.Module.FindAsync(lmsActivity.ModuleId);
+
+            if ((lmsActivity.StartDate.Date >= module.StartDate.Date && lmsActivity.EndDate.Date <= module.EndDate.Date) && lmsActivity.StartDate.Date <= lmsActivity.EndDate.Date)
+            {
+
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        _context.Update(lmsActivity);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!LmsActivityExists(lmsActivity.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    //return RedirectToAction(nameof(Index));
+                    TempData["SuccessText"] = $"Aktivitet: {lmsActivity.Name} uppdaterad Ok!";
+                    return RedirectToAction(nameof(ModuleActivities), new { lmsActivity.ModuleId });
+                }
+                ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
+                ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", lmsActivity.ModuleId);
+                TempData["FailText"] = $"Något gick fel. Aktivitet: {lmsActivity.Name} uppdaterades inte!";
+                lmsActivity.Module = module;
+                return View(lmsActivity);
+            }
+            else
+            {
+                TempData["FailText"] = "Startdatum och slutdatum måste ligga inom modulens start- och slutdatum/n" +
+                        "och startdatum kan inte ligga senare än slutdatum!";
+                ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
+                ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", lmsActivity.ModuleId);
+                lmsActivity.Module = module;
+                return View(lmsActivity);
+            }
+        }
+
+
+
+
         // GET: LmsActivities/Delete/5
         [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> Delete(int? id)

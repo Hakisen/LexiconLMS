@@ -16,8 +16,9 @@ namespace LexiconLMS.Models
         [DataType(DataType.Date)]
         [Display(Name = "Färdig")]
         public System.DateTime ReadyDate { get; set; }
+        [Display(Name = "Din uppgift")]
+        public string TeacherDescription { get; set; }
 
-        
         [Display(Name = "Svar")]
         public string StudentAnswer { get; set; }
         [Display(Name = "Elevens kommentar")]
