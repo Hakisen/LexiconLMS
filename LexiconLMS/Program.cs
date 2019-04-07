@@ -72,7 +72,7 @@ namespace LexiconLMS
             using (var context = new ApplicationDbContext(
              serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
-
+                
                 var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
                 var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 if (context.Course.Any())
@@ -162,6 +162,10 @@ namespace LexiconLMS
                 context.ActivityType.AddRange(activityTypes);
                 context.SaveChanges();
 
+             
+
+
+
 
 
                 var activities = new List<LmsActivity>();
@@ -195,7 +199,26 @@ namespace LexiconLMS
 
 
 
+                var readyStates = new List<ReadyState>();
+                var readyStaeNames = new[] { "Inte Påbörjad", "Påbörjad", "Klar", "Godkänd" };
 
+
+                foreach (var name in readyStaeNames)
+                {
+
+
+
+
+                    var readyState = new ReadyState
+                    {
+                        Type = name,
+
+                    };
+                    readyStates.Add(readyState);
+                }
+
+                context.ReadyState.AddRange(readyStates);
+                context.SaveChanges();
 
 
 
