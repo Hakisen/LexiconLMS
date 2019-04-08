@@ -72,7 +72,29 @@ namespace LexiconLMS
             using (var context = new ApplicationDbContext(
              serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
-                
+                if (!context.ReadyState.Any())
+                {
+                    var readyStates = new List<ReadyState>();
+                    var readyStaeNames = new[] { "Inte Påbörjad", "Påbörjad", "Klar", "Godkänd" };
+
+
+                    foreach (var name in readyStaeNames)
+                    {
+
+
+
+
+                        var readyState = new ReadyState
+                        {
+                            Type = name,
+
+                        };
+                        readyStates.Add(readyState);
+                    }
+
+                    context.ReadyState.AddRange(readyStates);
+                    context.SaveChanges();
+                }
                 var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
                 var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 if (context.Course.Any())
@@ -199,27 +221,7 @@ namespace LexiconLMS
 
 
 
-                var readyStates = new List<ReadyState>();
-                var readyStaeNames = new[] { "Inte Påbörjad", "Påbörjad", "Klar", "Godkänd" };
-
-
-                foreach (var name in readyStaeNames)
-                {
-
-
-
-
-                    var readyState = new ReadyState
-                    {
-                        Type = name,
-
-                    };
-                    readyStates.Add(readyState);
-                }
-
-                context.ReadyState.AddRange(readyStates);
-                context.SaveChanges();
-
+  
 
 
 

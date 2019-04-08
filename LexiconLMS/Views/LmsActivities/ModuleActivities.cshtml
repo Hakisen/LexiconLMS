@@ -9,6 +9,10 @@
 <div class="text-success blink_me">
     @TempData["SuccessText"]
 </div>
+<div class="text-danger blink_me">
+    @TempData["FailText"]
+</div>
+
 <p>
     @if (User.IsInRole("Teacher"))
     {
@@ -16,7 +20,7 @@
     }
 </p>
 <table class="table table-striped">
-    <thead  class="table-dark">
+    <thead class="table-dark">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.StartDate)
@@ -42,45 +46,46 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActivityType.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Module.Name)
-            </td>
-            @if (User.IsInRole("Teacher"))
-            {
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
-                @if(item.ActivityType.Type== "Övningsuppgift") { 
-                <a asp-action="SubmitTask" asp-route-id="@item.Id" class="badge badge-primary">Skicka uppgift</a>
-                }
-                <a asp-controller="Documents" asp-action="LmsActivityDocuments" asp-route-lmsActivityId="@item.Id" class="badge badge-warning">Dokument</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a>
-            </td>
-            }
-            @if (User.IsInRole("Student"))
-            {
+            <tr>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
-                    <a asp-controller="Documents" asp-action="LmsActivityDocuments" asp-route-lmsActivityId="@item.Id" class="badge badge-warning">Dokument</a>
+                    @Html.DisplayFor(modelItem => item.StartDate)
                 </td>
-            }
-        </tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActivityType.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Module.Name)
+                </td>
+                @if (User.IsInRole("Teacher"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
+                        @if (item.ActivityType.Type == "Övningsuppgift")
+                        {
+                            <a asp-action="SubmitTask" asp-route-id="@item.Id" class="badge badge-primary">Skicka uppgift</a>
+                        }
+                        <a asp-controller="Documents" asp-action="LmsActivityDocuments" asp-route-lmsActivityId="@item.Id" class="badge badge-warning">Dokument</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a>
+                    </td>
+                }
+                @if (User.IsInRole("Student"))
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
+                        <a asp-controller="Documents" asp-action="LmsActivityDocuments" asp-route-lmsActivityId="@item.Id" class="badge badge-warning">Dokument</a>
+                    </td>
+                }
+            </tr>
         }
     </tbody>
 </table>

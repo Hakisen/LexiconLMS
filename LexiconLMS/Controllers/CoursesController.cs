@@ -102,6 +102,7 @@ namespace LexiconLMS.Controllers
         {
             var student = new StudentViewModel();
             var studentName = User.Identity.Name;
+            var studentId = _userManager.GetUserId(User);
             var user = await _userManager.FindByNameAsync(studentName);
             ViewBag.StudentName = user.Name;
             var courseId = (int)user.CourseId;
@@ -112,8 +113,10 @@ namespace LexiconLMS.Controllers
             student.StudentCourse = await _context.Course.Include(x => x.Documents).Include(a => a.ApplicationUser)
                 .Include(u => u.Modules).ThenInclude(v => v.LmsActivities).ThenInclude(x => x.Documents)
                 .Include(u => u.Modules)
+                .Include(u => u.Modules).ThenInclude(v => v.LmsActivities).ThenInclude(x => x.LmsTasks)
+                .Include(u => u.Modules)
                 .ThenInclude(x => x.Documents).FirstOrDefaultAsync(u => u.Id == courseId);
-
+           
             var course = _context.Course
              .Include(d => d.Documents)
              .FirstOrDefault(c => c.ApplicationUser.Contains(user));
@@ -171,7 +174,27 @@ namespace LexiconLMS.Controllers
                 = await _context.Document.Include(u => u.Course).ThenInclude(u => u.Modules).FirstOrDefaultAsync(u => u.Id == courseId);
 
             student.Student = user;
-      
+
+            student.StudentTasks = new List<LmsTask>();
+
+
+
+
+
+
+            foreach (var module in student.StudentCourse.Modules)
+            {
+                foreach (var activity in module.LmsActivities)
+                {
+                    foreach (var activityTask in activity.LmsTasks)
+                    {
+                        if(studentId==activityTask.ApplicationUserId)
+                        student.StudentTasks.Add(activityTask);
+                    }
+
+                }
+
+            }
 
 
 

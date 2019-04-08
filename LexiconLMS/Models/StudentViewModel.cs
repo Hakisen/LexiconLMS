@@ -12,6 +12,7 @@ namespace LexiconLMS.Models
        [Display(Name = "Elevkurs")]
         public Course StudentCourse { get; set; }
         public List<Module> StudentModules { get; set; }
+        public List<LmsTask> StudentTasks { get; set; }
 
         [Display(Name = "Elev")]
         public ApplicationUser Student { get; set; }

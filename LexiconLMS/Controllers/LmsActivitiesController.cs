@@ -290,87 +290,99 @@ namespace LexiconLMS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitTask(int id)
         {
-            
 
 
-            var lmsActivity = await _context.LmsActivity.FindAsync(id);
+
+            var lmsActivity = await _context.LmsActivity.Include(u => u.LmsTasks).FirstOrDefaultAsync(u => u.Id == id);
             if (lmsActivity == null)
             {
                 return NotFound();
             }
-
-
-            var studentmodule = await _context.Module.FindAsync(lmsActivity.ModuleId);
-            var studentcourse = await _context.Course.FindAsync(studentmodule.CourseId);
-            var studentspercourse = _context.Course.Include(a => a.ApplicationUser).
-                FirstOrDefault(u => u.Id == studentcourse.Id);
             var submitTask = new SubmitTaskViewModel();
-            submitTask.StudentCourse = studentcourse;
-            submitTask.StudentModule = studentmodule;
-           
-            submitTask.LmsActivity = await _context.LmsActivity.FindAsync(id);
-
-            if (id != submitTask.LmsActivity.Id)
+            if (lmsActivity.LmsTasks.Count == 0)
             {
-                return NotFound();
-            }
 
-            //var LmsActivity = await _context.LmsActivity.FindAsync(submitTask.LmsActivity.Id);
-            var taskList = new List<LmsTask>();
-            var ReadyStatex = await _context.ReadyState.FirstOrDefaultAsync(u=>u.Type=="Inte Påbörjad");
-            var ReadyStateId = ReadyStatex.Id;
-            foreach (var student in studentcourse.ApplicationUser)
-            {
-                var studentTask = new LmsTask();
-               
-                studentTask.LmsActivityId = submitTask.LmsActivity.Id;
-                studentTask.ApplicationUserId = student.Id;
-                studentTask.TeacherDescription = submitTask.LmsActivity.Description;
-                studentTask.ReadyStateId = ReadyStateId;
+                var studentmodule = await _context.Module.FindAsync(lmsActivity.ModuleId);
+                var studentcourse = await _context.Course.FindAsync(studentmodule.CourseId);
+                var studentspercourse = _context.Course.Include(a => a.ApplicationUser).
+                    FirstOrDefault(u => u.Id == studentcourse.Id);
 
+                submitTask.StudentCourse = studentcourse;
+                submitTask.StudentModule = studentmodule;
 
-                taskList.Add(studentTask);
-            }
+                submitTask.LmsActivity = await _context.LmsActivity.FindAsync(id);
 
-            if (ModelState.IsValid)
-            {
-                try
+                if (id != submitTask.LmsActivity.Id)
                 {
-                    _context.LmsTask.AddRange(taskList);
-
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                //var LmsActivity = await _context.LmsActivity.FindAsync(submitTask.LmsActivity.Id);
+                var taskList = new List<LmsTask>();
+                var ReadyStatex = await _context.ReadyState.FirstOrDefaultAsync(u => u.Type == "Inte Påbörjad");
+                var ReadyStateId = ReadyStatex.Id;
+                foreach (var student in studentcourse.ApplicationUser)
                 {
-                    if (!LmsActivityExists(submitTask.LmsActivity.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                //return RedirectToAction(nameof(Index));
-                TempData["SuccessText"] = $"Uppgifter till: {submitTask.LmsActivity.Name} skapad Ok!";
-                return RedirectToAction(nameof(ModuleActivities), new { submitTask.LmsActivity.ModuleId });
+                    var studentTask = new LmsTask();
 
-                //ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
-                //ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", lmsActivity.ModuleId);
-                //TempData["FailText"] = $"Något gick fel. Aktivitet: {lmsActivity.Name} uppdaterades inte!";
-                //lmsActivity.Module = module;
-                return View(submitTask.LmsActivity);
+                    studentTask.LmsActivityId = submitTask.LmsActivity.Id;
+                    studentTask.ApplicationUserId = student.Id;
+                    studentTask.TeacherDescription = submitTask.LmsActivity.Description;
+                    studentTask.ReadyStateId = ReadyStateId;
+
+
+                    taskList.Add(studentTask);
+                }
+
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        _context.LmsTask.AddRange(taskList);
+
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!LmsActivityExists(submitTask.LmsActivity.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    //return RedirectToAction(nameof(Index));
+                    TempData["SuccessText"] = $"Uppgifter till: {submitTask.LmsActivity.Name} skapad Ok!";
+                    return RedirectToAction(nameof(ModuleActivities), new { submitTask.LmsActivity.ModuleId });
+
+                    //ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
+                    //ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", lmsActivity.ModuleId);
+                    //TempData["FailText"] = $"Något gick fel. Aktivitet: {lmsActivity.Name} uppdaterades inte!";
+                    //lmsActivity.Module = module;
+                    //return View(submitTask.LmsActivity);
+                }
+                else
+                {
+                    TempData["FailText"] = "Uppgifter ej skapade";
+                    //ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
+                    //ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", lmsActivity.ModuleId);
+                    return View(submitTask.LmsActivity);
+
+
+                }
             }
             else
             {
-                TempData["FailText"] = "Uppgifter ej skapade";
-                //ViewData["ActivityTypeId"] = new SelectList(_context.Set<ActivityType>(), "Id", "Type", lmsActivity.ActivityTypeId);
-                //ViewData["ModuleId"] = new SelectList(_context.Module, "Id", "Name", lmsActivity.ModuleId);
-             
+                submitTask.LmsActivity = lmsActivity;
+                TempData["FailText"] = $"Uppgifter till {submitTask.LmsActivity.Name} redan skapade";
+                
+                return RedirectToAction(nameof(ModuleActivities), new { submitTask.LmsActivity.ModuleId });
 
-                return View(submitTask.LmsActivity);
             }
         }
+
 
 
 
