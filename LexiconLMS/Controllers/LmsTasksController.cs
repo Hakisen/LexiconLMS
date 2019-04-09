@@ -180,6 +180,65 @@ namespace LexiconLMS.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: LmsTasks/Report/5
+        public async Task<IActionResult> ReportTask(int? Id)
+        {
+            if (Id == null)
+            {
+                return NotFound();
+            }
+
+            var lmsTask = await _context.LmsTask.FindAsync(Id);
+            if (lmsTask == null)
+            {
+                return NotFound();
+            }
+            ViewData["ApplicationUserId"] = lmsTask.ApplicationUserId;
+            ViewData["LmsActivityId"] = lmsTask.LmsActivityId;
+            ViewData["ReadyStateId"] = new SelectList(_context.Set<ReadyState>(), "Id", "Id", lmsTask.ReadyStateId);
+            return View(lmsTask);
+        }
+
+        // POST: LmsTasks/ReortTask/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ReportTask(int Id, [Bind("Id,TeacherFeedback,ReadyDate,StudentAnswer,StudentComment,ReadyStateId,LmsActivityId,ApplicationUserId")] LmsTask lmsTask)
+        {
+            if (Id != lmsTask.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(lmsTask);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!LmsTaskExists(lmsTask.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Student", "Courses");
+            }
+            ViewData["ApplicationUserId"] = lmsTask.ApplicationUserId;
+            ViewData["LmsActivityId"] = lmsTask.LmsActivityId;
+            ViewData["ReadyStateId"] = new SelectList(_context.Set<ReadyState>(), "Id", "Id", lmsTask.ReadyState);
+            return View(lmsTask);
+        }
+
+
+
         private bool LmsTaskExists(int id)
         {
             return _context.LmsTask.Any(e => e.Id == id);
