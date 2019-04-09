@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewData["Title"] = "ActivityTasks";
+}
+
+<h1>ActivityTasks</h1>
+
+@model IEnumerable<LexiconLMS.Models.LmsTask>
+
+@{
+    ViewData["Title"] = "ModuleActivities";
+}
+
+<h3>Uppgifter för aktivitet @ViewBag.LmsActivityName</h3>
+
+<div class="text-success blink_me">
+    @TempData["SuccessText"]
+</div>
+<div class="text-danger blink_me">
+    @TempData["FailText"]
+</div>
+
+<p>
+    @*@if (User.IsInRole("Teacher"))
+    {
+        <a asp-action="CreateModuleActivity" asp-route-moduleId="@ViewBag.ModuleId" class="btn btn-outline-primary">Skapa ny modulaktivitet</a>
+    }*@
+</p>
+<table class="table table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TeacherDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReadyState)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.StudentAnswer)
+            </th><th>
+                @Html.DisplayNameFor(model => model.StudentComment)
+            </th>
+            
+
+            <th>
+                @Html.DisplayNameFor(model => model.LmsActivity)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TeacherDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReadyState.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentAnswer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StudentComment)
+                </td>
+                4
+                <td>
+                    @Html.DisplayFor(modelItem => item.LmsActivity.Name)
+                </td>
+                @if (User.IsInRole("Teacher"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
+                      
+
+                        <a asp-controller="Documents" asp-action="LmsTaskDocuments" asp-route-lmsTaskId="@item.Id" class="badge badge-warning">Dokument</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a>
+                    </td>
+                }
+                @if (User.IsInRole("Student"))
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
+                        <a asp-controller="Documents" asp-action="LmsTaskDocuments" asp-route-lmsTaskId="@item.Id" class="badge badge-warning">Dokument</a>
+                        
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    @if (User.IsInRole("Teacher"))
+    {
+        <a asp-controller="Modules" asp-action="CourseModules" asp-route-courseId="@ViewBag.CourseId" class="badge badge-primary">Tillbaka till kursmoduler</a>
+        <a asp-controller="LmsActivities" asp-action="ModuleActivities" asp-route-courseId="@ViewBag.ModuleId" class="badge badge-primary">Tillbaka till moduleaktiviteter</a>
+    }
+    @if (User.IsInRole("Student"))
+    {
+        <a asp-controller="Courses" asp-action="StudentModules" class="badge badge-primary">Tillbaka till kursmoduler</a>
+    }
+
+</div>
+

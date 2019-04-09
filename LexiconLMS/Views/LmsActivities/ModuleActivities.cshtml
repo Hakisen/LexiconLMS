@@ -67,23 +67,29 @@
                 </td>
                 @if (User.IsInRole("Teacher"))
                 {
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
-                        @if (item.ActivityType.Type == "Övningsuppgift")
-                        {
-                            <a asp-action="SubmitTask" asp-route-id="@item.Id" class="badge badge-primary">Skicka uppgift</a>
-                        }
-                        <a asp-controller="Documents" asp-action="LmsActivityDocuments" asp-route-lmsActivityId="@item.Id" class="badge badge-warning">Dokument</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a>
-                    </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="badge badge-success">Ändra</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
+                    @if (item.ActivityType.Type == "Övningsuppgift")
+                    {
+                        <a asp-action="SubmitTask" asp-route-id="@item.Id" class="badge badge-primary">Skicka uppgift</a>
+                        <a asp-controller="LmsTasks" asp-action="ActivityTasks" asp-route-lmsActivityId="@item.Id" class="badge badge-info">Uppgifter</a>
+                    }
+                    <a asp-controller="Documents" asp-action="LmsActivityDocuments" asp-route-lmsActivityId="@item.Id" class="badge badge-warning">Dokument</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="badge badge-danger">Radera</a>
+                </td>
                 }
                 @if (User.IsInRole("Student"))
                 {
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
-                        <a asp-controller="Documents" asp-action="LmsActivityDocuments" asp-route-lmsActivityId="@item.Id" class="badge badge-warning">Dokument</a>
-                    </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="badge badge-primary">Detaljer</a>
+                    <a asp-controller="Documents" asp-action="LmsActivityDocuments" asp-route-lmsActivityId="@item.Id" class="badge badge-warning">Dokument</a>
+                    @if (item.ActivityType.Type == "Övningsuppgift")
+                    {
+                        <a asp-action="SubmitTask" asp-route-id="@item.Id" class="badge badge-primary">Skicka uppgift</a>
+                        <a asp-controller="LmsTasks" asp-action="ActivityTasks" asp-route-lmsActivityId="@item.Id" class="badge badge-info">Uppgifter</a>
+                    }
+                </td>
                 }
             </tr>
         }

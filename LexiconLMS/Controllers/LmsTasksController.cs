@@ -131,7 +131,23 @@ namespace LexiconLMS.Controllers
             ViewData["ReadyStateId"] = new SelectList(_context.Set<ReadyState>(), "Id", "Id", lmsTask.ReadyStateId);
             return View(lmsTask);
         }
+        //Get: ActivityTasks
+        public async Task<IActionResult> ActivityTasks(int? lmsActivityId)
+        {
+            var applicationDbContext = _context.LmsTask.Include(l => l.ReadyState).Include(m => m.LmsActivity).Where(m => m.LmsActivity.Id == lmsActivityId);
+            //return View("Index", await applicationDbContext.ToListAsync());
+            var lmsActivity = _context.LmsActivity.Find(lmsActivityId);
+            var module = _context.Module.Find(lmsActivity.ModuleId);
 
+            ViewBag.ModuleName = module.Name;
+            ViewBag.CourseId = module.CourseId;
+            ViewBag.ModuleId = lmsActivity.ModuleId;
+
+            //var course = _context.Course.Find(module.CourseId);
+            //course.Name
+
+            return View(await applicationDbContext.ToListAsync());
+        }
         // GET: LmsTasks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

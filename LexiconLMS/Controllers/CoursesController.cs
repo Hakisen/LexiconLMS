@@ -113,7 +113,7 @@ namespace LexiconLMS.Controllers
             student.StudentCourse = await _context.Course.Include(x => x.Documents).Include(a => a.ApplicationUser)
                 .Include(u => u.Modules).ThenInclude(v => v.LmsActivities).ThenInclude(x => x.Documents)
                 .Include(u => u.Modules)
-                .Include(u => u.Modules).ThenInclude(v => v.LmsActivities).ThenInclude(x => x.LmsTasks)
+                .Include(u => u.Modules).ThenInclude(v => v.LmsActivities).ThenInclude(x => x.LmsTasks).ThenInclude(y => y.ReadyState)
                 .Include(u => u.Modules)
                 .ThenInclude(x => x.Documents).FirstOrDefaultAsync(u => u.Id == courseId);
            

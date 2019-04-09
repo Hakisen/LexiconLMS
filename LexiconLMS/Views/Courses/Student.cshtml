@@ -85,25 +85,23 @@
                           
 
 
-                                <tr >
-                                    <td class="span 1">
+                        <tr>
+                            <td class="span 1">
 
-                                        @Html.DisplayFor(modelitem => task.ReadyState)
-                                    </td>
-                                    <td class="span 1">
+                                @Html.DisplayFor(modelitem => task.ReadyState.Type)
+                            </td>
+                            <td class="span 1">
 
-                                        @Html.DisplayFor(modelitem => task.LmsActivity.Name)
-                                    </td>
-                                    <td class="span 2">
-                                        @Html.DisplayFor(modelitem => task.LmsActivity.Description)
-                                    </td>
-                                    @*<td class="span 1">
+                                @Html.DisplayFor(modelitem => task.LmsActivity.Name)
+                            </td>
+                            <td class="span 2">
+                                @Html.DisplayFor(modelitem => task.LmsActivity.Description)
+                            </td>
+                            <td class="span 1">
+                                <a asp-controller="Documents" asp-action="LmsTaskDocuments" asp-route-lmsTaskId="@task.Id" class="badge badge-warning">Dokument</a>
+                            </td>
 
-                                        <a asp-controller="Documents" asp-action="GetDocument" asp-route-id="@Document.Id" class="badge badge-warning">Ladda ned</a>
-
-                                    </td>*@
-
-                                </tr>
+                        </tr>
                             }
                         </tbody>
 

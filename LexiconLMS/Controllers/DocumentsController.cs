@@ -673,6 +673,100 @@ namespace LexiconLMS.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateLmsTaskDocument([Bind("MyUploadedFile,Title,DueDate,CreatedDate,Path,MimeType,Id,CourseId,ModuleId,LmsTaskId,ApplicationUserId,OwnerFileName")]Document document)
+        {
+
+
+
+
+            // do other validations on your model as needed
+            if (document.MyUploadedFile.FileName != null)
+            {
+
+                var uniqueFileName = GetUniqueFileName(document.MyUploadedFile.FileName);
+                var documentroot = Path.Combine(hostingEnvironment.WebRootPath, "documents");
+
+                var fullpath = Path.Combine(documentroot, uniqueFileName);
+
+
+                document.MyUploadedFile.CopyTo(new FileStream(fullpath, FileMode.Create));
+
+                //to do : Save uniqueFileName  to your db table   
+
+                var lmsTask = await _context.LmsTask.FindAsync(document.LmsTaskId);
+                document.OwnerFileName = document.MyUploadedFile.FileName;
+                document.StoredFilePath = uniqueFileName;
+                document.ContentType = document.MyUploadedFile.ContentType;
+                document.Length = document.MyUploadedFile.Length;
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(document);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessText"] = $"Uppgiftsdokument: {document.Title} skapades Ok!";
+                    return RedirectToAction(nameof(LmsTaskDocuments), new { document.LmsTaskId });
+                }
+
+                TempData["FailText"] = $"Något gick fel vid inlämnandet av uppgiftsdokumentet. Försök igen";
+
+                document.LmsTask = lmsTask;
+            }
+
+
+            return RedirectToAction("LmsTaskDocuments", "Documents");
+        }
+
+
+
+
+        public async Task<IActionResult> CreateLmsTaskDocument(int lmsTaskId)
+        {
+
+
+            var lmsTask = await _context.LmsTask.FindAsync(lmsTaskId);
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var userId = await _userManager.GetUserIdAsync(user);
+
+            Document model = new Document
+            {
+                LmsTaskId = lmsTaskId,
+                ApplicationUser = user,
+                ApplicationUserId = userId,
+                LmsTask = lmsTask,
+                CreatedDate = DateTime.Today
+            };
+
+            return View(model);
+
+        }
+
+
+        public async Task<IActionResult> LmsTaskDocuments(int? lmsTaskId)
+        {
+            var applicationDbContext = _context.Document.Include(c => c.LmsTask).Where(c => c.LmsTask.Id == lmsTaskId);
+
+
+            //return View("Index", await applicationDbContext.ToListAsync());
+            var lmsTask = _context.LmsTask.Find(lmsTaskId);
+            
+            var lmsActivity = _context.LmsActivity.Find(lmsTask.LmsActivityId);
+            var module = _context.Module.Find(lmsActivity.ModuleId);
+            ViewBag.LmsTaskName = _context.LmsTask.Find(lmsTaskId).StudentAnswer;
+            ViewBag.LmsTaskId = lmsTaskId;
+
+            ViewBag.ActivityId = lmsTask.LmsActivityId;
+            ViewBag.ModuleId = lmsActivity.ModuleId;
+            ViewBag.CourseId = module.CourseId;
+            return View(await applicationDbContext.ToListAsync());
+
+        }
+
+
+
+
+
 
 
 
