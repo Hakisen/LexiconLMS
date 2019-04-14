@@ -60,15 +60,16 @@
                     <thead class="table-dark">
                         <tr><th class="span 3">Uppgifter</th></tr>
                         <tr>
-                            <th class="span 1">
-                                <span>Uppgiftsnamn</span>
-                            </th>
+
                             <th class="span 1">
                                 @Html.DisplayNameFor(modelitem => Model.StudentTasks.FirstOrDefault().ReadyState)
                             </th>
                             <th class="span 2">
                                 @Html.DisplayNameFor(modelitem => Model.StudentTasks.FirstOrDefault().LmsActivity.Name)
                             </th>
+                            <td class="span 2">
+                                @Html.DisplayNameFor(modelitem => Model.StudentTasks.FirstOrDefault().LmsActivity.Description)
+                            </td>
                             <th class="span 1">
 
                             </th>
@@ -80,9 +81,6 @@
                         {
 
 
-
-
-                          
 
 
                         <tr>

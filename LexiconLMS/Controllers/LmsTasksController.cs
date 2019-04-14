@@ -195,7 +195,9 @@ namespace LexiconLMS.Controllers
             }
             ViewData["ApplicationUserId"] = lmsTask.ApplicationUserId;
             ViewData["LmsActivityId"] = lmsTask.LmsActivityId;
-            ViewData["ReadyStateId"] = new SelectList(_context.Set<ReadyState>(), "Id", "Id", lmsTask.ReadyStateId);
+
+            
+            ViewData["ReadyStateId"] = new SelectList(_context.Set<ReadyState>(), "Id", "Type");
             return View(lmsTask);
         }
 
